@@ -73,3 +73,13 @@ default branch, uploads only `site/`, and uses fixed official Actions commits.
 Its existence does not prove CI or deployment success. Record the actual run,
 commit and returned `page_url`; do not invent a live URL from repository naming.
 [Release instructions](../docs/RELEASE.zh-CN.md) cover the authorized process.
+
+## Public CI checkpoint
+
+The public source commit `a880144d07d8599c6e5232a34bcef1e1cac54bc1` passed all six
+[Core CI jobs](https://github.com/dwgx/RDC-Operator-Kit/actions/runs/45780615916).
+Each core job ran 184 tests: Windows 3.10 / 3.13 each passed 177 with 7 skips;
+Ubuntu 3.10 / 3.13 each passed 179 with 5 skips. Both MCP jobs passed the two
+protocol sessions and reported unchanged saved records. The initial failed
+[CI run](https://github.com/dwgx/RDC-Operator-Kit/actions/runs/45777836079) remains available.
+These are core/stdio results, not live modern-UI acceptance.

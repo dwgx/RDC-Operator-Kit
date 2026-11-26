@@ -1,4 +1,4 @@
-> **0.1.0a5 integration candidate — 2026-11-26.** This update adds typed, read-only MCP results and saved-request summaries, strengthens Linux installation and liveness reporting, and refreshes both static web pages. Read the [Wave 05 report](docs/REVIEW-WAVE5.zh-CN.md) for completed checks and pending gates. Earlier Windows evidence remains in the [Wave 04 report](docs/REVIEW-WAVE4.zh-CN.md).
+> **0.1.0a5 Windows-first alpha — 2026-11-26.** Typed read-only MCP results, saved-request summaries, stronger installation and liveness reporting, and a refreshed static interface. The first public CI exposed Windows path-alias issues; the corrected commit passed all six CI jobs. Read the [Wave 05 report](docs/REVIEW-WAVE5.zh-CN.md) for versioned source, installation and publication evidence. Earlier Windows evidence remains in the [Wave 04 report](docs/REVIEW-WAVE4.zh-CN.md).
 
 # RDC Operator Kit
 
@@ -71,8 +71,9 @@ bash scripts/install.sh --with-terminal
 .venv/bin/python -m rdc_operator --config config.local.json doctor
 ```
 
-The Linux installer rejects a linked `.venv/bin` directory before executing its
-interpreter, while retaining normal virtual-environment interpreter symlinks.
+The installers reject linked `.venv/bin` (Linux) and `.venv/Scripts` (Windows)
+directories before executing their interpreter, while retaining normal
+virtual-environment interpreter links and redirectors.
 Local Linux fixture checks do not constitute validation on the separately
 requested HMC device; that device's first environment probe was quota-blocked.
 
@@ -135,10 +136,32 @@ means the collected conditions did not reveal a conflict; it is not permission
 or a guarantee of a successful action. Exit 1 includes unsupported, blocked and
 unknown assessments. Use the Windows guide for the bounded smoke runner.
 
-Static GitHub Pages source lives in `site/`. CI and manual Pages workflows are
-prepared under `.github/workflows`, with action revisions pinned to commit SHAs.
-Workflow files are not execution evidence: actual CI, publication and deployment
-results are tracked in the [Wave 05 report](docs/REVIEW-WAVE5.zh-CN.md).
+The first public `main` commit is [5952a45](https://github.com/dwgx/RDC-Operator-Kit/commit/5952a45f03549de17cdc3d92ff6d7a1f91b3e0ad).
+Its [first CI run](https://github.com/dwgx/RDC-Operator-Kit/actions/runs/45777836079)
+had two failed Windows core jobs and four successful jobs. Those failures remain
+recorded. After the path fixes, Linux source core ran 184 tests (181 passed,
+three Windows-only skips); owned Windows source core ran 184 (173 passed,
+11 skipped), and real SDK 2.3.0 MCP sessions passed 72 checks in total.
+
+The correction was published as [a880144](https://github.com/dwgx/RDC-Operator-Kit/commit/a880144d07d8599c6e5232a34bcef1e1cac54bc1),
+and [its CI run](https://github.com/dwgx/RDC-Operator-Kit/actions/runs/45780615916)
+passed all six jobs. Each Windows core job ran 184 tests with 177 passes and
+seven skips; each Ubuntu core job had 179 passes and five skips. Core CI omits
+optional Pydantic 2, so its two model checks are explicit skips. Both independent
+MCP jobs passed modern and legacy sessions with unchanged records; their CI logs
+do not provide a detailed check count, so the separate owned-Windows 72 is not
+attributed to those jobs.
+
+Installed-package acceptance is recorded separately from source smoke. It checks
+the actual site-packages module bytes, the CLI entry points, a real stdio session,
+and preservation of unrelated dependencies and configuration. See the
+[versioned installation record](docs/REVIEW-WAVE5.zh-CN.md); a version string or
+source-tree pass alone does not establish that the corrected package is installed.
+
+Static GitHub Pages source lives in `site/`. CI and manual Pages workflows use
+pinned action revisions under `.github/workflows`. Use the repository Releases
+and deployment records to verify a fixed tag and site publication. The dated
+[Wave 05 report](docs/REVIEW-WAVE5.zh-CN.md) preserves the publication checkpoints.
 [Release instructions](docs/RELEASE.zh-CN.md) describe the publication process.
 
 MIT for original kit code. Upstream components retain their own licenses; see

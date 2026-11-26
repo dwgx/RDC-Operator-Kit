@@ -4,19 +4,28 @@
 
 | 本轮项目 | 已有结果 | 适用范围与当前待完成项 |
 |---|---|---|
-| 最终本地 Linux core | 182 run／181 pass／1 Windows-only skip | Linux / Python 3.12.14；2.719 秒、0 failure/error；不是 HMC。 |
+| CI 修复后本地 Linux core | 184 run／181 pass／3 Windows-only skip | Linux / Python 3.12.14；2.677 秒、0 failure/error；不是 HMC。三个 skip 为 Windows 安装器、8.3 路径和 junction/HANDLE 回归。 |
 | 初始 a5 Windows 源码集成 | 同一次九个顶层 case 全部 passed，exit 0 | core 177 run／166 pass／11 skip；源码执行，非 installed-package 全套验收。 |
 | 首次 Windows MCP 2.3.0 | modern `2026-07-28` 与 legacy `2025-11-25`，各 30 checks 为 true | 原合成记录未变、held worker exit 0；source a5、当时 installed distribution a4。 |
-| MCP smoke 修复与真实复验 | 12 个独立 verdict 符合预期；修后 Windows 两会话各 36 checks，通过 | 合成回归是两个正常控制通过、十个错误变异失败；真实 SDK 合计 72 项，二者不混算。 |
-| 修后 Windows core／安装器 | core 181 run／170 pass／11 skip；新增 junction 定点 1/1 | 两次独立命令，未伪装成一次 182 项完整运行；P2 目录归属修复已实机验证。 |
+| MCP smoke 修复与 CI 修复后真实复验 | 12 个独立 verdict 符合预期；最新 Windows 两会话各 36 checks，通过 | 合成回归为两个控制通过、十个错误变异失败；真实 SDK 合计 72 项。最新执行为 source tree，distribution 虽为 a5，仍不证明 CI 修复已进入安装包。 |
+| CI 修复后 Windows core | 184 run／173 pass／11 skip | Windows 11 / Python 3.14.7；7.673 秒、0 failure/error。新增短名称和瞬时 junction 回归均通过；不等于重跑整个九项集成 suite。 |
 | Linux 安装／liveness | 定向 6/6 与 18/18；独立反例确认修复 | 分别含合成归档、真实自有 pipe fixture 与故障注入；不等于完整 Linux PTY 或 HMC 验收。 |
 | 现代首页／Lab | 静态结构、Node 合成事件与独立交互反例检查；IME 修复定点 3/3 | 新 UI 没有 live browser／响应式／真实剪贴板通过结论；Lab 业务脚本保留 a4 字节。 |
 | HMC | 首个环境 probe quota-blocked | 没有 OS、Python、安装或执行结果；没有重连、换账户或其他传输重试。 |
 | 两次真实 OMP review | GLM deadline；DeepSeek provider 402；均无 final | 原生回执保留；不能称模型已完成 review。 |
-| a5 安装包／Skill | Skill 已更新并经私有 git 同步；wheel 11 模块与源码一致 | Skill 验收不是设备执行；Windows 安装与隔离导入按第五轮后续记录，不从旧 a4 安装推断。 |
-| GitHub | [公开仓库已创建](https://github.com/dwgx/RDC-Operator-Kit) | 源码 push、CI、Release、Pages 尚未在本总览记录完成；已创建空仓库不等于可安装发行版。 |
+| 最终 a5 安装包／Skill | 包含 CI 修复的 wheel 已在两个自有 Windows 环境完成 a5→a5 更新，各 11 个 site-packages 模块与修后源码完全一致；Skill 已更新并同步 | 仅更新 Kit，全部其他 distribution 版本与配置哈希不变，备份保留，使用 `-I` 隔离导入。pre-CI 安装结果仍保留为历史 checkpoint。 |
+| 实际 installed CLI／MCP | 两个 `rdc-kit.exe --version` 均为 a5、exit 0；一个 installed 现代 MCP 会话的 17 条断言全部 true | `-I` 启动，实际模块位于 site-packages；协议 `2026-07-28`，保存 unknown、双通道与原记录均核对，worker 正常返回 0。不是 GUI／legacy 重跑，不并入 source 72 或 CI 计数。 |
+| GitHub 源码 | [首次公开提交 `5952a45`](https://github.com/dwgx/RDC-Operator-Kit/commit/5952a45f03549de17cdc3d92ff6d7a1f91b3e0ad) 已 push 并回读一致 | public 仓库的 `main` 已有源码，不能继续描述为空仓库。 |
+| 首轮 GitHub CI（历史 checkpoint） | [实际 run](https://github.com/dwgx/RDC-Operator-Kit/actions/runs/45777836079)：两个 Windows core job 失败，其他四个 job 通过 | 两个失败 job 均为 182 run／11 failures／10 errors／7 skip；原日志保留，不被新 run 覆盖。 |
+| 修复提交 GitHub CI | [`a880144` 的 run 45780615916](https://github.com/dwgx/RDC-Operator-Kit/actions/runs/45780615916)：六个 job 全部 success | Windows Python 3.10/3.13 core 各 184 run／177 pass／7 skip；Ubuntu core 各 184 run／179 pass／5 skip。CI core 没有可选 Pydantic 2，相关两项明确 skip；新 Windows 路径回归均 ok。 |
+| CI 的两个独立 MCP job | Ubuntu／Windows 的 modern、legacy 会话均 passed，原记录未变 | 日志未给出完整逐项 check 数；不把自有 Windows 的 72 项套到 CI。 |
+| Pages 配置／发布余项 | Pages 已配置 GitHub Actions，API 返回 [配置地址](https://dwgx.github.io/RDC-Operator-Kit/)；`deployment_verified: false` | a5 tag／Release 和 Pages 实际部署仍待回执；配置地址不等于网站已经上线。 |
 
 MCP smoke 的 review 问题针对判定机制：Python 的普通容器相等会混淆 `false` 与 `0`，而旧状态检查遗漏文本通道的额外内容。生产 `as_result()` 本次没有被证实实际泄露；修复已加入类型敏感 JSON 比较和全部成功响应的双通道核对。真实协议复验与合成反例分别记录，不把修复前 60 checks 当作修复后通过。
+
+首次公开 CI 另揭示 Windows 8.3 短名称与已打开 HANDLE 长名称的比较问题。生产修复在打开前固定展开后的预期名称，保留 HANDLE 路径和 reparse 校验；截图 fixture 与子报告测试则对齐既有 canonical path 契约。首 push 前的 Linux 182 run／181 pass／1 skip，以及 Windows 181 run／170 pass／11 skip 加单独 junction 1/1，保留为较早 checkpoint；不与最新 184 项运行拼接。完整时间线见 [第五轮报告](REVIEW-WAVE5.zh-CN.md)。
+
+最终安装 wheel 为 44,645 字节，SHA-256 为 `24633b51a6cb3e72a4896fb9accf3d3125f4f9f87a2aba659ca482aa5ebcbc8b`。`installed-a5-final.json` 与 `installed-a5-final-smoke.json` 分别记录安装字节核对和实际 installed 入口执行；这次证据补足了旧 pre-CI 安装不能证明新修复已安装的缺口。
 
 历史 a4 的 Linux 158/158、Windows 最终 core 150 pass／8 skip／158，以及顶层 suite 8/9／exit 1 保持原结论；后一次 a5 通过不会删除其 `focus_unverified` 失败。a4 实机与浏览器记录见 [第四轮报告](REVIEW-WAVE4.zh-CN.md)。
 

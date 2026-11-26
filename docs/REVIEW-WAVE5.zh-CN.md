@@ -2,7 +2,7 @@
 
 日期：2026-11-26（Asia/Tokyo）。目标版本：`0.1.0a5`。基线为本地 a4 提交 `d9ab1b38fff68e77c88841c050b8c038f52dcdb5`。
 
-**当前结论：a5 初次 Windows 源码快照九个顶层 case 全部 passed；MCP smoke 判定缺口已修复，后续真实两会话 72 项通过。本地与 Windows core 的后续复验、安装与公开发布按下方时间线记录。** 本文只把有实际记录的检查写成通过，保留原始执行范围与后续发现。公开 GitHub 仓库、Release 和 Pages 发布已获所有者明确授权，目标为 `dwgx/RDC-Operator-Kit`；授权与发布完成是两个状态。
+**当前 checkpoint：a5 源码已公开；首轮 CI 的两个 Windows core job 失败后，修复提交 `a880144` 已 push，run 45780615916 六个 job 全部 success。路径修复后，本地 Linux core 为 184 run／181 pass／3 skip，自有 Windows core 为 184 run／173 pass／11 skip，真实 Windows source MCP 两会话 72/72；GitHub CI 的分平台计数另列第 10 节。最终 wheel 已在两个自有环境升级并隔离核对，另有 installed CLI／现代 MCP 共 17 条断言通过。a5 tag／Release 与 Pages 实际部署仍待回执。** 初次 Windows 九个顶层 case、CI 前安装与最终安装分别属于不同 checkpoint，详见第 7、9、10、11 节。公开发布已获所有者明确授权；授权、源码公开与最终发行完成分别记录。
 
 这次更新围绕可使用的接口、保守的失败语义与能复核的证据展开。没有声称“全网已研究完”“任意应用绝对可控”或已经比拟全部本地 Agent 能力。历史记录保留在 [Wave 04](REVIEW-WAVE4.zh-CN.md)、[Wave 03](REVIEW-WAVE3.zh-CN.md) 和 [Wave 02](research-wave2/REPORT.zh-CN.md)，各自只证明当时版本与环境。
 
@@ -15,6 +15,8 @@
 | MCP 输出 | 三个只读工具具有可发现的 object 输出 schema，并绑定固定 SDK 的实际输出模型 | 客户端可验证结构；schema 不是权限、真实性或业务成功证明 |
 | MCP 记录摘要 | 新增 `operator_request_status(request_id)` | 无需返回原 args、command、path、action 或 digest 即可查看保存记录组合；不推断实时运行状态 |
 | Linux 安装器 | 解释器执行前拒绝 `.venv/bin` 目录 symlink | 修复已复现的外部 fixture interpreter 执行路径；保留正常 venv 的 `bin/python` symlink |
+| Windows 安装器 | 解释器执行前拒绝 `.venv\Scripts` 目录 reparse | 自有空目录 junction 回归通过；保留正常解释器文件链接与 venv redirector |
+| Windows CI 路径 | MCP 在打开前展开预期路径的 8.3 名称；两个测试 fixture 对齐 canonical path | 保留实际 HANDLE 目标与 reparse 拒绝；不修改 runner TEMP 或放松截图身份校验 |
 | liveness 诊断 | 开始、每项前后与最终状态持续原子 checkpoint | 中途失败保留已返回结果并停止后续 case；持续存储故障仍需结合本次返回判断 |
 | GitHub workflows | Actions 使用固定 commit SHA | 减少浮动 action revision；不等于 workflow 已运行或依赖完全锁定 |
 
@@ -34,7 +36,7 @@ MCP 继续使用本地 stdio 与官方 `mcp==2.3.0`，启动时固定 config/sta
 
 实现通过 `Annotated[CallToolResult, OutputModel]` 给手工结果绑定实际验证模型，保留 JSON 文本与结构化内容。固定 false 字段拒绝数字 `0`，schema version 的整数 `1` 拒绝布尔 `true`。这解决的是 JSON 类型契约；原始 receipt 仍是待解释的数据，不能把它当作新的工具指令。[MCP Tools 规范](https://modelcontextprotocol.io/specification/2026-07-28/server/tools) · [SDK 结构化输出文档](https://py.sdk.modelcontextprotocol.io/v2/servers/structured-output/) · [固定 SDK 验证源码](https://github.com/modelcontextprotocol/python-sdk/blob/2118f14f8a19bc158d8a1cf90af58d85d187f849/src/mcp/server/mcpserver/utilities/func_metadata.py)
 
-### 已执行的本地 MCP 检查
+### 初始 checkpoint 的本地 MCP 检查
 
 环境：Linux 6.18.57 x86_64、CPython 3.12.14、Pydantic 2.13.4；全局 MCP 是 1.29.0，没有在本轮替换它。
 
@@ -55,7 +57,7 @@ MCP 继续使用本地 stdio 与官方 `mcp==2.3.0`，启动时固定 config/sta
 
 后续独立 reviewer 构造坏 SDK 响应时发现一项 P2：Python 容器相等比较会把 `false` 和数字 `0` 当成相等，状态工具检查又没有全面比较文本内容与 `structuredContent`。这使某些错误或两通道不一致的合成响应可能被 smoke 误判通过；没有据此认定生产 `as_result` 已实际泄露内容。
 
-主线将增加类型敏感的 JSON 等值检查，并对全部成功响应核对 JSON 文本与结构化内容。**该修复和受影响的 Windows MCP 定点复验结果待补入。** 上述 60 项是原冻结快照的实际结果，不改写原回执，也不将它扩展为 review 后的最终验收。没有为此重复计数整个九项 Windows suite。
+主线已增加类型敏感的 JSON 等值检查，并对全部成功响应核对 JSON 文本与结构化内容；**修复闭环和后续 72 项真实 MCP 复验分别见第 9、10 节。** 上述 60 项仍是初始冻结快照的实际结果，不改写原回执，也不扩展为后续快照的验收。没有为此重复计数整个九项 Windows suite。
 
 ## 3. Linux：两个有反例的修复
 
@@ -149,7 +151,7 @@ Scite 项目为 Birhan 等人的 *COPEX: Benchmarking LLM Robustness to Adversar
 
 本轮工程推断是：输出 schema 能改善结构与互操作性，但不能证明内容可信、授予操作权限或替代行为验收。因此读取保存记录的 MCP 保持只读、最小摘要与明确的未验证标志。真正的功能结果仍需源代码、具体反例及对应环境的运行证据支持。
 
-## 7. 首次集成验收记录（后续闭环见第 9 节）
+## 7. 首次集成验收 checkpoint（历史，后续见第 9、10、11 节）
 
 ### 已完成的本地与 Windows 源码验收
 
@@ -163,7 +165,7 @@ Windows 验证快照于 **2026-11-26 16:19 JST** 执行一次有界 `smoke_windo
 | doctor | passed | 配置组件的发现与诊断，不等于各组件所有功能 |
 | liveness | passed | 自有合成 pipe fixture；不代表任意进程或 TUI |
 | terminal | passed | 自有 REPL／TUI 与独立见证 |
-| mcp | passed | 上文首次两个真实 stdio 会话；后续 smoke 判定修复仍需定点复验 |
+| mcp | passed | 上文首次两个真实 stdio 会话；当时后续 smoke 判定修复尚未定点复验 |
 | browser_offline | passed | 离线 JSON 证据一致性，没有实时浏览器执行 |
 | omp_preview | passed | 既有 wrapper 的 dry-run，没有真实模型回答 |
 | desktop | passed | 自有 Windows fixture 与正常清理；不是任意应用或 UAC |
@@ -175,9 +177,9 @@ desktop 清理核对身份后正常关闭，进程 exit 0、witness closed、ver
 
 ### 首次记录时的交付状态（历史）
 
-以下表格是本报告写入时的状态。主线应以实际回执补充后续版本、命令、退出码、计数与指纹；没有结果的项目保持待验证，不填预计数字。
+以下表格只保留本报告首次写入时的 checkpoint，**不是当前发布状态**。后续实际提交、CI、安装与复验见第 9、10、11 节；不以新结果改写当时的待完成项。
 
-| 验收或交付 | 当前状态 | 尚需的实际证据 |
+| 验收或交付 | 当时状态 | 当时尚需的实际证据 |
 |---|---|---|
 | a5 完整本地 core suite | 初次 177/177，0 skip，通过 | MCP smoke 修复涉及新增回归时补充其必要检查 |
 | a5 Windows SDK 2.3.0 stdio | 初次两会话各 30 项通过；review 后修复与定点复验待完成 | 类型敏感等值和全部成功结果双通道检查的最终回执 |
@@ -201,16 +203,16 @@ a4 的 Linux 全套 **158/158**、Windows 最终 core **158 项运行／150 通�
 
 本版当前没有实现自动处理 UAC secure desktop、被拒 origin 的替代操控、任意现有进程接管、Linux/macOS 全 GUI 或云端 ChatGPT 自动连接本地 stdio。相应限制按 [能力表](CAPABILITIES.zh-CN.md) 保留；新增能力必须有具体接口、执行证据与独立结果才能写成已完成。
 
-## 9. 后续 review 闭环与发布前定点复验
+## 9. 首次公开 push 前的 review 闭环 checkpoint
 
-本节追加后续实际结果，保留前面的首次运行记录，不将不同快照拼成同一 run。
+本节记录首次公开 push 前的实际结果，保留前面的初始运行，不将不同快照拼成同一 run。首次 push、CI 失败与后续交付 checkpoint 见第 10、11 节。
 
-- **MCP smoke P2 已关闭。** 主线加入严格 JSON 类型比较与单一文本通道检查；独立原 12 场景复验符合预期（两个控制通过、十个错误变异被拒绝）。生产 `mcp_server.py` 的摘要保持不变。
+- **MCP smoke P2 已关闭。** 主线加入严格 JSON 类型比较与单一文本通道检查；独立原 12 场景复验符合预期（两个控制通过、十个错误变异被拒绝）。这一步 smoke 修复没有修改生产 `mcp_server.py`；后续 CI 另发现的运行时路径修复见第 10 节。
 - **修后 Windows MCP：72/72。** 两个真实 SDK 2.3.0 stdio 会话各 36 项通过，modern/legacy 协议分别为 `2026-07-28` / `2025-11-25`，记录字节未变。仍是 source tree，运行时 distribution 为 a4，不计作 a5 安装包验收。
 - **修后 Linux core：181/181，0 skip。** 命令 `python -m unittest discover -s tests -v`，2.674 秒，0 failure/error。
 - **修后 Windows core：181 run／170 pass／11 skip。** 同一命令在隔离修后源码执行，5.672 秒，0 failure/error。没有重新运行无关的整个九项 GUI/终端 suite。
 - **已安装 Skill 已更新。** canonical 与随包七文件一致；新增按需 a5 MCP 查询说明，a4 桌面最低版本保持不变。quick validation、精确 diff 与全新读者三个场景通过，私有 git 同步后远端字节核对一致。
-- **公开仓库已创建。** [dwgx/RDC-Operator-Kit](https://github.com/dwgx/RDC-Operator-Kit) 已由 GitHub 回读确认 public、默认分支 main。代码 push、CI、Release 与 Pages 的结果按后续真实回执追加。
+- **此 checkpoint 的公开仓库已创建。** [dwgx/RDC-Operator-Kit](https://github.com/dwgx/RDC-Operator-Kit) 已由 GitHub 回读确认 public、默认分支 main；当时尚未 push。首次源码 push 与 CI 已随后发生，记录在第 10 节。
 
 独立评审公开副本：[MCP](research-wave5/REVIEW-MCP.zh-CN.md)、[Linux 安装与诊断](research-wave5/REVIEW-LINUX.zh-CN.md)、[UI 与 IME](research-wave5/REVIEW-UI.zh-CN.md)。研究阅读范围见 [MCP 研究](research-wave5/RESEARCH-MCP.zh-CN.md)。
 
@@ -218,4 +220,74 @@ a4 的 Linux 全套 **158/158**、Windows 最终 core **158 项运行／150 通�
 
 由 Linux `bin` 反例追查同类具体风险，确认 Windows 安装器此前没有检查 `.venv\Scripts` 目录 reparse。补丁仅将该目录纳入原 guard；真实 Windows 空目录 junction fixture **1/1 通过，0.740 秒，无 skip**，没有 pip 或外部解释器执行。详见 [Windows 安装器 review](research-wave5/REVIEW-WINDOWS-INSTALLER.zh-CN.md)。
 
-新增 Windows 专用测试后，本地 Linux 最终全套为 **182 run／181 pass／1 skip，2.719 秒**；这一项 skip 明确要求 Windows。Windows 的已执行记录仍为先前 **181 run／170 pass／11 skip** 加单独的 junction 回归，不合并成一次全套报告。GitHub CI 的实际矩阵结果随后另列。
+新增 Windows 专用测试后，首 push 前的本地 Linux checkpoint 为 **182 run／181 pass／1 skip，2.719 秒**；这一项 skip 明确要求 Windows。当时 Windows 的记录为 **181 run／170 pass／11 skip** 加单独 junction 回归，不合并成一次全套报告。后续 CI 和 184 项完整运行另列如下。
+
+## 10. 首次公开、CI 反例与修复后 checkpoint
+
+### 首次 push 与实际 CI 失败
+
+从经过 allowlist 审阅的 137 个源文件建立独立公开 checkout，首次提交 [5952a45f03549de17cdc3d92ff6d7a1f91b3e0ad](https://github.com/dwgx/RDC-Operator-Kit/commit/5952a45f03549de17cdc3d92ff6d7a1f91b3e0ad) 已正常 push 到 public 仓库 `main`；远端回读为同一 SHA。`github-initial-publish.json` 保存提交与回读回执。仓库此后已有公开源码，不再是空仓库；这次 push 没有自动创建 a5 tag、Release 或 Pages 部署。
+
+[首轮 CI run 45777836079](https://github.com/dwgx/RDC-Operator-Kit/actions/runs/45777836079) 已实际执行六个 jobs：
+
+| Job 范围 | 首轮结果 | 原始记录 |
+|---|---|---|
+| Ubuntu core，Python 3.10 / 3.13 | 两个 job 通过 | 不等于 Windows core 通过 |
+| Windows core，Python 3.10 | failed；182 run／11 failures／10 errors／7 skip | 14.534 秒；原日志保留 |
+| Windows core，Python 3.13 | failed；182 run／11 failures／10 errors／7 skip | 11.928 秒；原日志保留 |
+| 独立 MCP，Ubuntu / Windows，Python 3.13 | 两个 job 通过 | 可选 SDK 的独立环境；不能覆盖 core job 的失败 |
+
+两个 Windows 失败分别保留在 `ci-initial-windows-py310.log`、`ci-initial-windows-py313.log`。后续修复不把这个 run 改称成功，也不因其中四个绿色 job 而声称首轮 CI 全绿。
+
+### 运行时问题与 fixture 问题分别修复
+
+Windows runner 的 TEMP 使用 8.3 目录名称，实际打开 HANDLE 返回长目录名称。MCP 原实现只统一大小写与分隔符，会把同一位置误判为 `unsafe_state`。修复使用 `GetLongPathNameW` 在打开前固定展开后的预期名称，再与 `GetFinalPathNameByHandleW` 返回的实际目标精确比较。没有以 `resolve()` 或事后接受新的目标来放宽 scope；原有 reparse 扫描、hard-link、文件身份、大小与严格 JSON 检查继续保留。
+
+新增两个 Windows 回归分别验证真实短名称可读同一保存记录，以及临时 junction 重定向仍在读取内容前被 HANDLE 目标校验拒绝。截图的两处失败则来自 stub 提前用未规范化 TEMP 生成 `filePath`，没有反映真实传给 WinApp 的 canonical `--output`；fixture 现在规范化临时根。子报告测试改为期望 `child_report()` 本来返回的规范路径。后两项只修改测试，窗口身份、错误路径、尺寸、重放和非零退出断言未削弱。
+
+### 修复后的本地与 Windows 源码复验
+
+| 检查 | 实际结果 | 范围 |
+|---|---|---|
+| 本地 Linux core | 184 run／181 pass／3 skip；2.677 秒，0 failure/error | Python 3.12.14；skip 为 Windows 安装器、8.3 路径、junction/HANDLE 三项，不是 HMC |
+| 自有 Windows core | 184 run／173 pass／11 skip；7.673 秒，exit 0 | Windows 11 / Python 3.14.7；新增短名称和瞬时 junction 两项均通过；原安装目录 junction 回归也通过 |
+| 自有 Windows MCP SDK 2.3.0 | modern / legacy 各 36 checks 为 true，合计 72/72，exit 0 | 协议分别为 `2026-07-28` / `2025-11-25`；原 receipt 与全部合成 request records 字节未变 |
+
+依据为 `linux-core-ci-fix.log` 和 `windows-ci-fix-validation.json`。Windows 汇总明确 `source_execution: true`、`installed_package_validation: false`；MCP 当前 source 与 distribution 版本都显示 a5，但它仍从源码运行。版本字符串相同不能证明已经安装这次 MCP 路径修复。这批复验没有重跑无关的整个九项 GUI/终端集成 suite，也不是修复提交的 GitHub CI 结果。
+
+### 修复提交的 GitHub CI 闭环
+
+四个受影响文件的修复已正常 push 为 [a880144d07d8599c6e5232a34bcef1e1cac54bc1](https://github.com/dwgx/RDC-Operator-Kit/commit/a880144d07d8599c6e5232a34bcef1e1cac54bc1)。[run 45780615916](https://github.com/dwgx/RDC-Operator-Kit/actions/runs/45780615916) 已 completed／success，六个 job 全部 success；结构化回执 `github-ci-fixed-summary.json` 与六份原日志分别保存。
+
+| Job | 实际结果 | 已记录范围 |
+|---|---|---|
+| Ubuntu / Python 3.10 core | 184 run／179 pass／5 skip，3.692 秒 | 0 failure/error |
+| Ubuntu / Python 3.13 core | 184 run／179 pass／5 skip，4.341 秒 | 0 failure/error |
+| Windows / Python 3.10 core | 184 run／177 pass／7 skip，11.953 秒 | 新增短路径与瞬时 junction 回归均明确 ok |
+| Windows / Python 3.13 core | 184 run／177 pass／7 skip，11.084 秒 | 新增短路径与瞬时 junction 回归均明确 ok |
+| Ubuntu / Python 3.13 MCP stdio | passed | modern `2026-07-28`、legacy `2025-11-25`；receipt 与全部 request records 未变 |
+| Windows / Python 3.13 MCP stdio | passed | 相同两协议均通过；receipt 与全部 request records 未变 |
+
+CI core 不安装可选 Pydantic 2，因此相关两项模型检查明确 skip；Ubuntu 另有三项 Windows 专用 skip。CI MCP 两个 job 使用独立可选依赖环境，不能和 core 的 skip 数合并。CI 日志没有输出完整逐项 check 数，本报告只写已记录的协议／结果／记录未变，不把上文自有 Windows 的 72 项移用为 CI 计数。
+
+另一次独立有限 review 对这四个文件差异未发现可行动 P1/P2，并完成 19/19 本地合成分支检查，覆盖名称规范化、WinAPI 错误／缓冲边界、打开顺序／关闭及缺失记录映射。这是源码和 Linux stub 范围的审查，不替代 Windows API 实测，也不扩展为整个仓库无缺陷。首轮失败 run 及其原日志仍保留。
+
+### CI 修复前的安装 checkpoint（历史）
+
+`installed-a5-pre-ci.json` 记录：两个自有 Windows 环境 `.venv`、`.venv-mcp` 已在发现 CI 问题前从 a4 升至 a5，隔离导入核对的 11 个模块与当次 wheel 精确一致，依赖集合与配置字节未变。主环境保留 SmartCLI 0.3.5 / MCP 1.30.0，独立 MCP 环境保持 SDK 2.3.0。
+
+这份安装回执属于 **CI 修复前 checkpoint**。在记录它时，包含新运行时修复的 wheel 尚待构建与升级；不能只看版本仍为 a5 就把旧 11 模块核对转为新字节的证明。后续最终安装的独立证据追加在第 11 节，旧回执保持原样。
+
+## 11. 最终 wheel 安装与实际 installed 入口
+
+最终 wheel 为 `rdc_operator_kit-0.1.0a5-py3-none-any.whl`，44,645 字节，SHA-256：
+
+`24633b51a6cb3e72a4896fb9accf3d3125f4f9f87a2aba659ca482aa5ebcbc8b`
+
+`installed-a5-final.json` 记录 `.venv`、`.venv-mcp` 均完成 **a5→a5，仅更新 Kit**，两个安装命令均 exit 0。每个环境都通过 `-I` 隔离导入核对 11 个实际 site-packages 模块，字节与 CI 修复后的源码完全一致；全部其他 distribution 的版本和配置哈希未变，升级前备份保留。这次按模块字节确认修复已安装，未用相同的版本字符串代替核对。
+
+`installed-a5-final-smoke.json` 另记录实际入口执行：两个环境的 `rdc-kit.exe --version` 都返回 `0.1.0a5`、exit 0；独立 MCP 环境通过 `-I` 启动实际 installed server，现代会话协商 `2026-07-28`，列出三个只读工具。保存回执与摘要中的原状态均保持 `outcome_unknown`，三种成功结果的 JSON 文本与结构化内容类型一致，原合成记录未变。同一自有 worker 正常从 server main 返回并 exit 0。
+
+该回执的 **17 条断言全部 true**。子进程实际导入位置为 site-packages，安装的 `mcp_server.py` SHA-256 为 `5e74935f63012c24b7ff6ce5ef65a2941154e376b9343a2f4a6497e379240cbe`，与修后源码相同。范围仅为两个 installed CLI 版本入口和一个真实现代 MCP 会话；没有重跑 legacy、GUI 或整个九项集成 suite，不并入第 10 节 source 72 或 GitHub CI 的计数。
+
+Pages 已配置为 `build_type: workflow`，API 回读地址为 [https://dwgx.github.io/RDC-Operator-Kit/](https://dwgx.github.io/RDC-Operator-Kit/)，当前 `deployment_verified: false`。这是已配置的目标地址，尚不表示网站上线；`v0.1.0a5` tag／Release、公开资产校验和 Pages 实际部署仍待各自回执。

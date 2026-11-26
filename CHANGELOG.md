@@ -1,4 +1,4 @@
-# 0.1.0a5 — publication candidate, 2026-11-26
+# 0.1.0a5 — public source, Release pending, 2026-11-26
 
 ### Added
 
@@ -24,6 +24,11 @@
 - Harden MCP smoke verdicts with JSON-type-sensitive equality and complete
   successful text/structured-channel comparisons. Independent mutations now
   produce the expected two control passes and ten rejected bad responses.
+- Handle Windows 8.3 state-directory names in MCP by expanding the expected
+  name before opening, while retaining the exact opened-HANDLE path comparison
+  and reparse rejection. Add real short-name and transient-junction regressions.
+- Align screenshot fixtures and child-report path expectations with existing
+  canonical-path contracts; preserve the production identity and negative checks.
 - Pin GitHub Actions to the verified commit SHAs recorded in the workflows.
 
 ### Validation and publication status
@@ -34,12 +39,39 @@
   labelled as that snapshot, not an installed-package or universal-control result.
 - Initial Windows SDK 2.3.0 modern/legacy sessions each passed 30 checks. The
   strengthened smoke subsequently passed 36 checks in each real Windows session.
-  Linux final core ran 182 tests (181 passed, one Windows-only skip); Windows
-  post-review core ran 181 (170 passed, 11 skipped), plus one separate junction test.
+  At the pre-push checkpoint, Linux core ran 182 tests (181 passed, one
+  Windows-only skip); Windows core ran 181 (170 passed, 11 skipped), plus one
+  separate junction test.
   These separate commands do not form a new nine-case integration run.
 - The public [dwgx/RDC-Operator-Kit repository](https://github.com/dwgx/RDC-Operator-Kit)
-  has been created. Source push, GitHub CI, a5 Release and Pages deployment have
-  not yet been recorded as complete. Public publication is already authorized.
+  received its first `main` commit, `5952a45f03549de17cdc3d92ff6d7a1f91b3e0ad`.
+  Its [first CI run](https://github.com/dwgx/RDC-Operator-Kit/actions/runs/45777836079)
+  failed both Windows core jobs: each ran 182 tests with 11 failures, 10 errors
+  and seven skips. The other four jobs passed; the original failures remain recorded.
+- The correction was pushed as `a880144d07d8599c6e5232a34bcef1e1cac54bc1`.
+  [CI run 45780615916](https://github.com/dwgx/RDC-Operator-Kit/actions/runs/45780615916)
+  passed all six jobs. Windows Python 3.10/3.13 core each had 184 run, 177 passed
+  and seven skipped; Ubuntu core each had 184 run, 179 passed and five skipped.
+  Optional Pydantic model checks remain explicit skips in the core jobs.
+  Both independent MCP jobs passed modern/legacy sessions with unchanged records;
+  no detailed CI check count is claimed from the separate owned-Windows result.
+- After the CI fixes, Linux core ran 184 tests (181 passed, three Windows-only
+  skips) in 2.677 s; owned Windows core ran 184 (173 passed, 11 skipped) in
+  7.673 s. The new short-name and junction regressions passed on Windows.
+  Real Windows MCP again passed 72/72 checks, still executing the source tree.
+- Preserve the pre-CI installation checkpoint: both owned Windows environments
+  had upgraded from a4 to a5, with 11 modules matching that earlier wheel.
+- Reinstalled the final CI-corrected wheel into both environments as a5 to a5,
+  updating only the Kit. Isolated imports verified all 11 installed modules
+  against corrected source; other distribution versions and config hashes stayed
+  unchanged, and backups were retained. The final wheel is 44,645 bytes; its
+  SHA-256 is recorded in [Wave 05](docs/REVIEW-WAVE5.zh-CN.md).
+- Both installed `rdc-kit.exe --version` entry points returned 0.1.0a5 with exit 0.
+  One real modern MCP session launched with `-I` from installed site-packages
+  passed all 17 recorded assertions, retaining unknown outcomes and unchanged
+  records. This is separate from source checks and CI; legacy and GUI were not rerun.
+- Pages is configured to use GitHub Actions and its URL was read back from the
+  API, but deployment remains unverified. The a5 tag/Release is still pending.
 - Modern UI validation remains static/synthetic because browser access was
   denied. HMC environment probing was quota-blocked. Actual GLM/DeepSeek OMP
   reviews returned deadline/provider-balance failures with no final review.
