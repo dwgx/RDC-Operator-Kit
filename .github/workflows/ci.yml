@@ -1,0 +1,62 @@
+name: Core CI
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: core-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  unittest:
+    name: ${{ matrix.os }} / Python ${{ matrix.python }}
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        python: ["3.10", "3.13"]
+    steps:
+      - name: Check out source
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          persist-credentials: false
+      - name: Set up Python
+        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Run core and synthetic regression tests
+        run: python -m unittest discover -s tests -v
+
+  mcp-stdio:
+    name: MCP stdio / ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 10
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    steps:
+      - name: Check out source
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          persist-credentials: false
+      - name: Set up Python
+        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+        with:
+          python-version: "3.13"
+      - name: Create MCP-only virtual environment
+        run: python -m venv .venv-mcp
+      - name: Install isolated SDK and check real stdio
+        shell: python
+        run: |
+          import pathlib, subprocess, sys
+          executable = pathlib.Path('.venv-mcp') / ('Scripts/python.exe' if sys.platform == 'win32' else 'bin/python')
+          subprocess.run([str(executable), '-m', 'pip', 'install', '.[mcp]'], check=True)
+          subprocess.run([str(executable), '-X', 'utf8', 'scripts/smoke_mcp.py', '--output-dir', 'evidence/mcp-ci'], check=True)

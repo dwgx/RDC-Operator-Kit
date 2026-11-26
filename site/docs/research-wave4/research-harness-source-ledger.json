@@ -1,0 +1,332 @@
+{
+  "schema_version": 1,
+  "research_date_jst": "2026-11-26",
+  "scope": "read-only research; no upstream execution",
+  "retrievals": [
+    {
+      "key": "osworld_pinned",
+      "url": "https://raw.githubusercontent.com/xlang-ai/OSWorld/0ad41bee56565efe7bb3c3a5ebc67590a1b8276f/desktop_env/desktop_env.py",
+      "http_status": 200,
+      "returned_characters": 29059,
+      "read_scope": "selected relevant methods/sections"
+    },
+    {
+      "key": "waa_pinned",
+      "url": "https://raw.githubusercontent.com/microsoft/WindowsAgentArena/eb220c4dcf64babefc1bfc287edda91ab04132ed/src/win-arena-container/client/desktop_env/envs/desktop_env.py",
+      "http_status": 200,
+      "returned_characters": 17224,
+      "read_scope": "selected relevant methods/sections"
+    },
+    {
+      "key": "browser_use_pinned",
+      "url": "https://raw.githubusercontent.com/browser-use/browser-use/94784c1f7ecb6b0a5f565b7f9fba59e395b7e048/browser_use/agent/service.py",
+      "http_status": 200,
+      "returned_characters": 51652,
+      "read_scope": "selected relevant methods/sections"
+    },
+    {
+      "key": "pw_click_tests",
+      "url": "https://raw.githubusercontent.com/microsoft/playwright-mcp/2337aff0213d28db41d3e3daf48cee19b3d0bd82/tests/click.spec.ts",
+      "http_status": 200,
+      "returned_characters": 1580,
+      "read_scope": "complete source file"
+    },
+    {
+      "key": "playwright_readme",
+      "url": "https://raw.githubusercontent.com/microsoft/playwright-mcp/main/README.md",
+      "http_status": 200,
+      "returned_characters": 70748,
+      "read_scope": "selected API/configuration sections"
+    },
+    {
+      "key": "research_fourth_1",
+      "url": "https://raw.githubusercontent.com/simular-ai/Agent-S/0fff0e634869dab72027435b4586e62300185d41/gui_agents/s2/cli_app.py",
+      "http_status": 200,
+      "returned_characters": 12107,
+      "read_scope": "selected relevant methods/sections"
+    },
+    {
+      "key": "research_fourth_2",
+      "url": "https://arxiv.org/abs/2404.07972",
+      "http_status": 200,
+      "returned_characters": 9023,
+      "read_scope": "author abstract and bibliographic metadata"
+    },
+    {
+      "key": "research_fourth_3",
+      "url": "https://arxiv.org/html/2409.08264v1",
+      "http_status": 200,
+      "returned_characters": 130778,
+      "read_scope": "selected sections: 3.1.3 and task/evaluator context"
+    },
+    {
+      "key": "microsoft_ambiguity",
+      "url": "https://learn.microsoft.com/en-us/azure/app-testing/playwright-cloud-browsers/troubleshoot-remote-mcp-server",
+      "http_status": 200,
+      "returned_characters": 18079,
+      "read_scope": "selected relevant methods/sections"
+    },
+    {
+      "key": "license_playwright",
+      "url": "https://raw.githubusercontent.com/microsoft/playwright-mcp/2337aff0213d28db41d3e3daf48cee19b3d0bd82/LICENSE",
+      "http_status": 200,
+      "returned_characters": 11552,
+      "read_scope": "license identification; full text retrieved"
+    },
+    {
+      "key": "license_osworld",
+      "url": "https://raw.githubusercontent.com/xlang-ai/OSWorld/0ad41bee56565efe7bb3c3a5ebc67590a1b8276f/LICENSE",
+      "http_status": 200,
+      "returned_characters": 11343,
+      "read_scope": "license identification; full text retrieved"
+    },
+    {
+      "key": "license_waa",
+      "url": "https://raw.githubusercontent.com/microsoft/WindowsAgentArena/eb220c4dcf64babefc1bfc287edda91ab04132ed/LICENSE",
+      "http_status": 200,
+      "returned_characters": 1162,
+      "read_scope": "license identification; full text retrieved"
+    },
+    {
+      "key": "license_agent_s",
+      "url": "https://raw.githubusercontent.com/simular-ai/Agent-S/dd11eec8708ea113d130c496fdaa24923807a2fd/LICENSE",
+      "http_status": 200,
+      "returned_characters": 11356,
+      "read_scope": "license identification; full text retrieved"
+    },
+    {
+      "key": "license_browser_use",
+      "url": "https://raw.githubusercontent.com/browser-use/browser-use/94784c1f7ecb6b0a5f565b7f9fba59e395b7e048/LICENSE",
+      "http_status": 200,
+      "returned_characters": 1069,
+      "read_scope": "license identification; full text retrieved"
+    }
+  ],
+  "scite": {
+    "metadata": {
+      "partial": false,
+      "count": 3,
+      "query": "",
+      "limit": 5,
+      "offset": 0,
+      "fulltextCoverage": {
+        "not_searched": 3
+      },
+      "hits": [
+        {
+          "doi": "10.48550/arxiv.2404.07972",
+          "title": "OSWorld: Benchmarking Multimodal Agents for Open-Ended Tasks in Real Computer Environments",
+          "authors": [
+            {
+              "authorName": "Tianbao Xie",
+              "authorSlug": "tianbao-xie-41rrKw"
+            },
+            {
+              "authorName": "Danyang Zhang",
+              "authorSlug": "danyang-zhang-XeaMmD"
+            },
+            {
+              "authorName": "Jixuan Chen",
+              "authorSlug": "jixuan-chen-XGgOED"
+            }
+          ],
+          "publisher": "arXiv",
+          "year": 2024,
+          "date": "2024-01-01",
+          "tally": {
+            "total": 263,
+            "supporting": 1,
+            "contrasting": 0,
+            "mentioning": 262,
+            "citingPublications": 165
+          },
+          "isOa": true,
+          "contentDenied": false,
+          "fulltextStatus": "not_searched",
+          "access": {
+            "url": "https://arxiv.org/pdf/2404.07972",
+            "source": "oa_url",
+            "accessType": "open",
+            "contentType": "pdf",
+            "description": "View PDF"
+          },
+          "url": "https://arxiv.org/pdf/2404.07972"
+        },
+        {
+          "doi": "10.48550/arxiv.2409.08264",
+          "title": "Windows Agent Arena: Evaluating Multi-Modal OS Agents at Scale",
+          "authors": [
+            {
+              "authorName": "Rogerio Bonatti",
+              "authorSlug": "rogerio-bonatti-M26jdp"
+            },
+            {
+              "authorName": "Dan Zhao",
+              "authorSlug": "dan-zhao-kbMXWa"
+            },
+            {
+              "authorName": "Francesco Bonacci",
+              "authorSlug": "francesco-bonacci-1ZzKwwe"
+            }
+          ],
+          "publisher": "arXiv",
+          "year": 2024,
+          "date": "2024-01-01",
+          "tally": {
+            "total": 88,
+            "supporting": 0,
+            "contrasting": 0,
+            "mentioning": 88,
+            "citingPublications": 118
+          },
+          "isOa": true,
+          "contentDenied": false,
+          "fulltextStatus": "not_searched",
+          "access": {
+            "url": "https://arxiv.org/pdf/2409.08264",
+            "source": "oa_url",
+            "accessType": "open",
+            "contentType": "pdf",
+            "description": "View PDF"
+          },
+          "url": "https://arxiv.org/pdf/2409.08264"
+        },
+        {
+          "doi": "10.48550/arxiv.2504.00906",
+          "title": "Agent S2: A Compositional Generalist-Specialist Framework for Computer Use Agents",
+          "authors": [
+            {
+              "authorName": "Saaket Agashe",
+              "authorSlug": "saaket-agashe-w0ZeaL"
+            },
+            {
+              "authorName": "Kyle Wong",
+              "authorSlug": "kyle-wong-Xx8dz5k"
+            },
+            {
+              "authorName": "Vincent Tu",
+              "authorSlug": "vincent-tu-W8kb6N5"
+            }
+          ],
+          "publisher": "arXiv",
+          "year": 2025,
+          "date": "2025-01-01",
+          "tally": {
+            "total": 97,
+            "supporting": 0,
+            "contrasting": 0,
+            "mentioning": 97,
+            "citingPublications": 101
+          },
+          "isOa": true,
+          "contentDenied": false,
+          "fulltextStatus": "not_searched",
+          "access": {
+            "url": "https://arxiv.org/pdf/2504.00906",
+            "source": "oa_url",
+            "accessType": "open",
+            "contentType": "pdf",
+            "description": "View PDF"
+          },
+          "url": "https://arxiv.org/pdf/2504.00906"
+        }
+      ],
+      "hint": "To get full details for a paper, call this tool again with its DOI in the `dois` parameter. Use `term` to search within the paper."
+    },
+    "osworld_fulltext": {
+      "doi": "10.48550/arxiv.2404.07972",
+      "title": "OSWorld: Benchmarking Multimodal Agents for Open-Ended Tasks in Real Computer Environments",
+      "contentAccess": {
+        "reason": "no_full_text",
+        "available": [
+          "tally",
+          "citations.type",
+          "citations.section",
+          "citations.confidence",
+          "abstract"
+        ],
+        "withheld": [
+          "citations.snippet",
+          "fulltextExcerpts"
+        ],
+        "unlock": {
+          "institution": "Snippets and excerpts open up when the user's organization holds a scite license covering this publisher or journal; when `access.accessType` is 'institutional', `access.url` is that route.",
+          "article_galaxy": "Connect Article Galaxy to check the price and reuse rights and order the full text."
+        }
+      },
+      "text": "",
+      "offset": 0,
+      "returnedChars": 0,
+      "totalChars": 0,
+      "hasMore": false,
+      "contentDenied": true,
+      "link": "https://doi.org/10.48550/arxiv.2404.07972",
+      "message": "No readable text is available for this paper. `link` goes to where the user can read it."
+    },
+    "waa_fulltext": {
+      "doi": "10.48550/arxiv.2409.08264",
+      "title": "Windows Agent Arena: Evaluating Multi-Modal OS Agents at Scale",
+      "contentAccess": {
+        "reason": "no_full_text",
+        "available": [
+          "tally",
+          "citations.type",
+          "citations.section",
+          "citations.confidence",
+          "abstract"
+        ],
+        "withheld": [
+          "citations.snippet",
+          "fulltextExcerpts"
+        ],
+        "unlock": {
+          "institution": "Snippets and excerpts open up when the user's organization holds a scite license covering this publisher or journal; when `access.accessType` is 'institutional', `access.url` is that route.",
+          "article_galaxy": "Connect Article Galaxy to check the price and reuse rights and order the full text."
+        }
+      },
+      "text": "",
+      "offset": 0,
+      "returnedChars": 0,
+      "totalChars": 0,
+      "hasMore": false,
+      "contentDenied": true,
+      "link": "https://doi.org/10.48550/arxiv.2409.08264",
+      "message": "No readable text is available for this paper. `link` goes to where the user can read it."
+    },
+    "verification": {
+      "summary": {
+        "verified": 3,
+        "couldNotVerify": 0,
+        "withEditorialNotices": 0,
+        "withContrastingEvidence": 0,
+        "inPredatoryJournals": 0
+      },
+      "papers": [
+        {
+          "doi": "10.48550/arxiv.2404.07972",
+          "status": "verified",
+          "title": "OSWorld: Benchmarking Multimodal Agents for Open-Ended Tasks in Real Computer Environments",
+          "year": 2024
+        },
+        {
+          "doi": "10.48550/arxiv.2409.08264",
+          "status": "verified",
+          "title": "Windows Agent Arena: Evaluating Multi-Modal OS Agents at Scale",
+          "year": 2024
+        },
+        {
+          "doi": "10.48550/arxiv.2504.00906",
+          "status": "verified",
+          "title": "Agent S2: A Compositional Generalist-Specialist Framework for Computer Use Agents",
+          "year": 2025
+        }
+      ]
+    }
+  },
+  "source_caveats": [
+    "Scite did not serve readable text for OSWorld or WAA; public author sources supplied selected text separately.",
+    "main source retrievals were compared with pinned SHA retrievals for OSWorld, WAA and browser-use; text matched.",
+    "No GitHub benchmark execution or claim of exhaustive repository audit.",
+    "No Scite Collection or external feedback/citation mutations in this read-only subtask."
+  ]
+}

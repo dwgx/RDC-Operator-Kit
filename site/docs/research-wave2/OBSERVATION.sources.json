@@ -1,0 +1,339 @@
+{
+  "schema_version": 1,
+  "title": "RDC Operator Kit observation evidence research",
+  "researched_on": "2026-11-26",
+  "timezone": "UTC",
+  "status": "research_and_proposed_tests_only",
+  "scope": {
+    "product_baseline": "0.1.0a1",
+    "live_desktop_actions_executed_by_this_research_branch": 0,
+    "linux_simulation_tests_executed_by_this_research_branch": 0,
+    "openai_domain_browser_actions": 0,
+    "full_desktop_capture": false,
+    "paper_reading": "Targeted abstracts, relevant sections and appendices; not a claim of complete paper reading",
+    "root_may_implement_after_this_report": true
+  },
+  "access_attempts": [
+    {
+      "id": "A1",
+      "provider": "Scite",
+      "tool": "search_literature",
+      "intent": "paper_search",
+      "query": {
+        "titles": [
+          "OSWorld: Benchmarking Multimodal Agents for Open-Ended Tasks in Real Computer Environments",
+          "Windows Agent Arena: Evaluating Multi-Modal OS Agents at Scale",
+          "Agent S: An Open Agentic Framework that Uses Computers Like a Human"
+        ],
+        "term": "screenshot observation feedback evaluation",
+        "limit": 10
+      },
+      "result": "error",
+      "error_code": "INVALID_ARGUMENT",
+      "reason": "MCP tools require a paid Scite plan or active free trial.",
+      "papers_returned": 0,
+      "fulltext_read": false,
+      "read_fulltext_schema_discovered": true,
+      "followup": "Used accessible primary arXiv pages and official project/code documentation. Did not change account, subscription or collections."
+    },
+    {
+      "provider": "web",
+      "url": "https://arxiv.org/html/2606.29537v1",
+      "result": "DisabledError",
+      "followup": "Retrieved arXiv abstract (current v2) and author project page; did not infer inaccessible full-text details."
+    }
+  ],
+  "local_baseline": [
+    {
+      "path": "AGENTS.md",
+      "sha256": "892253aa53a49674477bd5aa6560a3c17d33bb80f9c4820337c27d594a979c67"
+    },
+    {
+      "path": "docs/ARCHITECTURE.zh-CN.md",
+      "sha256": "60b23d4a2a21c895e9ba4c925f07afa6a18f65b53fdd081d8a177b0beba4c1b3"
+    },
+    {
+      "path": "docs/VERIFICATION.zh-CN.md",
+      "sha256": "b0a5ebd76e2aacd267e100148bdf8fd6ce5294a8532a6e41f23dcf84815d66b5"
+    },
+    {
+      "path": "rdc_operator/adapters.py",
+      "sha256": "de03786ceee0478cd3cf464cd330a4dfc840ba0632b95efe65f4670559084170",
+      "sections": [
+        "343-383 _window_identity",
+        "425-453 _capture_observation",
+        "456-483 screenshot",
+        "484 onward mutation binding"
+      ]
+    },
+    {
+      "path": "examples/desktop-fixture.ps1",
+      "sha256": "71e0ee9aea62c64f47e93662e6c490651535cb9f65e5e739e3a9b00a8ba79cb9"
+    },
+    {
+      "path": "scripts/smoke_desktop.py",
+      "sha256": "f7ba0a4a8ab9837253e4ca5baed7b9ab04314efbaa716c33db8af693c9a14daf"
+    }
+  ],
+  "sources": [
+    {
+      "id": "P1",
+      "type": "primary_paper",
+      "title": "OSWorld: Benchmarking Multimodal Agents for Open-Ended Tasks in Real Computer Environments",
+      "authors": "Xie et al.",
+      "year": 2024,
+      "url": "https://arxiv.org/html/2404.07972v2",
+      "version": "arXiv v2, 2024-05-30",
+      "retrieval_method": "web open and find",
+      "ref": "turn817966600view0",
+      "additional_refs": [
+        "turn185357014view4"
+      ],
+      "read_scope": [
+        "Abstract",
+        "2.2.3 Execution-Based Evaluation",
+        "2.3 Observation Space",
+        "5.2 window perturbation and history"
+      ],
+      "supports": "Screenshot and accessibility observations, execution-based evaluation and window perturbation analysis.",
+      "does_not_establish": "This machine's screenshot origin, latency, or correctness."
+    },
+    {
+      "id": "P2",
+      "type": "primary_paper",
+      "title": "Windows Agent Arena: Evaluating Multi-Modal OS Agents at Scale",
+      "authors": "Bonatti et al.",
+      "year": 2024,
+      "url": "https://arxiv.org/html/2409.08264v1",
+      "version": "arXiv v1, 2024-09-12",
+      "retrieval_method": "web open and find",
+      "ref": "turn817966600view1",
+      "additional_refs": [
+        "turn714746488view1"
+      ],
+      "read_scope": [
+        "Abstract",
+        "Introduction asynchronous OS processes",
+        "3.1 task definition",
+        "3.1.1 Observation space",
+        "3.1.3 execution-based reward"
+      ],
+      "supports": "Observation-action loop and independent final-state evaluation; OS processes run asynchronously.",
+      "does_not_establish": "Per-action observation freshness or real-time service guarantees."
+    },
+    {
+      "id": "P3",
+      "type": "primary_paper",
+      "title": "Agent S: An Open Agentic Framework that Uses Computers Like a Human",
+      "authors": "Agashe et al.",
+      "year": 2024,
+      "url": "https://arxiv.org/html/2410.08164v1",
+      "version": "arXiv v1, 2024-10-10",
+      "retrieval_method": "web open and find",
+      "ref": "turn817966600view2",
+      "additional_refs": [
+        "turn185357014view2",
+        "turn361827146view3"
+      ],
+      "read_scope": [
+        "Abstract/Introduction ACI",
+        "3.1.3 Self-Evaluator",
+        "Appendix A action list"
+      ],
+      "supports": "Bounded action primitives, visual and accessibility inputs, wait action, self-evaluation without external ground truth.",
+      "does_not_establish": "That self-evaluation is an independent operational oracle."
+    },
+    {
+      "id": "P4",
+      "type": "primary_paper",
+      "title": "ScreenSpot-Pro: GUI Grounding for Professional High-Resolution Computer Use",
+      "authors": "Li et al.",
+      "year": 2025,
+      "url": "https://arxiv.org/html/2504.07981v1",
+      "version": "arXiv v1, 2025-04-04",
+      "retrieval_method": "web open and find",
+      "ref": "turn180697383view0",
+      "additional_refs": [
+        "turn361827146view2"
+      ],
+      "read_scope": [
+        "Abstract",
+        "Introduction grounding task definition",
+        "Data collection/annotation overview",
+        "Appendix D/E examples"
+      ],
+      "supports": "Static instruction-screenshot target localization and high-resolution small-target difficulties.",
+      "does_not_establish": "Freshness at action execution, end-to-end task completion, or this host's GUI accuracy."
+    },
+    {
+      "id": "P5",
+      "type": "primary_abstract_and_author_project",
+      "title": "OSWorld 2.0: Benchmarking Computer Use Agents on Long-Horizon Real-World Tasks",
+      "authors": "Yuan et al.",
+      "year": 2026,
+      "url": "https://arxiv.org/abs/2606.29537",
+      "version": "abstract page current v2 revised 2026-07-13",
+      "additional_urls": [
+        "https://osworld-v2.xlang.ai/"
+      ],
+      "retrieval_method": "web open and find",
+      "ref": "turn185357014view0",
+      "additional_refs": [
+        "turn361827146view0",
+        "turn185357014view1",
+        "turn361827146view1"
+      ],
+      "read_scope": [
+        "Abstract",
+        "Project challenge definitions for dynamic environment and streaming interaction"
+      ],
+      "supports": "Distinguishes incoming task changes from visual changes between observation and action.",
+      "does_not_establish": "Full-text implementation details; current kit performance; availability of a real-time capture channel."
+    },
+    {
+      "id": "M1",
+      "type": "official_api_documentation",
+      "title": "Direct3D11CaptureFrame Class",
+      "url": "https://learn.microsoft.com/en-us/uwp/api/windows.graphics.capture.direct3d11captureframe",
+      "retrieval_method": "system1 web search official Microsoft domain",
+      "ref": "turn735533547search0",
+      "supports": "SystemRelativeTime is compositor QPC render time; ContentSize is rendered content size.",
+      "does_not_establish": "That winapp screenshot JSON exposes those fields."
+    },
+    {
+      "id": "M2",
+      "type": "official_api_documentation",
+      "title": "Screen capture",
+      "url": "https://learn.microsoft.com/en-us/windows/apps/develop/media-authoring-processing/screen-capture",
+      "retrieval_method": "system1 web search official Microsoft domain",
+      "ref": "turn735533547search4",
+      "additional_refs": [
+        "turn735533547search2"
+      ],
+      "supports": "FrameArrived/TryGetNextFrame, frame lifetime, ContentSize and frame pool resize guidance.",
+      "does_not_establish": "Guaranteed frame cadence or network delivery latency."
+    },
+    {
+      "id": "M3",
+      "type": "official_api_documentation",
+      "title": "PrintWindow function",
+      "url": "https://learn.microsoft.com/en-us/windows/desktop/api/winuser/nf-winuser-printwindow",
+      "retrieval_method": "system1 web search official Microsoft domain",
+      "ref": "turn735533547search3",
+      "supports": "Synchronous/blocking API; target application processes drawing request.",
+      "does_not_establish": "That a nonzero return means intended business action succeeded."
+    },
+    {
+      "id": "W1",
+      "type": "primary_source_code",
+      "title": "UiScreenshotCommand.cs",
+      "url": "https://github.com/microsoft/winappCli/blob/696222f72e80c669671845bd6c7b0286eefab987/src/winapp-CLI/WinApp.Cli/Commands/UiScreenshotCommand.cs",
+      "git_commit": "696222f72e80c669671845bd6c7b0286eefab987",
+      "git_blob_sha": "9ff87978e82178a052ef11fc8dfeaedef5d106f8",
+      "license": "MIT (source header)",
+      "retrieval_method": "GitHub fetch_file",
+      "read_scope": [
+        "395-438 multi-window expansion",
+        "624-670 PublishAsync",
+        "736-786 explicit HWND discovery"
+      ],
+      "execution_status": "Read source only; no upstream tests executed by this research branch"
+    },
+    {
+      "id": "W2",
+      "type": "primary_source_code",
+      "title": "UiJsonContext.cs",
+      "url": "https://github.com/microsoft/winappCli/blob/696222f72e80c669671845bd6c7b0286eefab987/src/winapp-CLI/WinApp.Cli/Helpers/UiJsonContext.cs",
+      "git_commit": "696222f72e80c669671845bd6c7b0286eefab987",
+      "git_blob_sha": "c50173b383cd1145a8e3f126dff0973a8c7c75df",
+      "license": "MIT (source header)",
+      "retrieval_method": "GitHub fetch_file",
+      "read_scope": [
+        "56-63 camelCase and omit-null",
+        "155-188 screenshot schema",
+        "190-229 recording schema"
+      ],
+      "execution_status": "Read source only; no upstream tests executed by this research branch"
+    },
+    {
+      "id": "W3",
+      "type": "primary_source_code",
+      "title": "UiCommandTests.Screenshot.Provenance.cs",
+      "url": "https://github.com/microsoft/winappCli/blob/696222f72e80c669671845bd6c7b0286eefab987/src/winapp-CLI/WinApp.Cli.Tests/UiCommandTests.Screenshot.Provenance.cs",
+      "git_commit": "696222f72e80c669671845bd6c7b0286eefab987",
+      "git_blob_sha": "12779f9935bff7806bde467e2c121fb72f15fc05",
+      "license": "MIT (source header)",
+      "retrieval_method": "GitHub fetch_file",
+      "read_scope": [
+        "Entire file: cross-process owned dialog provenance and handle reuse tests"
+      ],
+      "execution_status": "Read source only; no upstream tests executed by this research branch"
+    },
+    {
+      "id": "W4",
+      "type": "primary_source_code",
+      "title": "UiAutomationService.Screenshot.cs",
+      "url": "https://github.com/microsoft/winappCli/blob/696222f72e80c669671845bd6c7b0286eefab987/src/winapp-CLI/WinApp.UIAutomation/Services/UiAutomationService.Screenshot.cs",
+      "git_commit": "696222f72e80c669671845bd6c7b0286eefab987",
+      "git_blob_sha": "57e181912308140d16f40d6f69763dd438037f01",
+      "license": "MIT (source header)",
+      "retrieval_method": "GitHub fetch_file",
+      "read_scope": [
+        "Entire file: minimized restore, WGC/PrintWindow fallback, blank retry and screen capture"
+      ],
+      "execution_status": "Read source only; no upstream tests executed by this research branch"
+    },
+    {
+      "id": "W5",
+      "type": "primary_source_code",
+      "title": "WgcCapture.cs",
+      "url": "https://github.com/microsoft/winappCli/blob/696222f72e80c669671845bd6c7b0286eefab987/src/winapp-CLI/WinApp.UIAutomation/Capture/WgcCapture.cs",
+      "git_commit": "696222f72e80c669671845bd6c7b0286eefab987",
+      "git_blob_sha": "fe55b0cb01bd83953a2907335e53ba44f79daacd",
+      "license": "MIT (source header)",
+      "retrieval_method": "GitHub fetch_file",
+      "read_scope": [
+        "CaptureAsync two-second deadline and distinct Version handling",
+        "CopyFrame ContentSize handling"
+      ],
+      "execution_status": "Read source only; no upstream tests executed by this research branch"
+    },
+    {
+      "id": "W5b",
+      "type": "primary_source_code",
+      "title": "WgcCapture.FrameGrabber.cs",
+      "url": "https://github.com/microsoft/winappCli/blob/696222f72e80c669671845bd6c7b0286eefab987/src/winapp-CLI/WinApp.UIAutomation/Capture/WgcCapture.FrameGrabber.cs",
+      "git_commit": "696222f72e80c669671845bd6c7b0286eefab987",
+      "git_blob_sha": "769562b58f90c7e494766735f37e7648886a94c1",
+      "license": "MIT (source header)",
+      "retrieval_method": "GitHub fetch_file",
+      "read_scope": [
+        "166-259 FrameArrived, resizing, copy and Version increment",
+        "276-289 TryGetLatest"
+      ],
+      "execution_status": "Read source only; no upstream tests executed by this research branch"
+    },
+    {
+      "id": "W6",
+      "type": "primary_source_code",
+      "title": "WgcScreenshotFreshnessTests.cs",
+      "url": "https://github.com/microsoft/winappCli/blob/696222f72e80c669671845bd6c7b0286eefab987/src/winapp-CLI/WinApp.UIAutomation.Tests/WgcScreenshotFreshnessTests.cs",
+      "git_commit": "696222f72e80c669671845bd6c7b0286eefab987",
+      "git_blob_sha": "f5d9809bd08cbbc96980ec94df96941727ed6b22",
+      "license": "MIT (source header)",
+      "retrieval_method": "GitHub fetch_file",
+      "read_scope": [
+        "Entire file: cached polls, blank timeout, opaque black and cancellation tests"
+      ],
+      "execution_status": "Read source only; no upstream tests executed by this research branch"
+    }
+  ],
+  "claim_boundaries": [
+    "Research does not prove actual backend selection for the installed binary on a particular capture.",
+    "Rejecting a composite after capture does not undo file creation or guarantee no additional pixels were captured.",
+    "Previously viewed smoke02 remains a historical positive example; this branch has not re-audited its raw pixels or raw upstream JSON.",
+    "Frame IDs, hashes and call timestamps do not prove compositor frame time or application effect.",
+    "Proposed Windows and Linux tests are plans, not reported executions."
+  ]
+}
+

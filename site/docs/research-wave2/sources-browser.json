@@ -1,0 +1,625 @@
+{
+  "schema_version": 1,
+  "title": "Browser/MCP/Relay source ledger",
+  "as_of": "2026-11-26",
+  "scope": "Public primary-source research only; authorized independent fixtures, no policy-bypass route.",
+  "method": {
+    "exa_search_calls": 5,
+    "exa_requested_result_slots": 31,
+    "exa_fetch_calls": 2,
+    "exa_fetch_urls_requested": 7,
+    "exa_fetch_successful_urls": 6,
+    "firecrawl_developer_search_calls": 5,
+    "firecrawl_requested_result_slots": 23,
+    "firecrawl_scrape_calls": 1,
+    "firecrawl_feedback": "one partial-quality scrape feedback submitted successfully",
+    "github": "Pinned commits, licenses, selected implementation and test excerpts fetched read-only",
+    "coverage": "10 projects/services; 9 project repository refs plus a separate Playwright core test ref. Search slots are not read/validated source counts.",
+    "actual_browser_execution": 0,
+    "actual_upstream_test_execution": 0
+  },
+  "failures": [
+    {
+      "url": "https://docs.browserbase.com/guides/reusing-sessions",
+      "tool": "Exa web_fetch",
+      "result": "CRAWL_NOT_FOUND",
+      "resolution": "Found current platform/browser/long-sessions/keep-alive documentation by targeted search."
+    }
+  ],
+  "projects": [
+    {
+      "id": "omp-relay",
+      "name": "OMP Browser Relay",
+      "repo": "can1357/oh-my-pi",
+      "sha": "b55cd1bb664d8ab46ddc77f2a34eb47555dbf1ac",
+      "date": "2026-11-25T15:17:40Z",
+      "version": "v19.2.1 (release); browser-relay package 0.1.0; extension manifest 0.2.0",
+      "license": "MIT",
+      "priority": "highest: inspect existing installation; offline evidence contract first",
+      "local_session": "Existing Chrome via extension/native messaging; separate owned/borrowed tabs; no browser access performed.",
+      "observation": "observe/ariaSnapshot, screenshot/diffScreenshot; stale handles must be reacquired after navigation or worker recovery.",
+      "concurrency": "One active run per named tab; caller ownership and acquisition leases; ordinary child agents skip relay defaults, sidebar relay-only is a documented exception.",
+      "recovery": "Reattach does not replay possibly delivered input; worker replacement invalidates handles. Documentation/source disagree about extension ID installation details.",
+      "reuse": "Re-use existing dispatcher and browser receipt semantics; inspect busy-tab, open-lease, tab-isolation regression patterns; no new relay daemon.",
+      "boundary": "Read-only source research. No use on any host-refused origin; no install/sync/profile mutation; loopback is not a principal boundary.",
+      "sources": [
+        {
+          "level": "documentation",
+          "url": "https://github.com/can1357/oh-my-pi/blob/b55cd1bb664d8ab46ddc77f2a34eb47555dbf1ac/docs/tools/browser.md",
+          "retrieved_on": "2026-11-26",
+          "claims": "Browser facade, mode selection, observation and recovery contract",
+          "scope": "source/document text, not live behavior"
+        },
+        {
+          "level": "documentation",
+          "url": "https://github.com/can1357/oh-my-pi/blob/b55cd1bb664d8ab46ddc77f2a34eb47555dbf1ac/packages/browser-relay/README.md",
+          "retrieved_on": "2026-11-26",
+          "claims": "Native host lifecycle and contradictory installation claims",
+          "scope": "source/document text, not live behavior"
+        },
+        {
+          "level": "source",
+          "url": "https://github.com/can1357/oh-my-pi/blob/b55cd1bb664d8ab46ddc77f2a34eb47555dbf1ac/packages/coding-agent/src/tools/browser.ts",
+          "retrieved_on": "2026-11-26",
+          "claims": "withStringApp compatibility mapping inspected",
+          "scope": "source/document text, not live behavior"
+        },
+        {
+          "level": "source",
+          "url": "https://github.com/can1357/oh-my-pi/blob/b55cd1bb664d8ab46ddc77f2a34eb47555dbf1ac/packages/browser-relay/extension/manifest.json",
+          "retrieved_on": "2026-11-26",
+          "claims": "No key in fixed extension manifest",
+          "scope": "source/document text, not live behavior"
+        },
+        {
+          "level": "source",
+          "url": "https://github.com/can1357/oh-my-pi/blob/b55cd1bb664d8ab46ddc77f2a34eb47555dbf1ac/packages/coding-agent/src/tools/browser/relay/native-host-manifest.ts",
+          "retrieved_on": "2026-11-26",
+          "claims": "allowed_origins uses install-derived extension IDs",
+          "scope": "source/document text, not live behavior"
+        },
+        {
+          "level": "source",
+          "url": "https://github.com/can1357/oh-my-pi/blob/b55cd1bb664d8ab46ddc77f2a34eb47555dbf1ac/packages/coding-agent/src/tools/browser/relay/kind.ts",
+          "retrieved_on": "2026-11-26",
+          "claims": "relay-only and environment mode semantics",
+          "scope": "source/document text, not live behavior"
+        },
+        {
+          "level": "committed_test_inspected",
+          "url": "https://github.com/can1357/oh-my-pi/blob/b55cd1bb664d8ab46ddc77f2a34eb47555dbf1ac/packages/coding-agent/test/tools/browser-busy-tab.test.ts",
+          "retrieved_on": "2026-11-26",
+          "claims": "Competing runs rejected; fake backend, not executed",
+          "scope": "selected source excerpts, not executed"
+        },
+        {
+          "level": "committed_test_inspected",
+          "url": "https://github.com/can1357/oh-my-pi/blob/b55cd1bb664d8ab46ddc77f2a34eb47555dbf1ac/packages/coding-agent/test/tools/browser-open-lease.test.ts",
+          "retrieved_on": "2026-11-26",
+          "claims": "Cancellation only releases own acquisition; mocked backend, not executed",
+          "scope": "selected source excerpts, not executed"
+        },
+        {
+          "level": "committed_test_inspected",
+          "url": "https://github.com/can1357/oh-my-pi/blob/b55cd1bb664d8ab46ddc77f2a34eb47555dbf1ac/packages/coding-agent/test/tools/browser-relay-tab-isolation.test.ts",
+          "retrieved_on": "2026-11-26",
+          "claims": "Owned/borrowed/persist lifetime; Chromium-gated test, not executed",
+          "scope": "selected source excerpts, not executed"
+        },
+        {
+          "level": "committed_test_inspected",
+          "url": "https://github.com/can1357/oh-my-pi/blob/b55cd1bb664d8ab46ddc77f2a34eb47555dbf1ac/packages/coding-agent/test/tools/browser-relay-native-host.test.ts",
+          "retrieved_on": "2026-11-26",
+          "claims": "Native host port lifetime and child disconnect, not executed",
+          "scope": "selected source excerpts, not executed"
+        },
+        {
+          "level": "license",
+          "url": "https://github.com/can1357/oh-my-pi/blob/b55cd1bb664d8ab46ddc77f2a34eb47555dbf1ac/LICENSE",
+          "retrieved_on": "2026-11-26",
+          "claims": "MIT"
+        },
+        {
+          "level": "release",
+          "url": "https://github.com/can1357/oh-my-pi/releases/tag/v19.2.1",
+          "retrieved_on": "2026-11-26",
+          "claims": "Published release notes; not installation evidence",
+          "published_at": "2026-11-25T17:10:03Z"
+        }
+      ],
+      "actual_execution": {
+        "browser_actions": 0,
+        "upstream_tests_run": 0,
+        "installed": false
+      }
+    },
+    {
+      "id": "playwright-mcp",
+      "name": "Playwright MCP",
+      "repo": "microsoft/playwright-mcp",
+      "version": "package.json 0.0.86; depends on playwright/core 1.66.0-alpha-2026-11-18",
+      "license": "Apache-2.0",
+      "priority": "reference backend and fixture test design",
+      "local_session": "Persistent, isolated, or extension-connected existing browser as documented.",
+      "observation": "Accessibility snapshots plus screenshot/vision capabilities; state capture does not itself verify business effect.",
+      "concurrency": "One persistent profile per browser instance; use isolated contexts/distinct profiles for parallel clients. sharedBrowserContext is explicitly shared state.",
+      "recovery": "Inspected core code closes isolated contexts on disconnect, handles failed creation and idle relaunch; inspected core SHA postdates package dependency and is not asserted shipped in 0.0.86.",
+      "reuse": "Lifecycle and isolation tests, per-client ownership, small snapshot reads; avoid wholesale new host route.",
+      "boundary": "No installation/execution; current official Browser policy remains authoritative.",
+      "sources": [
+        {
+          "level": "documentation",
+          "url": "https://github.com/microsoft/playwright-mcp/blob/2337aff0213d28db41d3e3daf48cee19b3d0bd82/README.md",
+          "retrieved_on": "2026-11-26",
+          "claims": "Profile modes, extension and capability options",
+          "scope": "source/document text, not live behavior"
+        },
+        {
+          "level": "package_manifest",
+          "url": "https://github.com/microsoft/playwright-mcp/blob/2337aff0213d28db41d3e3daf48cee19b3d0bd82/package.json",
+          "retrieved_on": "2026-11-26",
+          "claims": "Exact package/dependency versions",
+          "scope": "source/document text, not live behavior"
+        },
+        {
+          "level": "license",
+          "url": "https://github.com/microsoft/playwright-mcp/blob/2337aff0213d28db41d3e3daf48cee19b3d0bd82/LICENSE",
+          "retrieved_on": "2026-11-26",
+          "claims": "Apache-2.0"
+        },
+        {
+          "level": "source",
+          "url": "https://github.com/microsoft/playwright/blob/049226728d2da8054db18b04782a9848b755855e/packages/playwright-core/src/tools/mcp/program.ts",
+          "retrieved_on": "2026-11-26",
+          "claims": "Per-client context cleanup and idle timers",
+          "ref": "049226728d2da8054db18b04782a9848b755855e",
+          "commit_date": "2026-11-21T02:30:35Z",
+          "release_mapping": "not established; later than inspected MCP package dependency"
+        },
+        {
+          "level": "committed_test_inspected",
+          "url": "https://github.com/microsoft/playwright/blob/049226728d2da8054db18b04782a9848b755855e/tests/mcp/http.spec.ts",
+          "retrieved_on": "2026-11-26",
+          "claims": "Concurrent isolated clients, shared close refusal, crash recovery",
+          "ref": "049226728d2da8054db18b04782a9848b755855e",
+          "commit_date": "2026-11-21T02:30:35Z",
+          "release_mapping": "not established; later than inspected MCP package dependency"
+        },
+        {
+          "level": "committed_test_inspected",
+          "url": "https://github.com/microsoft/playwright/blob/049226728d2da8054db18b04782a9848b755855e/tests/mcp/idle-timeout.spec.ts",
+          "retrieved_on": "2026-11-26",
+          "claims": "Idle close/relaunch versus disconnect/reattach",
+          "ref": "049226728d2da8054db18b04782a9848b755855e",
+          "commit_date": "2026-11-21T02:30:35Z",
+          "release_mapping": "not established; later than inspected MCP package dependency"
+        }
+      ],
+      "sha": "2337aff0213d28db41d3e3daf48cee19b3d0bd82",
+      "date": "2026-11-18T18:49:18Z",
+      "actual_execution": {
+        "browser_actions": 0,
+        "upstream_tests_run": 0,
+        "installed": false
+      }
+    },
+    {
+      "id": "browser-use",
+      "name": "browser-use",
+      "repo": "browser-use/browser-use",
+      "version": "pyproject.toml 1.0.8",
+      "license": "MIT",
+      "priority": "migration-aware reference; do not import full agent loop",
+      "local_session": "1.0 Browser() defaults to cloud; fresh local Chromium must be explicit. Current docs also describe user-browser attachment, not exercised.",
+      "observation": "Persistent Python REPL + browser-harness/raw CDP; screenshots on demand; old DOM watchdog excerpt belongs to pre-1.0 architecture.",
+      "concurrency": "No evidence here establishes safe concurrent input to one tab; separate browser/session ownership is required by our design.",
+      "recovery": "run() can return status=error; success is model verdict, done is only run completion. AgentHistoryList old replay/step interfaces removed.",
+      "reuse": "Result.error/status/partial distinction and compatibility checklist; omit second autonomous agent loop.",
+      "boundary": "No API/model/browser invocation; do not silently adopt cloud defaults.",
+      "sources": [
+        {
+          "level": "documentation",
+          "url": "https://github.com/browser-use/browser-use/blob/94784c1f7ecb6b0a5f565b7f9fba59e395b7e048/README.md",
+          "retrieved_on": "2026-11-26",
+          "claims": "Current architecture",
+          "scope": "source/document text, not live behavior"
+        },
+        {
+          "level": "documentation",
+          "url": "https://github.com/browser-use/browser-use/blob/94784c1f7ecb6b0a5f565b7f9fba59e395b7e048/MIGRATING.md",
+          "retrieved_on": "2026-11-26",
+          "claims": "1.0 breaking changes and result semantics",
+          "scope": "source/document text, not live behavior"
+        },
+        {
+          "level": "package_manifest",
+          "url": "https://github.com/browser-use/browser-use/blob/94784c1f7ecb6b0a5f565b7f9fba59e395b7e048/pyproject.toml",
+          "retrieved_on": "2026-11-26",
+          "claims": "1.0.8 and Python version",
+          "scope": "source/document text, not live behavior"
+        },
+        {
+          "level": "license",
+          "url": "https://github.com/browser-use/browser-use/blob/94784c1f7ecb6b0a5f565b7f9fba59e395b7e048/LICENSE",
+          "retrieved_on": "2026-11-26",
+          "claims": "MIT"
+        }
+      ],
+      "sha": "94784c1f7ecb6b0a5f565b7f9fba59e395b7e048",
+      "date": "2026-11-24T22:48:11Z",
+      "actual_execution": {
+        "browser_actions": 0,
+        "upstream_tests_run": 0,
+        "installed": false
+      }
+    },
+    {
+      "id": "stagehand",
+      "name": "Stagehand",
+      "repo": "browserbase/stagehand",
+      "version": "package.json 4.0.0; /v4 docs",
+      "license": "MIT",
+      "priority": "selective observation/action contract ideas",
+      "local_session": "localBrowser launch/connect or Browserbase browser handles; browser remains caller-owned.",
+      "observation": "observe returns selectors/actions, act executes instructions or observed actions, extract schema-validates data; direct observed actions are replayed by selector.",
+      "concurrency": "One Stagehand per handle according to v4 docs; no proof of conflict-free simultaneous writers on a tab.",
+      "recovery": "Cache hit avoids inference, not action execution; a cached selector is not an idempotency receipt.",
+      "reuse": "Separate observe/act/extract, scoped observation and typed extraction; dependency optional for later local fixture.",
+      "boundary": "Do not mix v3 ctor/env examples with v4 create/browser API; no model or Browserbase calls.",
+      "sources": [
+        {
+          "level": "documentation",
+          "url": "https://github.com/browserbase/stagehand/blob/97ff3e1189d3205bee10127fdde992f3313ef228/README.md",
+          "retrieved_on": "2026-11-26",
+          "claims": "v4 localBrowser and APIs",
+          "scope": "source/document text, not live behavior"
+        },
+        {
+          "level": "package_manifest",
+          "url": "https://github.com/browserbase/stagehand/blob/97ff3e1189d3205bee10127fdde992f3313ef228/package.json",
+          "retrieved_on": "2026-11-26",
+          "claims": "Monorepo 4.0.0",
+          "scope": "source/document text, not live behavior"
+        },
+        {
+          "level": "license",
+          "url": "https://github.com/browserbase/stagehand/blob/97ff3e1189d3205bee10127fdde992f3313ef228/LICENSE",
+          "retrieved_on": "2026-11-26",
+          "claims": "MIT"
+        },
+        {
+          "level": "documentation",
+          "url": "https://docs.stagehand.dev/v4/reference/stagehand",
+          "retrieved_on": "2026-11-26",
+          "claims": "Caller-owned browser handle; one Stagehand per handle; create API"
+        },
+        {
+          "level": "documentation_excerpt",
+          "url": "https://docs.stagehand.dev/v4/basics/act",
+          "retrieved_on": "2026-11-26",
+          "claims": "Observed Action replays selector directly; server cache needs Browserbase"
+        },
+        {
+          "level": "documentation_excerpt",
+          "url": "https://www.browserbase.com/blog/stagehand-caching",
+          "retrieved_on": "2026-11-26",
+          "claims": "Cache selectors and compare page fingerprints; reuse executes again, no exactly-once claim"
+        }
+      ],
+      "sha": "97ff3e1189d3205bee10127fdde992f3313ef228",
+      "date": "2026-11-25T23:24:42Z",
+      "actual_execution": {
+        "browser_actions": 0,
+        "upstream_tests_run": 0,
+        "installed": false
+      }
+    },
+    {
+      "id": "browserbase",
+      "name": "Browserbase managed browser",
+      "repo": null,
+      "sha": null,
+      "date": null,
+      "version": "live documentation retrieved 2026-11-26",
+      "license": "Hosted service terms; not covered by Stagehand MIT license",
+      "priority": "later optional remote fixture, not local desktop control",
+      "local_session": "Remote browser sessions and saved contexts, not this computer's Chrome.",
+      "observation": "Per-tab video replay documented; replay is historical and not proof of current frame.",
+      "concurrency": "Managed sessions available separately; multiple connections to one keepAlive session are not a single-writer protocol.",
+      "recovery": "keepAlive survives disconnect but respects timeout; explicit release needed; final statuses differ by session lifetime mode.",
+      "reuse": "Separate session lifecycle, context persistence and replay metadata; no new paid dependency this wave.",
+      "boundary": "No account/service invocation or purchase; replay signed URLs/API keys never public artifacts.",
+      "sources": [
+        {
+          "level": "documentation",
+          "url": "https://docs.browserbase.com/platform/browser/long-sessions/keep-alive",
+          "retrieved_on": "2026-11-26",
+          "claims": "Disconnect/reconnect lifecycle; paid feature; explicit release"
+        },
+        {
+          "level": "documentation_excerpt",
+          "url": "https://docs.browserbase.com/platform/browser/getting-started/manage-browser-session",
+          "retrieved_on": "2026-11-26",
+          "claims": "Terminal session statuses"
+        },
+        {
+          "level": "documentation_partial",
+          "url": "https://docs.browserbase.com/features/session-replay",
+          "retrieved_on": "2026-11-26",
+          "claims": "HLS historical per-tab replay; retrieved up to character budget"
+        }
+      ],
+      "actual_execution": {
+        "browser_actions": 0,
+        "upstream_tests_run": 0,
+        "installed": false
+      }
+    },
+    {
+      "id": "browseros",
+      "name": "BrowserOS neo",
+      "repo": "browseros-ai/BrowserOS",
+      "version": "main commit pinned; release mapping not established",
+      "license": "AGPL-3.0",
+      "priority": "design and test-pattern reference only",
+      "local_session": "Whole browser product, own agent tab groups; user tabs visible by metadata and can be explicitly adopted per docs.",
+      "observation": "Text snapshot, screenshots, per-tab DOM replay; canvas and mouse movement excluded from replay.",
+      "concurrency": "Colored tab groups and tab ownership documented; tab grouping is not cookie/profile isolation.",
+      "recovery": "Inspected ignored live test for unannounced dead CDP session and OOPIF recovery; not run.",
+      "reuse": "Audit timeline, owned-tab cleanup and lost-session test design. Do not copy AGPL code into an MIT-only bundle.",
+      "boundary": "Audit doc says no telemetry while privacy doc says anonymous events on by default; retain contradiction and defer to specific privacy disclosure. No browser install.",
+      "sources": [
+        {
+          "level": "documentation",
+          "url": "https://github.com/browseros-ai/BrowserOS/blob/62cb1ba800373775964782be6d79cc63a2b1799a/README.md",
+          "retrieved_on": "2026-11-26",
+          "claims": "Agent tabs, supported installer platforms, unpublished benchmark limits",
+          "scope": "source/document text, not live behavior"
+        },
+        {
+          "level": "committed_test_inspected",
+          "url": "https://github.com/browseros-ai/BrowserOS/blob/62cb1ba800373775964782be6d79cc63a2b1799a/packages/browseros-agent/crates/browseros-mcp/tests/oopif_snapshot_live.rs",
+          "retrieved_on": "2026-11-26",
+          "claims": "Explicit #[ignore] live test requires browser/fixture; inspected excerpt, not executed",
+          "scope": "selected source excerpts, not executed"
+        },
+        {
+          "level": "license",
+          "url": "https://github.com/browseros-ai/BrowserOS/blob/62cb1ba800373775964782be6d79cc63a2b1799a/LICENSE",
+          "retrieved_on": "2026-11-26",
+          "claims": "AGPL-3.0"
+        },
+        {
+          "level": "documentation",
+          "url": "https://docs.browseros.com/neo/audit-and-replay",
+          "retrieved_on": "2026-11-26",
+          "claims": "Local DOM replay, screenshots, per-tab timeline; no canvas/mouse capture; telemetry statement conflicts"
+        },
+        {
+          "level": "documentation",
+          "url": "https://docs.browseros.com/neo/privacy",
+          "retrieved_on": "2026-11-26",
+          "claims": "Anonymous product events on by default; local history and AI vendor data flows separate"
+        },
+        {
+          "level": "documentation",
+          "url": "https://docs.browseros.com/neo/tabs-and-isolation",
+          "retrieved_on": "2026-11-26",
+          "claims": "Owned tab groups versus user tabs"
+        }
+      ],
+      "sha": "62cb1ba800373775964782be6d79cc63a2b1799a",
+      "date": "2026-11-26T00:24:42Z",
+      "actual_execution": {
+        "browser_actions": 0,
+        "upstream_tests_run": 0,
+        "installed": false
+      }
+    },
+    {
+      "id": "skyvern",
+      "name": "Skyvern",
+      "repo": "Skyvern-AI/skyvern",
+      "version": "main commit pinned; installed release not selected",
+      "license": "AGPL-3.0",
+      "priority": "session-state and expiry test reference",
+      "local_session": "Local/server SDK and managed sessions; full workflow service is broader than current Kit.",
+      "observation": "Vision + browser automation; run recording and screenshot references; independent result witness still needed.",
+      "concurrency": "Docs require waiting for a run before starting another in same session; parallel work belongs in separate sessions.",
+      "recovery": "Stable expired/closed/startup-timeout codes; timeout tests distinguish fixed vendor deadlines from activity lease extension.",
+      "reuse": "Machine-readable failure categories, nonrenewable deadline semantics, test examples only.",
+      "boundary": "No server/database/model install; no AGPL source bundled; no anti-bot bypass functionality investigated.",
+      "sources": [
+        {
+          "level": "documentation",
+          "url": "https://github.com/Skyvern-AI/skyvern/blob/b2f722af4f0fc383de64eb12b31d4f6dad958dfa/README.md",
+          "retrieved_on": "2026-11-26",
+          "claims": "Architecture and local/service distribution",
+          "scope": "source/document text, not live behavior"
+        },
+        {
+          "level": "committed_test_inspected",
+          "url": "https://github.com/Skyvern-AI/skyvern/blob/b2f722af4f0fc383de64eb12b31d4f6dad958dfa/tests/unit/test_browser_session_timeouts.py",
+          "retrieved_on": "2026-11-26",
+          "claims": "Expiry categories and fixed infrastructure deadlines; excerpts inspected, not executed",
+          "scope": "selected source excerpts, not executed"
+        },
+        {
+          "level": "license",
+          "url": "https://github.com/Skyvern-AI/skyvern/blob/b2f722af4f0fc383de64eb12b31d4f6dad958dfa/LICENSE",
+          "retrieved_on": "2026-11-26",
+          "claims": "AGPL-3.0"
+        },
+        {
+          "level": "documentation_partial",
+          "url": "https://www.skyvern.com/docs/browsers",
+          "retrieved_on": "2026-11-26",
+          "claims": "Same session runs must be sequential; terminal session errors; retrieved up to character budget"
+        },
+        {
+          "level": "documentation_excerpt",
+          "url": "https://www.skyvern.com/docs/developers/troubleshooting",
+          "retrieved_on": "2026-11-26",
+          "claims": "Failure category taxonomy"
+        }
+      ],
+      "sha": "b2f722af4f0fc383de64eb12b31d4f6dad958dfa",
+      "date": "2026-11-25T23:37:45Z",
+      "actual_execution": {
+        "browser_actions": 0,
+        "upstream_tests_run": 0,
+        "installed": false
+      }
+    },
+    {
+      "id": "chrome-devtools-mcp",
+      "name": "Chrome DevTools MCP",
+      "repo": "ChromeDevTools/chrome-devtools-mcp",
+      "version": "package.json 1.14.0",
+      "license": "Apache-2.0",
+      "priority": "optional future diagnostics",
+      "local_session": "Launch or attach Chrome; official support is Chrome/Chrome for Testing, not a blanket Edge guarantee.",
+      "observation": "Screenshots, console/network and performance traces; page-scoped operations.",
+      "concurrency": "pageId routing available; routing alone does not serialize writers.",
+      "recovery": "Idle timeout closes launched browser or disconnects borrowed connection; next call reconnects/relaunches per config docs.",
+      "reuse": "Page identity routing and diagnostic evidence metadata; not a new route after host refusal.",
+      "boundary": "Telemetry defaults on per README; CrUX trace URL transmission separate; no installation or execution.",
+      "sources": [
+        {
+          "level": "documentation",
+          "url": "https://github.com/ChromeDevTools/chrome-devtools-mcp/blob/8c43179464d368a6a3c7f8ce2ee024e1e736b795/README.md",
+          "retrieved_on": "2026-11-26",
+          "claims": "Supported browser scope, diagnostics, telemetry",
+          "scope": "source/document text, not live behavior"
+        },
+        {
+          "level": "documentation",
+          "url": "https://github.com/ChromeDevTools/chrome-devtools-mcp/blob/8c43179464d368a6a3c7f8ce2ee024e1e736b795/docs/configuration.md",
+          "retrieved_on": "2026-11-26",
+          "claims": "Page ID routing and idle lifecycle",
+          "scope": "source/document text, not live behavior"
+        },
+        {
+          "level": "package_manifest",
+          "url": "https://github.com/ChromeDevTools/chrome-devtools-mcp/blob/8c43179464d368a6a3c7f8ce2ee024e1e736b795/package.json",
+          "retrieved_on": "2026-11-26",
+          "claims": "Version 1.14.0",
+          "scope": "source/document text, not live behavior"
+        },
+        {
+          "level": "license",
+          "url": "https://github.com/ChromeDevTools/chrome-devtools-mcp/blob/8c43179464d368a6a3c7f8ce2ee024e1e736b795/LICENSE",
+          "retrieved_on": "2026-11-26",
+          "claims": "Apache-2.0"
+        }
+      ],
+      "sha": "8c43179464d368a6a3c7f8ce2ee024e1e736b795",
+      "date": "2026-11-25T18:33:58Z",
+      "actual_execution": {
+        "browser_actions": 0,
+        "upstream_tests_run": 0,
+        "installed": false
+      }
+    },
+    {
+      "id": "browsermcp",
+      "name": "Browser MCP",
+      "repo": "BrowserMCP/mcp",
+      "version": "main commit pinned; package version not selected",
+      "license": "Apache-2.0",
+      "priority": "ownership/reconnect test patterns; not another service now",
+      "local_session": "Extension + one per-user daemon, separate slots for browser profiles.",
+      "observation": "Playwright-backed text/screenshot operations with hidden-tab checks.",
+      "concurrency": "Up to eight browser slots documented; per-browser IDs, pairing and Stop. Not evidence that shared cookies or same-tab concurrent writes are isolated.",
+      "recovery": "Reconnection grace, expiry of timed-out waiters, retirement of reused tab IDs; representative backend tests inspected.",
+      "reuse": "FakeExtension/FakeChromium, loopback fixture, identity-retirement tests; component reuse must retain notices and separately review file authority.",
+      "boundary": "README explicitly allows broad user-level file access; loopback/extension pairing does not make prompt injection harmless. No daemon installed.",
+      "sources": [
+        {
+          "level": "documentation",
+          "url": "https://github.com/BrowserMCP/mcp/blob/a51ddc4ee2210b102468a52b114e6f00e5bd206e/README.md",
+          "retrieved_on": "2026-11-26",
+          "claims": "Top-level architecture and pairing",
+          "scope": "source/document text, not live behavior"
+        },
+        {
+          "level": "documentation",
+          "url": "https://github.com/BrowserMCP/mcp/blob/a51ddc4ee2210b102468a52b114e6f00e5bd206e/packages/mcp/README.md",
+          "retrieved_on": "2026-11-26",
+          "claims": "Per-profile slots, ID reuse, lifecycle, test fixtures",
+          "scope": "source/document text, not live behavior"
+        },
+        {
+          "level": "committed_test_inspected",
+          "url": "https://github.com/BrowserMCP/mcp/blob/a51ddc4ee2210b102468a52b114e6f00e5bd206e/packages/mcp/src/relay/backend.test.ts",
+          "retrieved_on": "2026-11-26",
+          "claims": "Timeout cleanup, disconnect ownership, retired tab IDs; representative bodies inspected",
+          "scope": "selected source excerpts, not executed"
+        },
+        {
+          "level": "license",
+          "url": "https://github.com/BrowserMCP/mcp/blob/a51ddc4ee2210b102468a52b114e6f00e5bd206e/LICENSE",
+          "retrieved_on": "2026-11-26",
+          "claims": "Apache-2.0"
+        }
+      ],
+      "sha": "a51ddc4ee2210b102468a52b114e6f00e5bd206e",
+      "date": "2026-11-12T16:35:13Z",
+      "actual_execution": {
+        "browser_actions": 0,
+        "upstream_tests_run": 0,
+        "installed": false
+      }
+    },
+    {
+      "id": "agent-relay",
+      "name": "Agent Relay (AgentWorkforce)",
+      "repo": "AgentWorkforce/relay",
+      "version": "package.json 18.16.1",
+      "license": "Apache-2.0",
+      "priority": "delivery receipt contract reference",
+      "local_session": "Agent process messaging/lifecycle coordination; not a browser executor and not OMP Browser Relay.",
+      "observation": "No browser DOM/screenshot capability established by SDK itself.",
+      "concurrency": "Agent identity, durable channels, delivery modes and typed actions; existing runtime owns execution.",
+      "recovery": "accepted/delivered/deferred/failed receipts; action invocation acknowledgement distinct from eventual completed/failed event; idempotency keys for messages, not proof of browser exactly-once.",
+      "reuse": "Result envelope vocabulary and explicit deferred deadline semantics; reuse existing origin-dispatch instead of adding broker.",
+      "boundary": "Do not execute relay init or send external messages; public name similarity does not establish relation to local OMP.",
+      "sources": [
+        {
+          "level": "documentation",
+          "url": "https://github.com/AgentWorkforce/relay/blob/95b8afdac620feff75132d63a5c48e1eed9408d6/README.md",
+          "retrieved_on": "2026-11-26",
+          "claims": "Messaging and runtime roles",
+          "scope": "source/document text, not live behavior"
+        },
+        {
+          "level": "documentation",
+          "url": "https://github.com/AgentWorkforce/relay/blob/95b8afdac620feff75132d63a5c48e1eed9408d6/packages/sdk/README.md",
+          "retrieved_on": "2026-11-26",
+          "claims": "Delivery/action contract, retired harness APIs",
+          "scope": "source/document text, not live behavior"
+        },
+        {
+          "level": "package_manifest",
+          "url": "https://github.com/AgentWorkforce/relay/blob/95b8afdac620feff75132d63a5c48e1eed9408d6/package.json",
+          "retrieved_on": "2026-11-26",
+          "claims": "Version 18.16.1",
+          "scope": "source/document text, not live behavior"
+        },
+        {
+          "level": "license",
+          "url": "https://github.com/AgentWorkforce/relay/blob/95b8afdac620feff75132d63a5c48e1eed9408d6/LICENSE",
+          "retrieved_on": "2026-11-26",
+          "claims": "Apache-2.0"
+        }
+      ],
+      "sha": "95b8afdac620feff75132d63a5c48e1eed9408d6",
+      "date": "2026-11-25T17:55:10Z",
+      "actual_execution": {
+        "browser_actions": 0,
+        "upstream_tests_run": 0,
+        "installed": false
+      }
+    }
+  ]
+}

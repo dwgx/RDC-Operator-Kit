@@ -1,0 +1,311 @@
+{
+  "schema_version": 1,
+  "researched_at": "2026-11-26T09:38:02+09:00",
+  "timezone": "Asia/Tokyo",
+  "topic": "MCP transport and Agent Skills interop for RDC Operator Kit",
+  "status": "research_only_not_implemented_or_runtime_tested",
+  "methods": {
+    "search_provider": "Exa",
+    "search_queries": 5,
+    "requested_search_result_slots": 25,
+    "counts_note": "Result slots are not fully read independent sources. Relevant pages were fetched separately.",
+    "supplemental_read": "GitHub fetch_file for fixed SDK workflows",
+    "primary_source_families": 5,
+    "excluded": [
+      "OpenAI web/UI access",
+      "user credentials or browser profiles",
+      "package installation",
+      "server startup",
+      "remote publication"
+    ]
+  },
+  "sources": [
+    {
+      "id": "MCP-CORE-20260728",
+      "family": "MCP core specification",
+      "version": "2026-07-28",
+      "evidence": "official_versioned_specification",
+      "pages": [
+        {
+          "url": "https://modelcontextprotocol.io/specification/2026-07-28/changelog",
+          "read_scope": "Major and minor changes; deprecated section beginning",
+          "supports": [
+            "stateless request metadata",
+            "server/discover",
+            "removed session and handshake",
+            "Tasks moved to extension",
+            "SSE replay removal"
+          ]
+        },
+        {
+          "url": "https://modelcontextprotocol.io/specification/2026-07-28/basic/transports/stdio",
+          "read_scope": "Complete fetched page",
+          "supports": [
+            "subprocess transport and NDJSON framing",
+            "stdout protocol only",
+            "stderr not automatically error",
+            "EOF shutdown",
+            "modern/legacy probing"
+          ]
+        },
+        {
+          "url": "https://modelcontextprotocol.io/specification/2026-07-28/basic/transports/streamable-http",
+          "read_scope": "Overview, endpoint security, sending messages, cancellation and metadata sections",
+          "supports": [
+            "POST endpoint",
+            "Origin validation",
+            "localhost recommendation",
+            "HTTP disconnect cancellation"
+          ]
+        },
+        {
+          "url": "https://modelcontextprotocol.io/specification/2026-07-28/basic/patterns/cancellation",
+          "read_scope": "Complete fetched page",
+          "supports": [
+            "transport-specific cancellation",
+            "late completion races",
+            "bounded timeouts despite progress"
+          ]
+        },
+        {
+          "url": "https://modelcontextprotocol.io/specification/2026-07-28/server/tools",
+          "read_scope": "User interaction, tool definitions, annotations, errors and security sections",
+          "supports": [
+            "annotations untrusted unless trusted source",
+            "protocol error vs tool isError",
+            "input/output validation"
+          ]
+        },
+        {
+          "url": "https://modelcontextprotocol.io/specification/2026-07-28/basic/authorization",
+          "read_scope": "Purpose/scope, standards, metadata, issuer, token and scope selection sections; not whole specification",
+          "supports": [
+            "HTTP authorization distinct from stdio",
+            "per-request authorization",
+            "audience/issuer binding",
+            "no arbitrary token passthrough"
+          ]
+        }
+      ],
+      "runtime_tested": false
+    },
+    {
+      "id": "MCP-TASKS-20260728",
+      "family": "MCP Tasks extension",
+      "version": "2026-07-28",
+      "extension": "io.modelcontextprotocol/tasks",
+      "evidence": "official_versioned_specification_and_repository",
+      "stability": "Stable schema; draft separately Development",
+      "pages": [
+        {
+          "url": "https://github.com/modelcontextprotocol/ext-tasks",
+          "read_scope": "Repository README, schema status table and license",
+          "supports": [
+            "2026-07-28 Stable",
+            "draft Development",
+            "Apache-2.0 repository"
+          ]
+        },
+        {
+          "url": "https://tasks.extensions.modelcontextprotocol.io/specification/2026-07-28/tasks",
+          "read_scope": "Identifier, capability negotiation, task shape, status, creation, polling, update, cancellation sections",
+          "supports": [
+            "get/update/cancel API",
+            "durable handle before reply",
+            "completed may include isError true",
+            "cancellation cooperative and not guaranteed",
+            "TTL and poll interval"
+          ]
+        },
+        {
+          "url": "https://modelcontextprotocol.io/extensions/tasks/overview",
+          "read_scope": "Complete fetched overview",
+          "supports": [
+            "both peers opt in",
+            "per-request capability",
+            "host support varies"
+          ]
+        },
+        {
+          "url": "https://modelcontextprotocol.io/specification/2025-11-25/basic/utilities/tasks",
+          "read_scope": "Search result excerpts identifying experimental status and old cancellation semantics",
+          "supports": [
+            "historical core Tasks were experimental"
+          ],
+          "limitation": "not used as current protocol"
+        }
+      ],
+      "runtime_tested": false
+    },
+    {
+      "id": "PYTHON-SDK-2.3.0",
+      "family": "Official MCP Python SDK",
+      "version": "2.3.0",
+      "ref": "2118f14f8a19bc158d8a1cf90af58d85d187f849",
+      "license": "MIT",
+      "evidence": "fixed_tag_source_and_official_docs",
+      "pages": [
+        {
+          "url": "https://api.github.com/repos/modelcontextprotocol/python-sdk/git/ref/tags/v2.3.0",
+          "read_scope": "Complete tag object",
+          "supports": [
+            "exact tag-to-commit identity"
+          ]
+        },
+        {
+          "url": "https://github.com/modelcontextprotocol/python-sdk/blob/2118f14f8a19bc158d8a1cf90af58d85d187f849/pyproject.toml",
+          "fetched_url": "https://raw.githubusercontent.com/modelcontextprotocol/python-sdk/v2.3.0/pyproject.toml",
+          "read_scope": "Project metadata, versioning dependency hook, optional extras and Python classifiers",
+          "supports": [
+            "Python >=3.10 for tag",
+            "pywin32>=311 on Windows",
+            "mcp-types version lockstep",
+            "Python 3.14 dependency floors",
+            "MIT metadata"
+          ]
+        },
+        {
+          "url": "https://github.com/modelcontextprotocol/python-sdk/blob/2118f14f8a19bc158d8a1cf90af58d85d187f849/README.md",
+          "read_scope": "Complete fetched file",
+          "supports": [
+            "tag requires Python 3.10+",
+            "MCPServer v2 entry",
+            "MIT"
+          ]
+        },
+        {
+          "url": "https://github.com/modelcontextprotocol/python-sdk/blob/2118f14f8a19bc158d8a1cf90af58d85d187f849/LICENSE",
+          "read_scope": "Complete fetched file",
+          "supports": [
+            "MIT license"
+          ]
+        },
+        {
+          "url": "https://github.com/modelcontextprotocol/python-sdk/blob/2118f14f8a19bc158d8a1cf90af58d85d187f849/.github/workflows/main.yml",
+          "blob_sha": "ea214bc85214efd16ffd79452bc45168d44cebbd",
+          "read_scope": "Complete file via GitHub connector",
+          "supports": [
+            "shared workflow invocation"
+          ]
+        },
+        {
+          "url": "https://github.com/modelcontextprotocol/python-sdk/blob/2118f14f8a19bc158d8a1cf90af58d85d187f849/.github/workflows/shared.yml",
+          "blob_sha": "b7b39bbaf5884ef9ded95867f53c16261041bfd1",
+          "read_scope": "Complete file via GitHub connector",
+          "supports": [
+            "configured Ubuntu/Windows matrix Python 3.10–3.14"
+          ],
+          "limitation": "Workflow configuration only; no run outcome inspected"
+        },
+        {
+          "url": "https://py.sdk.modelcontextprotocol.io/whats-new/",
+          "read_scope": "Search excerpts of v2 stable and compatibility sections",
+          "supports": [
+            "v2 stable",
+            "v1 maintenance",
+            "new protocol compatibility"
+          ]
+        },
+        {
+          "url": "https://py.sdk.modelcontextprotocol.io/get-started/installation/",
+          "read_scope": "Search excerpts of requirements and dependency explanations",
+          "supports": [
+            "rolling docs now say Python 3.11+"
+          ],
+          "limitation": "Moving documentation; not the Python floor of pinned v2.3.0"
+        }
+      ],
+      "conflicts": [
+        {
+          "field": "Python minimum",
+          "fixed_tag": "3.10+",
+          "rolling_docs": "3.11+",
+          "resolution": "Use fixed pyproject and README for v2.3.0; re-evaluate when upgrading"
+        }
+      ],
+      "runtime_tested": false
+    },
+    {
+      "id": "AGENT-SKILLS-FORMAT",
+      "family": "Agent Skills open specification",
+      "evidence": "official_specification",
+      "pages": [
+        {
+          "url": "https://agentskills.io/specification",
+          "read_scope": "Complete fetched specification",
+          "supports": [
+            "SKILL.md required",
+            "frontmatter name and description",
+            "optional scripts/references/assets",
+            "compatibility field",
+            "allowed-tools experimental and implementation-dependent"
+          ]
+        }
+      ],
+      "runtime_tested": false
+    },
+    {
+      "id": "OMP-SKILLS-19.2.1",
+      "family": "OMP",
+      "version": "19.2.1",
+      "ref": "b55cd1bb664d8ab46ddc77f2a34eb47555dbf1ac",
+      "evidence": "fixed_repository_documentation",
+      "pages": [
+        {
+          "url": "https://github.com/can1357/oh-my-pi/blob/b55cd1bb664d8ab46ddc77f2a34eb47555dbf1ac/docs/skills.md",
+          "fetched_url": "https://raw.githubusercontent.com/can1357/oh-my-pi/b55cd1bb664d8ab46ddc77f2a34eb47555dbf1ac/docs/skills.md",
+          "read_scope": "First 11500 characters: representation, directory layout, frontmatter, discovery, providers, filters and collision rules",
+          "supports": [
+            "one-level discovery under conventional skill roots",
+            "provider-specific validation",
+            "strict Agent Plugins vs permissive scanners",
+            "source precedence and manual-only controls"
+          ],
+          "limitation": "Did not read every later section or execute discovery on device"
+        }
+      ],
+      "runtime_tested": false
+    }
+  ],
+  "local_baseline": [
+    {
+      "path": "AGENTS.md",
+      "sha256": "892253aa53a49674477bd5aa6560a3c17d33bb80f9c4820337c27d594a979c67"
+    },
+    {
+      "path": "README.md",
+      "sha256": "dfd6a8e5e4cad3734c873256404f5462efe967cb87f0c16cbff34232490ecd94"
+    },
+    {
+      "path": "pyproject.toml",
+      "sha256": "62f6b71fcc745e27e041f144f99619d15035b7c7b8e3977241288cb14325a6bb"
+    },
+    {
+      "path": "rdc_operator/core.py",
+      "sha256": "7784dd195627736e5492689c7715e47a299e9ed017f47be5d66e4f6bc0de4274"
+    },
+    {
+      "path": "rdc_operator/cli.py",
+      "sha256": "ea25f409d399807a4aac0a907bef6f68979e7e34da5d6b4acbe215f494523164"
+    },
+    {
+      "path": "skills/rdc-operator-kit/SKILL.md",
+      "sha256": "82f7c88c1732db3569f5205602f2841032c038a41022ef04b82074e2852ee833"
+    }
+  ],
+  "retrieval_errors": [
+    {
+      "url": "https://modelcontextprotocol.io/specification/2026-07-28/basic/utilities/cancellation",
+      "error": "CRAWL_LIVECRAWL_TIMEOUT",
+      "resolution": "Search discovered canonical /basic/patterns/cancellation and successful fetch followed"
+    }
+  ],
+  "proposed_not_executed": [
+    "Optional official-SDK stdio capabilities/receipt tools",
+    "new and legacy protocol client tests",
+    "Windows Unicode path/EOF shutdown tests",
+    "action cancellation/reconnect/no replay tests",
+    "any Tasks extension mapping"
+  ],
+  "conclusion": "Keep existing RDC-to-CLI route and portable Skill as current supported path; an optional SDK-based stdio transport is a separate future slice and does not make a cloud-reachable HTTP endpoint."
+}

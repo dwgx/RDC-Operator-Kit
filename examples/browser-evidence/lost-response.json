@@ -1,0 +1,98 @@
+{
+  "schema_version": 1,
+  "evidence_kind": "synthetic_fixture",
+  "executor": {
+    "name": "offline-data-fixture",
+    "version": "1",
+    "session_id": "synthetic-session-1"
+  },
+  "page": {
+    "browser_id": "synthetic-browser-1",
+    "context_id": "synthetic-context-1",
+    "tab_id": "synthetic-tab-1",
+    "target_id": "synthetic-target-1",
+    "document_epoch": "doc-001",
+    "fixture_nonce": "fixture-001",
+    "origin": "http://127.0.0.1:18764"
+  },
+  "request": {
+    "request_id": "increment-001",
+    "operation": "increment_once",
+    "token": "operation-token-001",
+    "before_count": 0,
+    "expected_count": 1,
+    "digest": "9ce3aedf258a3f9d1edcb855c203241d26a0a87dbd5e7931d1e125f4ddef7f90"
+  },
+  "observation": {
+    "observation_id": "obs-001",
+    "page": {
+      "browser_id": "synthetic-browser-1",
+      "context_id": "synthetic-context-1",
+      "tab_id": "synthetic-tab-1",
+      "target_id": "synthetic-target-1",
+      "document_epoch": "doc-001",
+      "fixture_nonce": "fixture-001",
+      "origin": "http://127.0.0.1:18764"
+    },
+    "sequence": 1,
+    "observed_at": "2026-11-26T00:00:00Z",
+    "counter": 0
+  },
+  "screenshot": {
+    "frame_id": "frame-001",
+    "page": {
+      "browser_id": "synthetic-browser-1",
+      "context_id": "synthetic-context-1",
+      "tab_id": "synthetic-tab-1",
+      "target_id": "synthetic-target-1",
+      "document_epoch": "doc-001",
+      "fixture_nonce": "fixture-001",
+      "origin": "http://127.0.0.1:18764"
+    },
+    "observation_id": "obs-001",
+    "sequence": 2,
+    "capture_started_at": "2026-11-26T00:00:00.100Z",
+    "capture_completed_at": "2026-11-26T00:00:00.200Z",
+    "captured_at": null,
+    "png_base64": "iVBORw0KGgoAAAANSUhEUgAAAAIAAAACCAIAAAD91JpzAAAAEUlEQVR4nGP4z8DA8B+MgBgAHfAD/dPQfSYAAAAASUVORK5CYII=",
+    "sha256": "27ce4cd0859ffa137ec951b62df9ba8c19d37ac07d2c166a4ab6a2a3be1e9ae8",
+    "width": 2,
+    "height": 2
+  },
+  "action": {
+    "request_id": "increment-001",
+    "request_digest": "9ce3aedf258a3f9d1edcb855c203241d26a0a87dbd5e7931d1e125f4ddef7f90",
+    "page": {
+      "browser_id": "synthetic-browser-1",
+      "context_id": "synthetic-context-1",
+      "tab_id": "synthetic-tab-1",
+      "target_id": "synthetic-target-1",
+      "document_epoch": "doc-001",
+      "fixture_nonce": "fixture-001",
+      "origin": "http://127.0.0.1:18764"
+    },
+    "observation_id": "obs-001",
+    "sequence": 3,
+    "occurred_at": "2026-11-26T00:00:00.300Z",
+    "dispatched": true,
+    "acknowledged": null,
+    "response": "lost"
+  },
+  "witness": {
+    "page": {
+      "browser_id": "synthetic-browser-1",
+      "context_id": "synthetic-context-1",
+      "tab_id": "synthetic-tab-1",
+      "target_id": "synthetic-target-1",
+      "document_epoch": "doc-001",
+      "fixture_nonce": "fixture-001",
+      "origin": "http://127.0.0.1:18764"
+    },
+    "sequence": 4,
+    "observed_at": "2026-11-26T00:00:00.500Z",
+    "source": "fixture_dom_readback",
+    "counter": 1,
+    "request_id": "increment-001",
+    "token": "operation-token-001"
+  }
+}
