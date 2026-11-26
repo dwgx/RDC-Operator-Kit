@@ -1,6 +1,6 @@
 # 当前结果：0.1.0a5
 
-2026-11-26（Asia/Tokyo）：最新接口、独立 review、具体环境与执行范围见 [第五轮报告](REVIEW-WAVE5.zh-CN.md)。以下总览区分初始 a5 快照、review 后修复和实际发布状态。没有将未执行、跳过或被阻断的项目计为通过。
+2026-11-26（Asia/Tokyo）：[v0.1.0a5 Release](https://github.com/dwgx/RDC-Operator-Kit/releases/tag/v0.1.0a5) 已发布，[项目网站](https://dwgx.github.io/RDC-Operator-Kit/) 已部署。最新接口、独立 review、具体环境与执行范围见 [第五轮报告](REVIEW-WAVE5.zh-CN.md)。以下总览区分初始 a5 快照、review 后修复和实际发布状态。没有将未执行、跳过或被阻断的项目计为通过。
 
 | 本轮项目 | 已有结果 | 适用范围与当前待完成项 |
 |---|---|---|
@@ -19,13 +19,17 @@
 | 首轮 GitHub CI（历史 checkpoint） | [实际 run](https://github.com/dwgx/RDC-Operator-Kit/actions/runs/45777836079)：两个 Windows core job 失败，其他四个 job 通过 | 两个失败 job 均为 182 run／11 failures／10 errors／7 skip；原日志保留，不被新 run 覆盖。 |
 | 修复提交 GitHub CI | [`a880144` 的 run 45780615916](https://github.com/dwgx/RDC-Operator-Kit/actions/runs/45780615916)：六个 job 全部 success | Windows Python 3.10/3.13 core 各 184 run／177 pass／7 skip；Ubuntu core 各 184 run／179 pass／5 skip。CI core 没有可选 Pydantic 2，相关两项明确 skip；新 Windows 路径回归均 ok。 |
 | CI 的两个独立 MCP job | Ubuntu／Windows 的 modern、legacy 会话均 passed，原记录未变 | 日志未给出完整逐项 check 数；不把自有 Windows 的 72 项套到 CI。 |
-| Pages 配置／发布余项 | Pages 已配置 GitHub Actions，API 返回 [配置地址](https://dwgx.github.io/RDC-Operator-Kit/)；`deployment_verified: false` | a5 tag／Release 和 Pages 实际部署仍待回执；配置地址不等于网站已经上线。 |
+| GitHub Release | [`v0.1.0a5`](https://github.com/dwgx/RDC-Operator-Kit/releases/tag/v0.1.0a5) 已于 17:31:53 JST 发布，固定提交 `27d367a9698c381d90986c8640d506b24d84ddd9` | 九项上传资产均已实际下载回读并核对 SHA-256 一致；完整清单见第五轮报告第 12 节。 |
+| 发行提交 CI | [run 45782996129](https://github.com/dwgx/RDC-Operator-Kit/actions/runs/45782996129) 六个 job 全部 success | 每组 core 184：Windows 177 pass／7 skip，Ubuntu 179 pass／5 skip；两个独立 MCP job 的 modern／legacy 协议均 passed。 |
+| GitHub Pages | [run 45783289213](https://github.com/dwgx/RDC-Operator-Kit/actions/runs/45783289213) build／deploy 均成功，head 与发行提交相同；[实际网站](https://dwgx.github.io/RDC-Operator-Kit/) | 这是部署验收，不增加新版 UI 的 live browser、剪贴板或响应式交互通过项。 |
 
 MCP smoke 的 review 问题针对判定机制：Python 的普通容器相等会混淆 `false` 与 `0`，而旧状态检查遗漏文本通道的额外内容。生产 `as_result()` 本次没有被证实实际泄露；修复已加入类型敏感 JSON 比较和全部成功响应的双通道核对。真实协议复验与合成反例分别记录，不把修复前 60 checks 当作修复后通过。
 
 首次公开 CI 另揭示 Windows 8.3 短名称与已打开 HANDLE 长名称的比较问题。生产修复在打开前固定展开后的预期名称，保留 HANDLE 路径和 reparse 校验；截图 fixture 与子报告测试则对齐既有 canonical path 契约。首 push 前的 Linux 182 run／181 pass／1 skip，以及 Windows 181 run／170 pass／11 skip 加单独 junction 1/1，保留为较早 checkpoint；不与最新 184 项运行拼接。完整时间线见 [第五轮报告](REVIEW-WAVE5.zh-CN.md)。
 
 最终安装 wheel 为 44,645 字节，SHA-256 为 `24633b51a6cb3e72a4896fb9accf3d3125f4f9f87a2aba659ca482aa5ebcbc8b`。`installed-a5-final.json` 与 `installed-a5-final-smoke.json` 分别记录安装字节核对和实际 installed 入口执行；这次证据补足了旧 pre-CI 安装不能证明新修复已安装的缺口。
+
+Release 归档和随附报告固定在发行提交 `27d367a`；随后 main 只同步文档／页面中的发布回执，不移动 tag、不替换资产。归档内较早的发布前状态保留为该冻结快照，当前结果以本页和第五轮第 12 节的后续记录区分。
 
 历史 a4 的 Linux 158/158、Windows 最终 core 150 pass／8 skip／158，以及顶层 suite 8/9／exit 1 保持原结论；后一次 a5 通过不会删除其 `focus_unverified` 失败。a4 实机与浏览器记录见 [第四轮报告](REVIEW-WAVE4.zh-CN.md)。
 

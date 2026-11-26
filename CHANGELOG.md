@@ -1,4 +1,4 @@
-# 0.1.0a5 — public source, Release pending, 2026-11-26
+# 0.1.0a5 — released alpha, 2026-11-26
 
 ### Added
 
@@ -70,8 +70,20 @@
   One real modern MCP session launched with `-I` from installed site-packages
   passed all 17 recorded assertions, retaining unknown outcomes and unchanged
   records. This is separate from source checks and CI; legacy and GUI were not rerun.
-- Pages is configured to use GitHub Actions and its URL was read back from the
-  API, but deployment remains unverified. The a5 tag/Release is still pending.
+- Published [v0.1.0a5](https://github.com/dwgx/RDC-Operator-Kit/releases/tag/v0.1.0a5)
+  at 2026-11-26 08:31:53 UTC (17:31:53 JST), fixed to
+  `27d367a9698c381d90986c8640d506b24d84ddd9`. All nine uploaded assets were
+  downloaded again and matched their SHA-256 values.
+- The [release-commit CI](https://github.com/dwgx/RDC-Operator-Kit/actions/runs/45782996129)
+  passed all six jobs: each Windows core job had 184 run, 177 passed and seven
+  skips; each Ubuntu core job had 184 run, 179 passed and five skips. Both
+  independent MCP jobs passed the modern and legacy protocols.
+- [Pages build/deploy](https://github.com/dwgx/RDC-Operator-Kit/actions/runs/45783289213)
+  succeeded at the same release commit. The project site is
+  [https://dwgx.github.io/RDC-Operator-Kit/](https://dwgx.github.io/RDC-Operator-Kit/).
+  Deployment does not add live acceptance of the refreshed UI.
+- Release archives remain fixed to that commit. Subsequent main changes only
+  synchronize publication receipts in docs/pages; the tag and assets are unchanged.
 - Modern UI validation remains static/synthetic because browser access was
   denied. HMC environment probing was quota-blocked. Actual GLM/DeepSeek OMP
   reviews returned deadline/provider-balance failures with no final review.

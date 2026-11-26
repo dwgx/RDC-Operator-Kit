@@ -34,7 +34,7 @@
   <main id="main">
     <section class="hero container" aria-labelledby="hero-title">
       <div class="hero-copy">
-        <div class="eyebrow"><span class="release-pill">0.1.0a5 ALPHA</span><span>WINDOWS FIRST</span><span class="eyebrow-separator" aria-hidden="true">/</span><span>公开源码</span></div>
+        <div class="eyebrow"><span class="release-pill">0.1.0a5 ALPHA</span><span>WINDOWS FIRST</span><span class="eyebrow-separator" aria-hidden="true">/</span><span>预发布已上线</span></div>
         <p class="hero-overline">A local toolkit for capable agents.</p>
         <h1 id="hero-title">把电脑上的工作，<br><span>接回对话。</span></h1>
         <p class="hero-description">复用你已有的 RDC、SmartCLI 与 OMP。让 Agent 读懂终端、定位窗口、执行明确动作，再用独立证据确认结果。每一次工作，都有可继续检查的记录。</p>
@@ -163,7 +163,7 @@ receipt.json
     <section class="section container" id="install">
       <div class="section-heading"><div><p class="section-kicker"><span>03</span> GET READY</p><h2>从一份本地源码开始。</h2></div><p>Python 3.10+ · 核心只用标准库<br>可选安装终端和 Windows 桌面依赖</p></div>
       <div class="install-layout">
-        <div class="install-aside"><span class="badge neutral">WINDOWS FIRST · ALPHA</span><h3>先取得源码，<br>再按平台安装。</h3><p>克隆源码，或从 Releases 选择完整源码包并核对校验和。安装器使用隔离的 <code>.venv</code> 与 <code>config.local.json</code>。</p><a class="button primary" href="https://github.com/dwgx/RDC-Operator-Kit">打开 GitHub 仓库 ↗</a><p class="scope-note"><a href="https://github.com/dwgx/RDC-Operator-Kit/releases">发行包与版本记录</a><br>现有配置、全局 PATH 与 RDC 登录保持原状。</p></div>
+        <div class="install-aside"><span class="badge neutral">WINDOWS FIRST · ALPHA</span><h3>先取得源码，<br>再按平台安装。</h3><p>克隆源码，或从 Releases 选择完整源码包并核对校验和。安装器使用隔离的 <code>.venv</code> 与 <code>config.local.json</code>。</p><a class="button primary" href="https://github.com/dwgx/RDC-Operator-Kit">打开 GitHub 仓库 ↗</a><p class="scope-note"><a href="https://github.com/dwgx/RDC-Operator-Kit/releases/tag/v0.1.0a5">下载 0.1.0a5 与校验文件</a><br>现有配置、全局 PATH 与 RDC 登录保持原状。</p></div>
         <div class="install-main">
           <div class="install-tabs tabs" role="tablist" aria-label="安装方式">
             <button id="tab-windows" role="tab" aria-selected="true" aria-controls="panel-windows" data-tab="windows" tabindex="0">Windows</button>
@@ -171,18 +171,19 @@ receipt.json
             <button id="tab-linux" role="tab" aria-selected="false" aria-controls="panel-linux" data-tab="linux" tabindex="-1">Linux</button>
           </div>
           <div class="install-panel" id="panel-windows" role="tabpanel" aria-labelledby="tab-windows" tabindex="0">
-            <div class="install-code-top"><span>PowerShell · 已取得的源码目录</span><button class="copy-button" type="button" data-copy="code-windows">复制</button></div>
-            <pre><code id="code-windows">git clone https://github.com/dwgx/RDC-Operator-Kit.git
+            <div class="install-code-top"><span>PowerShell · 下载固定发行版本</span><button class="copy-button" type="button" data-copy="code-windows">复制</button></div>
+            <pre><code id="code-windows">git clone --branch v0.1.0a5 --single-branch https://github.com/dwgx/RDC-Operator-Kit.git
+if ($LASTEXITCODE -ne 0) { throw 'Source download failed.' }
 Set-Location RDC-Operator-Kit
 .\scripts\install.ps1 -WithTerminal -WithDesktop
-
+if ($LASTEXITCODE -ne 0) { throw 'Installation failed.' }
 .\.venv\Scripts\python.exe -m rdc_operator --config config.local.json --state .rdc-state doctor</code></pre>
             <p>先把源码放到希望安装的目录，再从那里运行；<code>-InstallRoot</code> 必须与源码目录相同。第一次先阅读 doctor 结果，再使用自己的合成测试窗口验证桌面路线。</p>
           </div>
           <div class="install-panel" id="panel-agent" role="tabpanel" aria-labelledby="tab-agent" tabindex="0" hidden>
             <div class="install-code-top"><span>可复制的接手说明</span><button class="copy-button" type="button" data-copy="code-agent">复制</button></div>
             <pre><code id="code-agent">读取 https://github.com/dwgx/RDC-Operator-Kit 的 README 和 Skill。
-选择 0.1.0a5 或后续已核验版本，保留版本与摘要。
+检出已发布 v0.1.0a5，核对该 Release 的发布记录与校验文件。
 确认本机平台、依赖、目标目录与现有 RDC 路线。
 按安装文档准备隔离环境，然后运行 doctor。
 运行 windows-preflight，再用有界 Windows smoke 验证。
@@ -194,10 +195,9 @@ Set-Location RDC-Operator-Kit
           </div>
           <div class="install-panel" id="panel-linux" role="tabpanel" aria-labelledby="tab-linux" tabindex="0" hidden>
             <div class="install-code-top"><span>Shell · 核心与终端路线</span><button class="copy-button" type="button" data-copy="code-linux">复制</button></div>
-            <pre><code id="code-linux">git clone https://github.com/dwgx/RDC-Operator-Kit.git
-cd RDC-Operator-Kit
-bash scripts/install.sh --with-terminal
-
+            <pre><code id="code-linux">git clone --branch v0.1.0a5 --single-branch https://github.com/dwgx/RDC-Operator-Kit.git &amp;&amp;
+cd RDC-Operator-Kit &amp;&amp;
+bash scripts/install.sh --with-terminal &amp;&amp;
 .venv/bin/python -m rdc_operator --config config.local.json --state .rdc-state doctor</code></pre>
             <p>Linux 提供核心与可选终端安装路线。Windows 的 winapp 桌面适配器不在 Linux 支持范围；平台可安装与任务已验收分开记录。</p>
           </div>

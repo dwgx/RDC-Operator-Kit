@@ -1,10 +1,14 @@
 # a5 发布、安装与 GitHub Pages
 
-版本：`0.1.0a5`。状态日期：2026-11-26（Asia/Tokyo）。[公开仓库 `dwgx/RDC-Operator-Kit`](https://github.com/dwgx/RDC-Operator-Kit) 已创建并核验，默认分支名为 `main`。所有者已经明确授权本项目公开发布，后续无需为同一发布动作重新取得笼统许可。
+版本：`0.1.0a5`，已发布的 alpha。状态日期：2026-11-26（Asia/Tokyo）。
 
-**当前记录：源码已经公开 push。** 首提交 `5952a45` 的 CI 有两个 Windows core job 失败；修复提交 [`a880144`](https://github.com/dwgx/RDC-Operator-Kit/commit/a880144d07d8599c6e5232a34bcef1e1cac54bc1) 的 [run 45780615916](https://github.com/dwgx/RDC-Operator-Kit/actions/runs/45780615916) 已六个 job 全部 success。包含修复的最终 wheel 已在两个自有 Windows 环境完成升级、隔离导入及有限 installed 入口验证；`v0.1.0a5` tag／Release 与 Pages 实际部署仍待回执。下面的发行和固定 tag 安装步骤仍有前提，实际状态与资产依据见 [第五轮报告](REVIEW-WAVE5.zh-CN.md)。Pages 的 API 配置地址不等于已上线地址。
+**[下载 v0.1.0a5 Release](https://github.com/dwgx/RDC-Operator-Kit/releases/tag/v0.1.0a5) · [项目网站](https://dwgx.github.io/RDC-Operator-Kit/) · [公开源码仓库](https://github.com/dwgx/RDC-Operator-Kit)**
+
+Release 已于 **2026-11-26 17:31:53 JST（08:31:53 UTC）** 发布，tag `v0.1.0a5` 固定到 `27d367a9698c381d90986c8640d506b24d84ddd9`；九项上传资产均已实际下载回读，SHA-256 一致。发行提交的 [CI run 45782996129](https://github.com/dwgx/RDC-Operator-Kit/actions/runs/45782996129) 六个 job 全部成功，[Pages run 45783289213](https://github.com/dwgx/RDC-Operator-Kit/actions/runs/45783289213) build／deploy 也在同一提交成功。完整资产清单与历史 checkpoint 见 [第五轮报告第 12 节](REVIEW-WAVE5.zh-CN.md#12-实际公开发行与-pages-部署)。直接安装请从第 4 节开始；前面三节保留维护者的冻结、构建与发行流程。
 
 ## 1. 冻结可以公开的源码
+
+本版归档与 tag 固定在 `27d367a`。随后 `main` 只同步文档／页面中的发布回执，不移动 tag 或替换资产；需要检查发行源码时使用 `v0.1.0a5`，不要把后续 main 文档字节视为原归档内容。随附报告保留冻结时的发布前 checkpoint，当前回执在第五轮报告第 12 节追加。
 
 仅从审阅过的源码快照建立发布 checkout。不要把正在使用的 Windows 项目目录整体 `git add`：其中可能含配置、环境、工具与私有证据。公开树包括程序、安装脚本、文档、Skill、合成夹具、测试与静态网站；排除 `config.local.json`、`.venv/`、`.venv-mcp/`、`.rdc-state/`、`tools/`、`evidence/`、设备／账户标识、令牌、原始终端和 UI 内容。
 
@@ -71,11 +75,11 @@ python -m pip wheel --no-index --no-deps --no-build-isolation --wheel-dir dist/a
 
 ## 3. 推送、CI 与预发布
 
-目标仓库已存在，`main` 已收到首次源码与 CI 修复提交，不再执行第二次 `repo create`。后续交付从隔离发布 checkout 正常 push；检查 `origin` 精确指向 `https://github.com/dwgx/RDC-Operator-Kit.git`，并确认提交内容属于批准公开的范围。不使用 force、不上传运行目录、不输出令牌。
+目标仓库已存在，`main` 已收到首次源码、CI 修复与发行提交，`v0.1.0a5` 已公开。后续交付从隔离发布 checkout 正常 push；检查 `origin` 精确指向 `https://github.com/dwgx/RDC-Operator-Kit.git`，并确认提交内容属于批准公开的范围。不使用 force、不上传运行目录、不输出令牌。
 
-CI 随 push／pull request／手动触发。修复提交 `a880144` 的六个 job 已通过；创建 `v0.1.0a5` tag 前仍要确认实际目标 commit 与最终发行快照、校验文件一致。若目标随后发生影响验收的改动，不能沿用另一 commit 的绿灯。已存在 tag 应先检查身份，不删除或重写它来覆盖历史。
+CI 随 push／pull request／手动触发。本版发行提交 `27d367a` 的六个 job 已通过，tag、源码快照与资产的对应关系已核验。若之后发布其他版本，应确认其实际目标 commit 与最终发行快照、校验文件一致，不能沿用另一 commit 的绿灯。已存在 tag 应先检查身份，不删除或重写它来覆盖历史。
 
-固定 tag 已在远端后，可建立预发布草稿并上传明确列出的资产。以下 PowerShell 示例要求候选目录、报告与 tag 均已核验：
+以下命令保留本版创建预发布草稿的流程示例；**`v0.1.0a5` 已发布，不应对它重新执行 create 或覆盖上传**。维护后续版本时改用新的版本与候选目录，先核验报告和固定 tag，再上传明确列出的资产：
 
 ```powershell
 gh release create v0.1.0a5 `
@@ -90,7 +94,7 @@ gh release create v0.1.0a5 `
   dist/a5-candidate-001/SHA256SUMS.txt
 ```
 
-只有实际构建并校验的 wheel 才作为额外资产上传。检查 draft 的目标 tag、资产名、大小、下载字节及校验和后，将这份已审阅草稿发布：
+只有实际构建并校验的 wheel 才作为额外资产上传。发布草稿前检查目标 tag、资产名、大小、下载字节及校验和。本版从草稿转为公开 Release 的命令记录如下，当前无需重复执行：
 
 ```powershell
 gh release edit v0.1.0a5 --repo dwgx/RDC-Operator-Kit --draft=false
@@ -100,7 +104,7 @@ gh release edit v0.1.0a5 --repo dwgx/RDC-Operator-Kit --draft=false
 
 ## 4. 从 GitHub 安装
 
-**源码已公开，但以下固定 tag clone 命令仍须等待 `v0.1.0a5` tag 实际发布并核对目标 commit。** 当前 CI 通过不代表该 tag 或 Release 已存在。真实仓库 clone URL 已核验，固定版本安装以实际发布记录为准。
+**`v0.1.0a5` tag 与 Release 已实际发布，以下固定版本 clone 命令可用。** 该 tag 对应提交 `27d367a9698c381d90986c8640d506b24d84ddd9`；安装前核对 Python、目标目录与已有配置，保留现有工作。
 
 Windows PowerShell，在一个尚未含同名目录的位置：
 
@@ -121,7 +125,7 @@ git clone --branch v0.1.0a5 --single-branch https://github.com/dwgx/RDC-Operator
 
 随后运行 `.venv/bin/python -m rdc_operator --config config.local.json doctor`。Linux 支持核心与终端路线，Windows UIA 不适用；HMC 当前没有真机验收结果。完整前提、配置与诊断见 [中文指南](README.zh-CN.md)。
 
-也可以在发布后下载该 Release 的源码 ZIP 和 `SHA256SUMS.txt`，确认文件摘要匹配再解压，在解压后的源码目录执行相同安装脚本。SHA-256 证明下载字节与该清单一致，不代替来源与 tag 核验。当前没有远程 `curl | sh`／`iex` 入口，没有自动升级 daemon。
+也可以下载 [源码 ZIP](https://github.com/dwgx/RDC-Operator-Kit/releases/download/v0.1.0a5/RDC-Operator-Kit-0.1.0a5.zip) 和 [SHA256SUMS.txt](https://github.com/dwgx/RDC-Operator-Kit/releases/download/v0.1.0a5/SHA256SUMS.txt)，确认文件摘要匹配再解压，在解压后的源码目录执行相同安装脚本。SHA-256 证明下载字节与该清单一致，不代替来源与 tag 核验。当前没有远程 `curl | sh`／`iex` 入口，没有自动升级 daemon。
 
 给本地 Agent 使用时，提供上述真实仓库、固定 tag 与 README，让它先核对本机 Python、目标目录和原有配置，再按安装步骤执行。给 ChatGPT 使用仍需要宿主可用的 RDC／Browser 工具与设备连接；导入仓库中的 Skill 不会自动配对电脑或建立远程 MCP endpoint。
 
@@ -131,7 +135,9 @@ git clone --branch v0.1.0a5 --single-branch https://github.com/dwgx/RDC-Operator
 
 核心 jobs 的 timeout 为 15 分钟，MCP jobs 为 10 分钟；矩阵 `fail-fast: false`。权限为 `contents: read`，checkout 不保留 credentials。实际 job 数、测试数、skip、失败与运行 URL 从该 commit 的 GitHub 回执读取；工作流存在不代表执行通过。
 
-已执行两次 checkpoint：[首轮 run 45777836079](https://github.com/dwgx/RDC-Operator-Kit/actions/runs/45777836079) 两个 Windows core job 均以 182 run／11 failures／10 errors／7 skip 失败，其他四个 job 通过；修复提交 `a880144` 的 [run 45780615916](https://github.com/dwgx/RDC-Operator-Kit/actions/runs/45780615916) 六个 job 全部 success。后者 Windows core 两组各 184 run／177 pass／7 skip，Ubuntu core 两组各 184 run／179 pass／5 skip；可选 Pydantic 模型检查在 core 中明确 skip。两个独立 MCP job 的 modern／legacy 协议均 passed、保存记录未变；CI 日志未输出逐项 check 数，不采用自有 Windows 的 72 项作为 CI 计数。原始失败与后续成功分别保留。
+历史 checkpoint：[首轮 run 45777836079](https://github.com/dwgx/RDC-Operator-Kit/actions/runs/45777836079) 两个 Windows core job 均以 182 run／11 failures／10 errors／7 skip 失败，其他四个 job 通过；修复提交 `a880144` 的 [run 45780615916](https://github.com/dwgx/RDC-Operator-Kit/actions/runs/45780615916) 六个 job 全部 success。后者 Windows core 两组各 184 run／177 pass／7 skip，Ubuntu core 两组各 184 run／179 pass／5 skip；可选 Pydantic 模型检查在 core 中明确 skip。两个独立 MCP job 的 modern／legacy 协议均 passed、保存记录未变。原始失败与后续成功分别保留。
+
+最终发行提交 `27d367a` 又完成 [run 45782996129](https://github.com/dwgx/RDC-Operator-Kit/actions/runs/45782996129)，六个 job 均 success：Windows 两组各 184 run／177 pass／7 skip，Ubuntu 两组各 184 run／179 pass／5 skip；两个独立 MCP job 均通过 modern `2026-07-28` 与 legacy `2025-11-25`，保存记录未变。CI 日志未输出逐项 check 数，不采用自有 Windows 的 72 项作为 CI 计数。
 
 Actions 的固定 revision 已通过官方仓库 git-ref lookup 核对，当前 workflow 使用下面的完整 SHA，表中 tag 仅说明核对来源：
 
@@ -149,7 +155,7 @@ Actions 的固定 revision 已通过官方仓库 git-ref lookup 核对，当前 
 
 `site/` 是无后台接口的静态页面，不含本机控制凭据。发布前同步当前版本、真实仓库／Release 链接和 `site/docs/`；历史失败与策略拒绝仍保留。页面部署与真实浏览器验收分开，不能用另一个 URL 或浏览器表面补做已经被拒绝的交互验证。
 
-目标仓库 Pages 已配置 **GitHub Actions**（`build_type: workflow`），API 已回读 [https://dwgx.github.io/RDC-Operator-Kit/](https://dwgx.github.io/RDC-Operator-Kit/)。当前 `deployment_verified: false`，下一步是在最终公开文档就位后手动运行默认分支的部署 workflow：
+目标仓库 Pages 使用 **GitHub Actions**（`build_type: workflow`）。[run 45783289213](https://github.com/dwgx/RDC-Operator-Kit/actions/runs/45783289213) 的 build／deploy 均成功，head 为发行提交 `27d367a9698c381d90986c8640d506b24d84ddd9`；实际网站为 [https://dwgx.github.io/RDC-Operator-Kit/](https://dwgx.github.io/RDC-Operator-Kit/)。后续 main 文档／页面回执同步后，可以针对新提交手动运行部署 workflow，并单独记录该次结果：
 
 ```powershell
 gh workflow run pages.yml --repo dwgx/RDC-Operator-Kit --ref main
@@ -157,6 +163,6 @@ gh workflow run pages.yml --repo dwgx/RDC-Operator-Kit --ref main
 
 [`pages.yml`](../.github/workflows/pages.yml) 只接受手动触发，build 限定默认分支；上传范围仅为 `site/`。deploy 依赖 build，使用 `github-pages` environment；workflow 权限为 `contents: read`、`pages: write`、`id-token: write`，并设置独立并发组防止同时部署。此流程不会创建 MCP 服务或开放远程设备端口。[GitHub Pages 官方工作流说明](https://docs.github.com/en/pages/getting-started-with-github-pages/using-custom-workflows-with-github-pages)
 
-部署后检查准确 run／commit、两个 job 的完成状态，以及 `deploy-pages` 实际返回的 `page_url`。只有得到该回执并核验后，才把 API 配置地址标为已上线。当前记录的是实际回读的配置地址，没有把配置完成当成部署成功。
+每次部署后检查准确 run／commit、两个 job 的完成状态，以及 `deploy-pages` 实际返回的 `page_url`。本版已取得发行提交的成功部署回执；这不增加新版 UI、剪贴板或响应式交互的 live browser 通过项，也不改动固定 tag 或 Release 资产。
 
 如需撤回网站，可在 Pages 设置中取消发布；这不删除已公开 git 历史和下载副本。源码、Release 与 Pages 是三个分别记录的发布结果，任何一个完成都不能替代其他两项的真实证据。

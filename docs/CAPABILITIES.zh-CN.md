@@ -1,6 +1,6 @@
 # 能力与边界
 
-日期：2026-11-26（Asia/Tokyo）。RDC Operator Kit `0.1.0a5` 为集成中的 Alpha 候选。本文定义当前源码接口与操作条件，本轮已完成与待完成的验收见 [第五轮报告](REVIEW-WAVE5.zh-CN.md)。第一轮 [验证记录](VERIFICATION.zh-CN.md)、[第二轮报告](research-wave2/REPORT.zh-CN.md)、[第三轮审查](REVIEW-WAVE3.zh-CN.md) 和 [第四轮报告](REVIEW-WAVE4.zh-CN.md) 保留各自的版本与环境，不自动升级为 a5 的验收结论。
+日期：2026-11-26（Asia/Tokyo）。RDC Operator Kit `0.1.0a5` 已作为 alpha [发布](https://github.com/dwgx/RDC-Operator-Kit/releases/tag/v0.1.0a5)，[项目网站](https://dwgx.github.io/RDC-Operator-Kit/) 已部署；固定 tag 对应提交 `27d367a9698c381d90986c8640d506b24d84ddd9`。本文定义当前源码接口与操作条件，具体执行证据及未覆盖范围见 [第五轮报告](REVIEW-WAVE5.zh-CN.md)。发布和部署没有新增 UI live 或任意应用控制的通过结论。第一轮 [验证记录](VERIFICATION.zh-CN.md)、[第二轮报告](research-wave2/REPORT.zh-CN.md)、[第三轮审查](REVIEW-WAVE3.zh-CN.md) 和 [第四轮报告](REVIEW-WAVE4.zh-CN.md) 保留各自的版本与环境，不自动升级为 a5 的验收结论。
 
 ## 从任务选择路线
 

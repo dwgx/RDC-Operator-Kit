@@ -1,6 +1,12 @@
 # RDC Operator Kit 使用指南
 
-版本：`0.1.0a5`，集成中的 alpha 候选，状态日期为 2026-11-26（Asia/Tokyo）。公开发布已获授权，目标仓库为 `dwgx/RDC-Operator-Kit`；仓库、Release、Pages 和 CI 的实际完成状态以 [第五轮报告](REVIEW-WAVE5.zh-CN.md) 为准，目前尚未记录发布成功。Windows 操作步骤见 [Windows 操控指南](WINDOWS-CONTROL.zh-CN.md)。[第四轮验收报告](REVIEW-WAVE4.zh-CN.md)、[第一轮验证](VERIFICATION.zh-CN.md) 与 [a2 第二轮报告](research-wave2/REPORT.zh-CN.md) 保留对应版本的历史证据。a4 最终 Windows 顶层 suite 为 8/9 passed、整体 exit 1；其中的成功项不能拼接成 a5 全部通过。
+版本：`0.1.0a5`，已发布的 alpha，状态日期为 2026-11-26（Asia/Tokyo）。
+
+**[下载 v0.1.0a5 Release](https://github.com/dwgx/RDC-Operator-Kit/releases/tag/v0.1.0a5) · [项目网站](https://dwgx.github.io/RDC-Operator-Kit/) · [固定版本安装与校验](RELEASE.zh-CN.md)**
+
+tag `v0.1.0a5` 固定在提交 `27d367a9698c381d90986c8640d506b24d84ddd9`；发行 CI 六个 job 与 Pages build／deploy 均成功，九项 Release 资产下载回读 SHA-256 一致。精确回执和能力范围见 [第五轮报告](REVIEW-WAVE5.zh-CN.md)。Release 归档保留该提交，后续 main 只同步发布记录，不修改 tag 或资产。
+
+Windows 操作步骤见 [Windows 操控指南](WINDOWS-CONTROL.zh-CN.md)。[第四轮验收报告](REVIEW-WAVE4.zh-CN.md)、[第一轮验证](VERIFICATION.zh-CN.md) 与 [a2 第二轮报告](research-wave2/REPORT.zh-CN.md) 保留对应版本的历史证据。a4 最终 Windows 顶层 suite 为 8/9 passed、整体 exit 1；其中的成功项不能拼接成 a5 全部通过。
 
 RDC Operator Kit 为已获授权的电脑操作提供一条可核对的路径：读取当前状态，绑定目标，执行一次，再检查结果。它通过已有 RDC 传输调用本地 CLI，用 SmartCLI 控制终端，用 Microsoft winapp 控制 Windows 原生界面。网页交互使用宿主提供的官方 Browser 插件。
 
@@ -10,7 +16,7 @@ RDC Operator Kit 为已获授权的电脑操作提供一条可核对的路径：
 
 ### Windows
 
-准备 Python 3.10 或更新版本，把完整源码解压或克隆到一个专用目录。在该目录打开 PowerShell，运行：
+准备 Python 3.10 或更新版本，从已发布的 [Release](https://github.com/dwgx/RDC-Operator-Kit/releases/tag/v0.1.0a5) 下载并核验源码 ZIP，或按[固定 tag clone 步骤](RELEASE.zh-CN.md)取得完整源码，放入专用目录。在该目录打开 PowerShell，运行：
 
 ```powershell
 .\scripts\install.ps1 -WithTerminal -WithDesktop
@@ -25,7 +31,7 @@ RDC Operator Kit 为已获授权的电脑操作提供一条可核对的路径：
 
 ### 已有 Windows 环境的离线 wheel 升级
 
-如果已有归属明确、依赖就绪的 `.venv` 或 `.venv-mcp`，可在取得本版已核验的 `rdc_operator_kit-0.1.0a5-py3-none-any.whl` 后仅升级 Kit。a5 wheel 的实际构建、安装验证与发布状态见第五轮报告；下面的命令不是交付已经完成的证明。先保留当前源码、已安装 Kit、配置和状态的备份，核对本地修改；下例在已有项目根目录运行，假定 wheel 与同批 `SHA256SUMS.txt` 已放在该目录。
+如果已有归属明确、依赖就绪的 `.venv` 或 `.venv-mcp`，可从 [v0.1.0a5 Release](https://github.com/dwgx/RDC-Operator-Kit/releases/tag/v0.1.0a5) 取得 `rdc_operator_kit-0.1.0a5-py3-none-any.whl` 和同批 `SHA256SUMS.txt`，核验后仅升级 Kit。本版最终 wheel 已在两个自有 Windows 环境安装并逐一核对 11 个模块；实际 installed CLI 与现代 MCP 的有限验证见第五轮报告第 11 节。先保留当前源码、已安装 Kit、配置和状态的备份，核对本地修改；下例在已有项目根目录运行，假定这两个发行文件已放在该目录。
 
 先检查同名校验条目与实际文件一致；缺少条目、重复条目或摘要不符均停止：
 
@@ -52,7 +58,7 @@ if ($actualWheelHash -ne $expectedWheelHash) { throw 'Wheel SHA-256 mismatch' }
 & .\.venv-mcp\Scripts\python.exe -m pip install --no-index --no-deps --force-reinstall .\rdc_operator_kit-0.1.0a5-py3-none-any.whl
 ```
 
-wheel 只安装 Kit 的 Python 包，不安装或升级 SmartCLI、MCP SDK、winapp、Skill、测试夹具或网页，也不会同步源码目录。保留终端与 MCP 的分离环境；新机器或依赖尚未准备好的机器继续使用上面的完整源码安装流程。校验和用于核对交付字节，不能代替来源核验。a4 的两个已有环境曾完成 a2→a4 升级与隔离导入指纹核对，详见 [第四轮报告](REVIEW-WAVE4.zh-CN.md)；该历史证据不证明 a5 安装已完成，source-tree smoke 也不等于 installed-package 全套通过。
+wheel 只安装 Kit 的 Python 包，不安装或升级 SmartCLI、MCP SDK、winapp、Skill、测试夹具或网页，也不会同步源码目录。保留终端与 MCP 的分离环境；新机器或依赖尚未准备好的机器继续使用上面的完整源码安装流程。校验和用于核对交付字节，不能代替来源核验。a4 的 a2→a4 升级记录仍见 [第四轮报告](REVIEW-WAVE4.zh-CN.md)，a5 的独立安装证据另见第五轮；两者不混算，source-tree smoke 也不等于 installed-package 全套通过。
 
 ### Linux
 

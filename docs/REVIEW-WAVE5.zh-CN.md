@@ -2,7 +2,7 @@
 
 日期：2026-11-26（Asia/Tokyo）。目标版本：`0.1.0a5`。基线为本地 a4 提交 `d9ab1b38fff68e77c88841c050b8c038f52dcdb5`。
 
-**当前 checkpoint：a5 源码已公开；首轮 CI 的两个 Windows core job 失败后，修复提交 `a880144` 已 push，run 45780615916 六个 job 全部 success。路径修复后，本地 Linux core 为 184 run／181 pass／3 skip，自有 Windows core 为 184 run／173 pass／11 skip，真实 Windows source MCP 两会话 72/72；GitHub CI 的分平台计数另列第 10 节。最终 wheel 已在两个自有环境升级并隔离核对，另有 installed CLI／现代 MCP 共 17 条断言通过。a5 tag／Release 与 Pages 实际部署仍待回执。** 初次 Windows 九个顶层 case、CI 前安装与最终安装分别属于不同 checkpoint，详见第 7、9、10、11 节。公开发布已获所有者明确授权；授权、源码公开与最终发行完成分别记录。
+**当前 checkpoint：[v0.1.0a5 Release](https://github.com/dwgx/RDC-Operator-Kit/releases/tag/v0.1.0a5) 已发布，[项目网站](https://dwgx.github.io/RDC-Operator-Kit/) 已部署。tag 固定在 `27d367a9698c381d90986c8640d506b24d84ddd9`；发行提交 CI 六个 job 全部 success，九项公开资产均已下载回读并核对 SHA-256 一致。** 最终 wheel 已在两个自有环境升级并隔离核对，installed CLI／现代 MCP 共 17 条断言通过。发布回执见第 12 节；初次 Windows 九个顶层 case、source MCP、CI 前安装与最终安装分别属于不同 checkpoint，详见第 7、9、10、11 节。首轮 CI 的 Windows 失败、历史待办及后续修复均按发生顺序保留。
 
 这次更新围绕可使用的接口、保守的失败语义与能复核的证据展开。没有声称“全网已研究完”“任意应用绝对可控”或已经比拟全部本地 Agent 能力。历史记录保留在 [Wave 04](REVIEW-WAVE4.zh-CN.md)、[Wave 03](REVIEW-WAVE3.zh-CN.md) 和 [Wave 02](research-wave2/REPORT.zh-CN.md)，各自只证明当时版本与环境。
 
@@ -290,4 +290,32 @@ CI core 不安装可选 Pydantic 2，因此相关两项模型检查明确 skip�
 
 该回执的 **17 条断言全部 true**。子进程实际导入位置为 site-packages，安装的 `mcp_server.py` SHA-256 为 `5e74935f63012c24b7ff6ce5ef65a2941154e376b9343a2f4a6497e379240cbe`，与修后源码相同。范围仅为两个 installed CLI 版本入口和一个真实现代 MCP 会话；没有重跑 legacy、GUI 或整个九项集成 suite，不并入第 10 节 source 72 或 GitHub CI 的计数。
 
-Pages 已配置为 `build_type: workflow`，API 回读地址为 [https://dwgx.github.io/RDC-Operator-Kit/](https://dwgx.github.io/RDC-Operator-Kit/)，当前 `deployment_verified: false`。这是已配置的目标地址，尚不表示网站上线；`v0.1.0a5` tag／Release、公开资产校验和 Pages 实际部署仍待各自回执。
+**安装完成时的发布 checkpoint（历史）：** Pages 已配置为 `build_type: workflow`，API 回读地址为 [https://dwgx.github.io/RDC-Operator-Kit/](https://dwgx.github.io/RDC-Operator-Kit/)，当时 `deployment_verified: false`。在这个 checkpoint，tag／Release、公开资产校验和 Pages 实际部署仍待各自回执。随后完成的结果单独记录在第 12 节。
+
+## 12. 实际公开发行与 Pages 部署
+
+`v0.1.0a5` 已固定到发行提交 [`27d367a9698c381d90986c8640d506b24d84ddd9`](https://github.com/dwgx/RDC-Operator-Kit/commit/27d367a9698c381d90986c8640d506b24d84ddd9)。[GitHub Release](https://github.com/dwgx/RDC-Operator-Kit/releases/tag/v0.1.0a5) 的 ID 为 `459135379`，实际发布时间为 `2026-11-26T08:31:53Z`，即同日 **17:31:53 JST**。`github-release-publication-summary.json` 记录发布成功及下载回读校验。
+
+### 九项发行资产
+
+以下九项资产均在上传后实际重新下载，字节大小与 SHA-256 全部一致。它们属于同一份固定发行，不把后来 main 文档中的发布补记混入这些归档。
+
+| 资产 | 字节数 | SHA-256 |
+|---|---:|---|
+| `RDC-Operator-Kit-0.1.0a5-report.zh-CN.md` | 34,294 | `fc54bf0e0ec3aa2037372de73c4951872bd1e1404453f3051386e34f9bf6f7d1` |
+| `RDC-Operator-Kit-0.1.0a5.tar.gz` | 616,168 | `8c31a02017590e219943575d79d2121827696277ae0cd2d7b8884c2b43885f60` |
+| `RDC-Operator-Kit-0.1.0a5.zip` | 757,918 | `abf861fcaad1b139deabdfed43747d3122188fec8927673ca7245416a6f8b4ea` |
+| `RDC-Operator-Kit-preview.html` | 226,943 | `f30dd6ea34e5e9229fa8318f36ccd4cd3b21f8034d0ad5b7c1ff22932018a295` |
+| `RELEASE-VALIDATION.json` | 1,525 | `00c423dada18e0ef9e9a59fa48bcfae305085b2e906c49b0cbcabcaf810af4b0` |
+| `SHA256SUMS.txt` | 777 | `a03d65204eb94385b12d71bc28010dcf52b11a92778e086be2f5c6d38acf9fed` |
+| `SOURCE-MANIFEST.json` | 23,374 | `9e908157bbaa7dfdab0ad30fa401d274f0e6f25ecd36383ab556386947eb6e82` |
+| `rdc_operator_kit-0.1.0a5-py3-none-any.whl` | 44,645 | `24633b51a6cb3e72a4896fb9accf3d3125f4f9f87a2aba659ca482aa5ebcbc8b` |
+| `static-web-audit.json` | 721 | `f62903f10d83c897519aec79b19b32d2842c842b28ea7da396db35f7086260f5` |
+
+### 发行提交 CI 与网站
+
+同一发行提交的 [CI run 45782996129](https://github.com/dwgx/RDC-Operator-Kit/actions/runs/45782996129) 已 completed／success，六个 job 全部 success。Windows Python 3.10／3.13 core 各 **184 run／177 pass／7 skip**；Ubuntu Python 3.10／3.13 core 各 **184 run／179 pass／5 skip**。Ubuntu 与 Windows 的独立 MCP job 均通过 modern `2026-07-28` 和 legacy `2025-11-25`，保存记录未变。结构化回执为 `github-ci-release-summary.json`；CI 没有输出逐项 72 个 check，不能移用自有 Windows source smoke 的计数。
+
+[Pages run 45783289213](https://github.com/dwgx/RDC-Operator-Kit/actions/runs/45783289213) 的 build 与 deploy 均成功，head 同为 `27d367a9698c381d90986c8640d506b24d84ddd9`，实际网站为 [https://dwgx.github.io/RDC-Operator-Kit/](https://dwgx.github.io/RDC-Operator-Kit/)。这是静态站点部署回执；没有增加新版 UI、剪贴板或响应式交互的 live browser 验收，先前浏览器拒绝与未执行范围继续保留。
+
+Release 归档、随附报告与 tag 固定在上述发行提交。随后 main 仅同步文档／页面中的发布回执，**不移动 tag、不替换任何发行资产**；随附报告停留在冻结时的发布前 checkpoint，与本节后续补记分别保留。第 11 节实际安装的 wheel 与公开 wheel 是同一份字节，发布完成没有被计作另一次安装或整套 GUI／legacy 验收。

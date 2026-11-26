@@ -83,3 +83,18 @@ Ubuntu 3.10 / 3.13 each passed 179 with 5 skips. Both MCP jobs passed the two
 protocol sessions and reported unchanged saved records. The initial failed
 [CI run](https://github.com/dwgx/RDC-Operator-Kit/actions/runs/45777836079) remains available.
 These are core/stdio results, not live modern-UI acceptance.
+
+## Published release and site
+
+[0.1.0a5](https://github.com/dwgx/RDC-Operator-Kit/releases/tag/v0.1.0a5)
+was published on 2026-11-26 at 17:31:53 JST from commit
+`27d367a9698c381d90986c8640d506b24d84ddd9`. All nine uploaded assets were
+downloaded from the draft and compared byte-for-byte by SHA-256 before publication.
+[CI for that source](https://github.com/dwgx/RDC-Operator-Kit/actions/runs/45782996129)
+passed all six jobs. [Pages build and deploy](https://github.com/dwgx/RDC-Operator-Kit/actions/runs/45783289213)
+succeeded for the same source, publishing
+<https://dwgx.github.io/RDC-Operator-Kit/>.
+
+Later main-branch documentation records the observed publication and pins its
+installation examples to the released tag. It does not rewrite that tag or its
+assets. Deployment does not add live-browser UI acceptance to the static checks.
