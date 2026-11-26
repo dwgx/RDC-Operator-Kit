@@ -112,6 +112,99 @@ class ReadOnlyMcpContractTests(unittest.TestCase):
         self.assertFalse(answer["receipt_authenticity_verified"])
         self.assertEqual(path.read_bytes(), before)
 
+    @unittest.skipUnless(os.name == "nt", "Windows short-name path semantics")
+    def test_windows_short_state_path_reads_same_receipt_and_status(self):
+        import ctypes
+        from ctypes import wintypes
+
+        fn = ctypes.WinDLL("kernel32", use_last_error=True).GetShortPathNameW
+        fn.argtypes = [wintypes.LPCWSTR, wintypes.LPWSTR, wintypes.DWORD]
+        fn.restype = wintypes.DWORD
+        buffer = ctypes.create_unicode_buffer(32768)
+        size = fn(str(self.state), buffer, len(buffer))
+        if not size or size >= len(buffer):
+            self.skipTest("short-name conversion is unavailable on this filesystem")
+        short = Path(buffer.value)
+        if os.path.normcase(str(short)) == os.path.normcase(str(self.state.resolve())):
+            self.skipTest("this fixture has no distinct 8.3 alias; no policy was changed")
+        self.write_intent()
+        path, payload = self.write_receipt(digest="a" * 64)
+        before = path.read_bytes()
+        operator = ReadOnlyOperator(self.config, short)
+        self.assertEqual(operator.call("operator_receipt", {"request_id": "sample"})["receipt"], payload)
+        value = operator.call("operator_request_status", {"request_id": "sample"})
+        self.assertEqual(value["record_state"], "receipt_recorded")
+        self.assertEqual(value["saved_receipt_status"], "outcome_unknown")
+        self.assertEqual(path.read_bytes(), before)
+        self.assertEqual(operator.call("operator_request_status", {"request_id": "missing"})[
+            "record_state"], "no_records_observed")
+
+    @unittest.skipUnless(os.name == "nt", "Windows junction and HANDLE path semantics")
+    def test_windows_transient_parent_junction_never_reads_outside_handle(self):
+        import shutil
+        import subprocess
+
+        command = shutil.which("cmd.exe")
+        if not command:
+            self.skipTest("cmd.exe is required for the owned junction fixture")
+        outside = self.root / "outside"
+        outside.mkdir()
+        (outside / "sample.receipt.json").write_text('{"private":"OUTSIDE_SENTINEL"}', encoding="utf-8")
+        requests = self.state / "requests"
+        parked = self.state / "requests-parked"
+        probe = self.root / "junction-probe"
+
+        def make_junction(path):
+            return subprocess.run([command, "/d", "/c", "mklink", "/J", str(path), str(outside)],
+                                  capture_output=True, timeout=5, check=False)
+
+        available = make_junction(probe)
+        if available.returncode:
+            self.skipTest("directory junction creation is unavailable for this user or filesystem")
+        probe.rmdir()
+        self.write_receipt()
+        original_check, original_open = mcp_server._unlinked, os.open
+        checked, opened = [], []
+
+        def replace_after_check(path):
+            original_check(path)
+            if not checked:
+                checked.append(path)
+                requests.rename(parked)
+                self.assertEqual(make_junction(requests).returncode, 0)
+
+        def open_then_restore(path, flags):
+            # Hold the outside HANDLE while restoring an entirely ordinary
+            # path. A post-open link scan alone would now miss the redirect.
+            fd = original_open(path, flags)
+            opened.append(fd)
+            requests.rmdir()
+            parked.rename(requests)
+            return fd
+
+        try:
+            with patch.object(mcp_server, "_unlinked", side_effect=replace_after_check), \
+                    patch.object(mcp_server.os, "open", side_effect=open_then_restore), \
+                    patch.object(mcp_server.os, "fdopen") as read:
+                with self.assertRaises(KitError) as caught:
+                    self.operator.call("operator_receipt", {"request_id": "sample"})
+                self.assertEqual(caught.exception.code, "unsafe_state")
+                self.assertIn("outside the fixed path", caught.exception.message)
+                read.assert_not_called()
+            self.assertEqual(len(opened), 1)
+            with self.assertRaises(OSError):
+                os.fstat(opened[0])
+        finally:
+            for fd in opened:
+                try:
+                    os.close(fd)
+                except OSError:
+                    pass  # The expected rejection already closed this handle.
+            if parked.exists():
+                if requests.exists():
+                    requests.rmdir()
+                parked.rename(requests)
+
     def test_invalid_id_never_opens_a_receipt(self):
         for name in ("operator_receipt", "operator_request_status"):
             for rid in ("../outside", "/absolute", "C:\\outside", "x/y", "x\\y", "sample.receipt.json",

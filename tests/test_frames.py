@@ -26,7 +26,9 @@ class CaptureTests(unittest.TestCase):
     def setUp(self):
         tmp = tempfile.TemporaryDirectory()
         self.addCleanup(tmp.cleanup)
-        self.root = Path(tmp.name)
+        # Match the canonical --output path passed to the WinApp adapter, even
+        # when Windows TEMP uses an 8.3 directory alias.
+        self.root = Path(tmp.name).resolve(strict=True)
         self.config = {"schema_version": 1, "allowed_roots": [str(self.root)], "winapp": [sys.executable]}
         self.identity = {"window": 123, "pid": 7, "thread_id": 8,
                          "process_started": "111", "executable": "fixture.exe"}

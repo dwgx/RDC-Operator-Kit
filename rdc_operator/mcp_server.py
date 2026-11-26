@@ -56,6 +56,34 @@ def _unlinked(path: Path) -> None:
             raise KitError("unsafe_state", "State and receipts cannot use links or reparse points")
 
 
+def _normalized_windows_path(value: str) -> str:
+    if value.startswith("\\\\?\\UNC\\"):
+        value = "\\\\" + value[8:]
+    elif value.startswith("\\\\?\\"):
+        value = value[4:]
+    return os.path.normcase(os.path.normpath(value))
+
+
+def _long_windows_path(path: Path) -> str:
+    """Expand 8.3 names, retaining the requested path rather than resolving links."""
+    import ctypes
+    from ctypes import wintypes
+
+    kernel = ctypes.WinDLL("kernel32", use_last_error=True)
+    fn = kernel.GetLongPathNameW
+    fn.argtypes = [wintypes.LPCWSTR, wintypes.LPWSTR, wintypes.DWORD]
+    fn.restype = wintypes.DWORD
+    buffer = ctypes.create_unicode_buffer(32768)
+    size = fn(str(path), buffer, len(buffer))
+    if not size:
+        if ctypes.get_last_error() in (2, 3):  # ERROR_FILE/PATH_NOT_FOUND
+            raise FileNotFoundError("Saved record path does not exist")
+        raise KitError("unsafe_state", "Cannot verify the requested receipt's long path")
+    if size >= len(buffer):
+        raise KitError("unsafe_state", "Cannot verify the requested receipt's long path")
+    return _normalized_windows_path(buffer.value)
+
+
 def _opened_windows_path(fd: int) -> str:
     import ctypes
     from ctypes import wintypes
@@ -69,22 +97,20 @@ def _opened_windows_path(fd: int) -> str:
     size = fn(msvcrt.get_osfhandle(fd), buffer, len(buffer), 0)
     if not size or size >= len(buffer):
         raise KitError("unsafe_state", "Cannot verify the opened receipt's final path")
-    value = buffer.value
-    if value.startswith("\\\\?\\UNC\\"):
-        value = "\\\\" + value[8:]
-    elif value.startswith("\\\\?\\"):
-        value = value[4:]
-    return os.path.normcase(os.path.normpath(value))
+    return _normalized_windows_path(buffer.value)
 
 
 def _open_receipt(path: Path) -> int:
     _unlinked(path)
     if os.name == "nt":
+        # Freeze the lexical long name before opening. realpath/resolve here
+        # could instead adopt the target of a concurrently introduced junction.
+        expected = _long_windows_path(path)
         fd = os.open(path, os.O_RDONLY | getattr(os, "O_BINARY", 0))
         try:
             # Verify the opened HANDLE, before reading bytes, so a redirected
             # parent path cannot turn a tool argument into an outside-file read.
-            if _opened_windows_path(fd) != os.path.normcase(os.path.normpath(str(path))):
+            if _opened_windows_path(fd) != expected:
                 raise KitError("unsafe_state", "Opened receipt is outside the fixed path")
             _unlinked(path)
             return fd

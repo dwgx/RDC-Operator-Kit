@@ -198,7 +198,7 @@ class WindowsSmokeRunnerTests(unittest.TestCase):
         result = runner.child_report({"status": "failed", "exit_code": 1}, report, runner.output)
         self.assertEqual(result["status"], "failed")
         self.assertEqual(result["exit_code"], 1)
-        self.assertEqual(result["child_summary"], str(report))
+        self.assertEqual(result["child_summary"], str(report.resolve(strict=True)))
         self.assertEqual(result["child_status"], "failed")
         self.assertTrue(result["child_summary_available"])
 
