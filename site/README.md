@@ -1,8 +1,16 @@
-# Static site · 0.1.0a5 Alpha
+# Static site · 0.1.0a6 Alpha
 
 This directory contains a self-contained static project guide and Browser Evidence
 Lab. It needs no build step, package install, remote font, analytics service or
 live device connection. The page is documentation, not a remote-control console.
+
+## a6 recovery guide
+
+The homepage adds a manual-reconnection workflow, original-state reconciliation,
+fresh observation guidance and a separately labelled Wave 06 acceptance section.
+The established CSS/JavaScript and Lab witness logic remain unchanged. New content
+and relative links receive static validation; no blocked browser target was retried.
+See [Wave 06](../docs/REVIEW-WAVE6.zh-CN.md) for exact installed/source evidence.
 
 ## Modern interface
 
@@ -40,7 +48,7 @@ separately in [Wave 05](../docs/REVIEW-WAVE5.zh-CN.md). None of these source tes
 is proof of modern homepage browser execution or installed-package validation.
 HMC was quota-blocked and both real OMP reviews ended without a final response.
 
-## Repository, documentation and deployment
+## Historical repository preparation and deployment
 
 The public [dwgx/RDC-Operator-Kit repository](https://github.com/dwgx/RDC-Operator-Kit)
 has been created. At this documentation checkpoint, source push, CI, Release and
@@ -55,7 +63,11 @@ saved-record summary; it does not add action tools or a remote network endpoint.
 Use the repository's [MCP guide](../docs/MCP.zh-CN.md) for the contract and setup.
 
 Before packaging or deployment, synchronize the public repository `docs/` tree
-into `site/docs/`, preserving subdirectories. This includes every document linked
+into `site/docs/`, preserving subdirectories. In the site copies, rewrite relative
+links that leave `docs/` to the matching public repository path at the released
+tag; only `site/` is deployed, so a link to a sibling source directory would break.
+Keep intra-document and intra-`docs/` links relative. The source documents themselves
+retain their repository-relative links. This includes every document linked
 from the page and its relative dependencies, such as `WINDOWS-CONTROL.zh-CN.md`,
 `REVIEW-WAVE5.zh-CN.md`, historical reports and research references. Never copy
 runtime `evidence/`, local configuration or private reports into the site.
@@ -74,7 +86,7 @@ Its existence does not prove CI or deployment success. Record the actual run,
 commit and returned `page_url`; do not invent a live URL from repository naming.
 [Release instructions](../docs/RELEASE.zh-CN.md) cover the authorized process.
 
-## Public CI checkpoint
+## Historical a5 public CI checkpoint
 
 The public source commit `a880144d07d8599c6e5232a34bcef1e1cac54bc1` passed all six
 [Core CI jobs](https://github.com/dwgx/RDC-Operator-Kit/actions/runs/45780615916).
@@ -84,7 +96,7 @@ protocol sessions and reported unchanged saved records. The initial failed
 [CI run](https://github.com/dwgx/RDC-Operator-Kit/actions/runs/45777836079) remains available.
 These are core/stdio results, not live modern-UI acceptance.
 
-## Published release and site
+## Historical a5 release and site
 
 [0.1.0a5](https://github.com/dwgx/RDC-Operator-Kit/releases/tag/v0.1.0a5)
 was published on 2026-11-26 at 17:31:53 JST from commit

@@ -1,4 +1,4 @@
-> **0.1.0a5 Windows-first alpha — 2026-11-26.** Typed read-only MCP results, saved-request summaries, stronger installation and liveness reporting, and a refreshed static interface. The first public CI exposed Windows path-alias issues; the corrected commit passed all six CI jobs. Read the [Wave 05 report](docs/REVIEW-WAVE5.zh-CN.md) for versioned source, installation and publication evidence. Earlier Windows evidence remains in the [Wave 04 report](docs/REVIEW-WAVE4.zh-CN.md).
+> **0.1.0a6 Windows-first alpha — 2026-11-28.** Durable task checkpoints and read-only resumption plans after user-managed reconnection. Preserve the original state, scope and uncertain effects. Read the [Agent guide](docs/AGENT-GUIDE.zh-CN.md) and [recovery specification](docs/RESUME-SPEC.zh-CN.md). The [Wave 06 report](docs/REVIEW-WAVE6.zh-CN.md) records recovery review, real failure injections and source/installed acceptance separately.
 
 # RDC Operator Kit
 
@@ -8,11 +8,11 @@ Windows-first companion tooling for Remote Desktop Commander (RDC), SmartCLI,
 Microsoft winapp, the official ChatGPT Browser connector, and an existing OMP
 dispatcher. Independent community project; not affiliated with these vendors.
 
-**Status: 0.1.0a5 Windows-first alpha with documented limitations.**
+**Status: 0.1.0a6 Windows-first alpha; validation and publication are recorded separately.**
 
 [GitHub repository](https://github.com/dwgx/RDC-Operator-Kit) · [Releases](https://github.com/dwgx/RDC-Operator-Kit/releases) · [中文说明](docs/README.zh-CN.md)
 
-The [Wave 05 report](docs/REVIEW-WAVE5.zh-CN.md) separates source tests, installed-package validation and publication receipts.
+The [Wave 06 report](docs/REVIEW-WAVE6.zh-CN.md) separates source tests, installed-package validation and publication receipts. Previous [Wave 05 evidence](docs/REVIEW-WAVE5.zh-CN.md) remains historical.
 
 See [中文说明](docs/README.zh-CN.md), [capability map](docs/CAPABILITIES.zh-CN.md),
 [research and sources](docs/RESEARCH.zh-CN.md), and [verification](docs/VERIFICATION.zh-CN.md).
@@ -24,6 +24,10 @@ covers browser/MCP projects, OMP Relay, finite window samples, and terminal live
 
 - A Python CLI with durable request intents and receipts. Duplicate requests retrieve
   their original outcome. Ambiguous interruptions are never automatically replayed.
+- Durable task checkpoints with revision checks, original-state identity, frozen
+  scope/config fingerprints, typed handles and persistent stop reasons. The read-only
+  `resume` command checks saved results and fresh caller-supplied route observations;
+  it does not log in, authenticate a physical device, replay actions or authorize execution.
 - Real terminal sessions through pinned SmartCLI: start, snapshot, wait, input, keys,
   and conservative close acknowledgement.
 - Windows UIA through pinned winapp: inspect a specific window, select an observed
@@ -101,6 +105,29 @@ number. The observation returns a short-lived ID and the actual selectors.
 An authorized state-changing request requires `--apply`. This is an execution switch,
 not a replacement for user authorization. Read [the workflow](docs/README.zh-CN.md)
 before driving a terminal or desktop.
+
+## Continue after a manual reconnect
+
+Read the [Agent guide](docs/AGENT-GUIDE.zh-CN.md) before constructing the private
+checkpoint and context JSON. Use the original absolute state path; both recovery
+commands require an explicit `--state`. Preserve the frozen task brief and request
+files alongside the private handoff: a scope hash cannot reconstruct their contents.
+
+```text
+python -B -m rdc_operator --config CONFIG --state ORIGINAL_STATE checkpoint recovery-checkpoint.local.json --expected-revision 0
+python -B -m rdc_operator --config CONFIG --state ORIGINAL_STATE resume TASK_ID --context recovery-context.local.json
+```
+
+`-B` suppresses Python startup bytecode-cache writes. The read-only guarantee
+for recovery assessment does not cover OS access timestamps, host logs or
+caller-selected stdout redirection.
+
+Revision 0 creates a checkpoint. Updates require its current revision and cannot
+drop known requests or clear a quota, policy-refusal or cancellation stop. A plan
+is always read-only: `review_required` is not permission to act, while `blocked`
+preserves missing evidence or a stop. Even unchanged route IDs require fresh UI
+observations after a human handoff. This is an agent workflow, not global
+enforcement over other tools or calls made without the checkpoint.
 
 ## Boundaries that matter
 

@@ -254,6 +254,6 @@ Microsoft 的 `Direct3D11CaptureFrame.SystemRelativeTime` 才定义为 composito
 - [W4] 同提交：[UiAutomationService.Screenshot.cs](https://github.com/microsoft/winappCli/blob/696222f72e80c669671845bd6c7b0286eefab987/src/winapp-CLI/WinApp.UIAutomation/Services/UiAutomationService.Screenshot.cs)。
 - [W5] 同提交：[WgcCapture.cs](https://github.com/microsoft/winappCli/blob/696222f72e80c669671845bd6c7b0286eefab987/src/winapp-CLI/WinApp.UIAutomation/Capture/WgcCapture.cs)；[WgcCapture.FrameGrabber.cs](https://github.com/microsoft/winappCli/blob/696222f72e80c669671845bd6c7b0286eefab987/src/winapp-CLI/WinApp.UIAutomation/Capture/WgcCapture.FrameGrabber.cs)。
 - [W6] 同提交：[WgcScreenshotFreshnessTests.cs](https://github.com/microsoft/winappCli/blob/696222f72e80c669671845bd6c7b0286eefab987/src/winapp-CLI/WinApp.UIAutomation.Tests/WgcScreenshotFreshnessTests.cs)。
-- [L1] 项目基线：[ARCHITECTURE](../ARCHITECTURE.zh-CN.md)、[VERIFICATION](../VERIFICATION.zh-CN.md)、[adapters.py](../../rdc_operator/adapters.py)、[desktop fixture](../../examples/desktop-fixture.ps1)。
+- [L1] 项目基线：[ARCHITECTURE](../ARCHITECTURE.zh-CN.md)、[VERIFICATION](../VERIFICATION.zh-CN.md)、[adapters.py](https://github.com/dwgx/RDC-Operator-Kit/blob/v0.1.0a6/rdc_operator/adapters.py)、[desktop fixture](https://github.com/dwgx/RDC-Operator-Kit/blob/v0.1.0a6/examples/desktop-fixture.ps1)。
 - [A1] 本次 Scite tool 访问错误；无论文内容返回，不作为论文事实来源。
 

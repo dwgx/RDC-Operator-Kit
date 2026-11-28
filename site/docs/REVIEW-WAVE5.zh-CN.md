@@ -20,7 +20,7 @@
 | liveness 诊断 | 开始、每项前后与最终状态持续原子 checkpoint | 中途失败保留已返回结果并停止后续 case；持续存储故障仍需结合本次返回判断 |
 | GitHub workflows | Actions 使用固定 commit SHA | 减少浮动 action revision；不等于 workflow 已运行或依赖完全锁定 |
 
-实现位置：[静态首页](../site/index.html)、[交互脚本](../site/app.js)、[Lab](../site/lab.html)、[MCP server](../rdc_operator/mcp_server.py)、[Linux installer](../scripts/install.sh)、[liveness probe](../scripts/probe_terminal_liveness.py)。当前操作契约见 [能力表](CAPABILITIES.zh-CN.md) 与 [架构](ARCHITECTURE.zh-CN.md)。
+实现位置：[静态首页](https://github.com/dwgx/RDC-Operator-Kit/blob/v0.1.0a6/site/index.html)、[交互脚本](https://github.com/dwgx/RDC-Operator-Kit/blob/v0.1.0a6/site/app.js)、[Lab](https://github.com/dwgx/RDC-Operator-Kit/blob/v0.1.0a6/site/lab.html)、[MCP server](https://github.com/dwgx/RDC-Operator-Kit/blob/v0.1.0a6/rdc_operator/mcp_server.py)、[Linux installer](https://github.com/dwgx/RDC-Operator-Kit/blob/v0.1.0a6/scripts/install.sh)、[liveness probe](https://github.com/dwgx/RDC-Operator-Kit/blob/v0.1.0a6/scripts/probe_terminal_liveness.py)。当前操作契约见 [能力表](CAPABILITIES.zh-CN.md) 与 [架构](ARCHITECTURE.zh-CN.md)。
 
 ## 2. 只读 MCP：接口与验证分层
 
@@ -47,9 +47,9 @@ MCP 继续使用本地 stdio 与官方 `mcp==2.3.0`，启动时固定 config/sta
 | 四个受影响文件 `git diff --check` | exit 0 | 空白检查；不证明真实 SDK wire 行为 |
 | a5 固定 SDK 2.3.0 的首次真实 Windows stdio | 两个独立会话各 30 项检查为 true，summary passed | 是本版实际执行；下文另列独立 review 发现的 smoke 判定缺口，不能据此声称验收逻辑无缺陷 |
 
-对应源码测试为 [`test_mcp_contract.py`](../tests/test_mcp_contract.py)。实现者的两个模型测试只替换 SDK 注册器，不是完整协议验收；该区别保留在报告中。
+对应源码测试为 [`test_mcp_contract.py`](https://github.com/dwgx/RDC-Operator-Kit/blob/v0.1.0a6/tests/test_mcp_contract.py)。实现者的两个模型测试只替换 SDK 注册器，不是完整协议验收；该区别保留在报告中。
 
-[`smoke_mcp.py`](../scripts/smoke_mcp.py) 的首次真实执行使用 Windows 11 / Python 3.14.7 / SDK 2.3.0，modern `discover` 实际协商 `2026-07-28`，legacy `initialize` 实际协商 `2025-11-25`，两个独立会话各 30 项检查为 true。检查包括三个工具、输入与输出 schema、隐私哨兵、孤立 receipt、digest 不符及合成记录字节不变。专属 fixture launcher 把一个合成 ID 的 `snapshot_atomic` 改为数字 `0`，真实 SDK 返回错误；两会话的 SDK 持有进程及预先持有的 worker HANDLE 均确认 exit 0。
+[`smoke_mcp.py`](https://github.com/dwgx/RDC-Operator-Kit/blob/v0.1.0a6/scripts/smoke_mcp.py) 的首次真实执行使用 Windows 11 / Python 3.14.7 / SDK 2.3.0，modern `discover` 实际协商 `2026-07-28`，legacy `initialize` 实际协商 `2025-11-25`，两个独立会话各 30 项检查为 true。检查包括三个工具、输入与输出 schema、隐私哨兵、孤立 receipt、digest 不符及合成记录字节不变。专属 fixture launcher 把一个合成 ID 的 `snapshot_atomic` 改为数字 `0`，真实 SDK 返回错误；两会话的 SDK 持有进程及预先持有的 worker HANDLE 均确认 exit 0。
 
 该次 summary 明确记录 `smoke_execution: source_tree`、`kit_source_version: 0.1.0a5`、`kit_distribution_version: 0.1.0a4` 和 `installed_package_validation: false`。它没有证明 a5 已安装。记录中的原 receipt 与全部合成 request records 前后字节均未改变。
 

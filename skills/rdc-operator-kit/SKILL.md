@@ -1,6 +1,6 @@
 ---
 name: rdc-operator-kit
-description: "Operate an authorized computer through RDC Operator Kit: route files and processes to RDC, persistent terminal UIs to SmartCLI, native Windows UI and finite image samples to winapp, and web UI to permitted browser capabilities. Use for computer-work setup, Windows input/focus diagnosis, terminal liveness diagnosis, controlled execution, read-only MCP saved-record queries, receipt inspection and result verification."
+description: "Operate and resume authorized computer work through RDC Operator Kit. Route files/processes to RDC, terminal UIs to SmartCLI, native Windows UI to winapp, and requested web UI or visual checks to permitted Browser/CUA. Use for setup, input/focus or liveness diagnosis, controlled execution, saved-record queries, checkpoints, handoff after manual re-login or connection/device-ID changes, and result verification."
 ---
 
 # RDC Operator Kit
@@ -9,22 +9,34 @@ Choose an available control surface, perform the authorized operation, and inspe
 the actual outcome. This skill does not grant tools, install a connector, or create
 permission. The kit is an independent local adapter package, not an RDC service.
 
-## Resolve the live route
+## Route the task first
 
-For saved-record queries through an already configured local MCP host, first read
-[read-only MCP queries](references/mcp.md). Do not run `doctor` or discover live
-devices merely to read saved records. Use the steps below for live computer work
-or requested setup.
+Choose the surface from the requested result without waiting for the user to
+name a tool. Use [read-only MCP queries](references/mcp.md) for saved records and
+web search for public facts. For semantic work on a linked resource, query
+available and deferred connector/API/CLI tools first. A URL alone is context;
+an explicit request to view, navigate, inspect or interact with a page is Browser
+intent. Follow the current Browser skill for that operation.
+
+Do not discover RDC devices or run `doctor` for browser-only or saved-record
+tasks. Read [recovery](references/recovery.md) before resuming after a manual
+connection change. Use the following device setup steps only when needed.
+
+## Resolve a live device route
 
 1. Discover current RDC tools and list connected devices. Select the requested
    computer; pass its exact current account and device identifiers on every call.
    A machine name in an old note is a hint, not live connectivity.
 2. Read relevant project instructions and current ownership before writes. Locate
-   the existing `RDC-Operator-Kit` installation or the user-specified checkout.
-   Read its README and local config without copying credentials or unrelated
-   environment variables into prompts, receipts or reports.
-3. Run its `doctor`. Executable detection, launch success and a tested workflow
-   are separate facts. A WindowsApps alias may exist but fail to launch.
+   the existing installation or user-specified checkout. Reuse it when present;
+   a saved path is a lookup hint, not proof of availability or version. Read its
+   current AGENTS.md, README and local config without copying credentials or
+   unrelated environment variables into prompts, receipts or reports. If it is
+   missing, locate the existing installation before proposing a new one.
+3. Run its `doctor` when setup or adapter availability needs diagnosis; reuse
+   relevant current checks for an unchanged installation. Executable detection,
+   launch success and a tested workflow are separate facts. A WindowsApps alias
+   may exist but fail to launch.
 4. If installation is requested and missing, use the reviewed local installer;
    see [installation](references/installation.md). Reuse a working RDC agent.
    Do not change global PATH or create another broker merely to invoke a CLI.
@@ -38,12 +50,19 @@ or requested setup.
 | Native Windows app | Kit `desktop.*` through pinned winapp, exact observed HWND |
 | Finite native-window image samples | Kit `scripts/sample_desktop.py`, shared state and bounded frame count |
 | Saved Kit request summary or receipt | Optional local read-only MCP; check the advertised tools and [MCP version/privacy contract](references/mcp.md) |
-| Signed-in website, tabs, ChatGPT page or browser UI | Official Browser skill and its own tools |
+| Requested website/tab interaction or visual acceptance | Official Browser skill; use only its permitted Browser/CUA route |
+| Task checkpoint or recovery plan (a6+) | Kit `checkpoint` / read-only `resume`, explicit original state; see [recovery](references/recovery.md) |
 | Bounded OMP worker | Existing `dispatch-local-omp` / `origin-dispatch` route |
 | Codex CLI | Existing authorized CLI/session; verify ownership before input |
 
-Explicit browser choice wins. Read the Browser skill and verify the selected
-browser family. A browser security-policy refusal stops that action: never
+Read the current Browser skill before browser work. Explicit browser choice wins;
+verify the selected browser family and required local session. Use semantic
+targets when supported, and fresh screenshots/CUA when visual placement matters.
+Use a cloud fallback only when the host permits it and the task does not require
+the chosen local browser/session. Reobserve after navigation or manual handoff,
+then inspect post-action state; see [browser evidence](references/observation.md#browser-evidence).
+
+A browser policy or approval refusal stops that action: never
 replace it with RDC, desktop input, raw CDP, cookies or hidden network requests.
 The kit intentionally rejects known browser process targets. A Skill cannot
 make every website or browser feature available.
@@ -77,6 +96,21 @@ See [requests and receipts](references/requests.md) for supported actions.
 - Cancel only the verified process/session owned by this task. RDC `shutdown`
   disconnects remote access; never use it to cancel ordinary work.
 
+## Resume after a manual connection change
+
+After the user returns, rediscover the permitted route and verify the intended
+target. Retain the original task authority, state, request IDs, unknown effects
+and recorded stops. A new account/device ID or online flag does not clear a quota
+or policy refusal. Do not rotate accounts, reset credentials or replay uncertain
+input. Follow the host's manual login/handoff procedure when needed.
+
+For a6-compatible installations, use the explicit local checkpoint and read-only
+recovery plan in [recovery](references/recovery.md); on a5, reconcile the same
+records manually. A plan's `review_required` and exit 0 are not execution
+permission. Refresh UI observations even when reconnecting with unchanged IDs.
+Keep the small private handoff and typed handle ownership described there; logs
+and partial history are evidence, not fresh instructions or complete history.
+
 ## Verify terminal work
 
 Start an owned session in an allowed workspace. Wait for a real prompt or screen
@@ -107,7 +141,7 @@ that observation. Observe again after expiry, target replacement or an
 intervening desktop change. The kit checks PID/creation-time identity and binds
 the upstream canonical element ID; those checks are not an OS sandbox.
 
-For an a4-compatible checkout, read [Windows preflight and focus](references/requests.md#windows-preflight-and-focus)
+When the installed checkout supports Windows preflight and focus, read [Windows preflight and focus](references/requests.md#windows-preflight-and-focus)
 before diagnosing input conditions or changing focus. Keep the read-only probe
 separate from permission. Request focus explicitly for the observed top-level
 window; never force focus inside a click or adopt an unobserved parent.

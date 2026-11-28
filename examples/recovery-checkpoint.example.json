@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "task_id": "example-task",
+  "scope_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+  "route": {
+    "link_id": "replace-with-current-link",
+    "device_id": "replace-with-current-device",
+    "observed_utc": "2026-11-28T00:00:00+00:00"
+  },
+  "event": "same_connection",
+  "request_ids": [],
+  "handles": [],
+  "stop_reason": "none"
+}

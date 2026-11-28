@@ -1,4 +1,27 @@
-# 当前结果：0.1.0a5
+# 当前检查点：0.1.0a6 candidate
+
+2026-11-28（Asia/Tokyo）。本轮新增任务 checkpoint／CAS／原 state 绑定和只读 resume；它不是所有操作的全局执行拦截器。完整缺陷、修复与证据边界见[第六轮报告](REVIEW-WAVE6.zh-CN.md)，使用步骤见[Agent 指南](AGENT-GUIDE.zh-CN.md)与[恢复规格](RESUME-SPEC.zh-CN.md)。下面保留 a5 及更早历史，旧 CI／Release／Pages 不自动成为 a6 的验收。
+
+| a6 项目 | 当前结果 | 范围与限制 |
+|---|---|---|
+| 基线 | 公开 main `54131f00c3b942797809a1b90424e845ef56fe13` 的 139 个文件逐 SHA-256 对齐 | 本地运行时冻结 `06e0e21` 不是公开提交 |
+| Linux 最终 core | 225 run／221 pass／4 Windows-only skip；exit 0、3.529 秒 | Python 3.12.14；较早 223／219／4 是中间检查点 |
+| Windows 最终 core | 225 run／212 pass／13 skip；exit 0 | Windows 11 build 26300、Python 3.14.7；运行前 149 个源码文件逐哈希核对 |
+| Source 恢复 smoke | Linux、Windows 各 17/17 passed | 真实自有子进程在 effect 后、receipt 前退出；合成 operation，不是真实 RDC 重登 |
+| 运行时独立反例 | 三项修后 3/3 passed | JSON null、NUL state、提交后回读不确定性；原失败保留 |
+| CLI 只读边界 | fresh-copy `python -B` 正向通过；去掉 `-B` 的反向控制按预期失败 | 后者实际产生一个缓存目录和七个 pyc；不声称 atime／宿主日志不变 |
+| Smoke 判定修复 | 副作用 guard、owned-worker 清理、请求与 typed-handle 明细反向控制均核对 | Python audit／mock 范围，不是 OS 沙箱 |
+| 发行隐私 | 七个方法修后全部通过；修前 26 个失败条目保留 | 含 subtest，不是 26 个测试；合成 ZIP/TAR/HTML，非通用秘密扫描 |
+| Windows 已安装 a6 | 两环境 offline／no-deps 升级，各 12 个实际模块与 wheel 一致，备份保留 | `-I` site-packages 导入，非 Kit 依赖及 config 哈希不变；两个 CLI entry point 均返回 a6 |
+| Installed 恢复 smoke | Windows 两环境各 17/17，Linux 新隔离环境同一 wheel 17/17 | Windows 每次六个 guarded resume、零 effect；与 source smoke 分开 |
+| Installed 现代 MCP | SDK 2.3.0 真正 stdio，17 checks passed | 协议 `2026-07-28`；三工具与严格双通道、unknown、记录未变、worker 正常退出；不是恢复 smoke 的 17 项 |
+| Skill／前向推演 | canonical 八资源保存并回读；四种 Agent 场景回答完成 | 未在推演中操作 Browser、账号或未知进程；不是所有 Agent 的行为保证 |
+| 当前路由／历史上下文 | 用户手动登录后重新发现现有连接；既往会话只取得相关检索片段 | 不公开私有标识，不声称读取完整聊天 |
+| a6 GitHub CI／Release／Pages | **pending** | 尚无本轮最终公开回执；不沿用 a5 绿灯或资产 |
+
+本轮 wheel 为 51,757 字节，SHA-256 为 `f84ae08e8e6625a14ca84fe2b4a154a58ee4829c5a3866dc9bb23656b2f2770e`。已安装模块验证不等于源码主副本已经最终同步。Browser 的既有策略拒绝／localhost 自动审批拒绝、HMC 额度阻断、OMP 无 final 等历史结论全部保留，本轮未重新测试或绕过。
+
+# 历史结果：0.1.0a5
 
 2026-11-26（Asia/Tokyo）：[v0.1.0a5 Release](https://github.com/dwgx/RDC-Operator-Kit/releases/tag/v0.1.0a5) 已发布，[项目网站](https://dwgx.github.io/RDC-Operator-Kit/) 已部署。最新接口、独立 review、具体环境与执行范围见 [第五轮报告](REVIEW-WAVE5.zh-CN.md)。以下总览区分初始 a5 快照、review 后修复和实际发布状态。没有将未执行、跳过或被阻断的项目计为通过。
 

@@ -14,3 +14,8 @@ build/
 .rdc-delivery.json
 delivery-payload.json
 receive-source.py
+.recovery-marker.json
+checkpoints/
+recovery-checkpoint.local.json
+recovery-context.local.json
+recovery-handoff.local.md

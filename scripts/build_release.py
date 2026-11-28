@@ -26,9 +26,11 @@ ROOT_FILES = {"README.md", "LICENSE", "pyproject.toml", ".gitignore", "AGENTS.md
 DIRECTORIES = {"rdc_operator", "scripts", "examples", "tests", "docs", "site", "skills", ".github"}
 EXTENSIONS = {".py", ".ps1", ".sh", ".md", ".json", ".yml", ".yaml", ".html", ".css", ".js", ".svg"}
 EXCLUDED_PARTS = {"__pycache__", ".git", ".venv", ".venv-mcp", "evidence", "tools", "dist", "build", ".rdc-state",
-                  ".pytest_cache"}
+                  ".pytest_cache", "checkpoints"}
 EXCLUDED_FILES = {"config.local.json", ".rdc-install.json", ".rdc-delivery.json",
-                  "delivery-payload.json", "receive-source.py"}
+                  "delivery-payload.json", "receive-source.py", ".recovery-marker.json",
+                  "recovery-checkpoint.local.json", "recovery-context.local.json",
+                  "recovery-handoff.local.md"}
 
 
 def _excluded_name(name: str) -> bool:

@@ -8,7 +8,7 @@
 
 同时，**进程退出 0、出现 `READY>`、甚至出现本次随机 token 对应的 `business_done`，都不能单独证明业务完成。** 本轮唯一的完成正例要求三项一致：完成 marker、独立 JSON witness 的值与本次身份匹配、进程退出 0。其余反例正确保留未完成状态。这是本项目合成协议的验收规则，不是所有软件都实现了相同协议。
 
-实现见 [`probe_terminal_liveness.py`](../../scripts/probe_terminal_liveness.py)、[`liveness-fixture.py`](../../examples/liveness-fixture.py) 和 [`test_liveness.py`](../../tests/test_liveness.py)。它们只启动固定白名单中的自建 Python fixture，不接管任意 PID、命令、终端会话或正在运行的 Agent。
+实现见 [`probe_terminal_liveness.py`](https://github.com/dwgx/RDC-Operator-Kit/blob/v0.1.0a6/scripts/probe_terminal_liveness.py)、[`liveness-fixture.py`](https://github.com/dwgx/RDC-Operator-Kit/blob/v0.1.0a6/examples/liveness-fixture.py) 和 [`test_liveness.py`](https://github.com/dwgx/RDC-Operator-Kit/blob/v0.1.0a6/tests/test_liveness.py)。它们只启动固定白名单中的自建 Python fixture，不接管任意 PID、命令、终端会话或正在运行的 Agent。
 
 ## Linux 第一轮实际结果（修复前源码）
 
@@ -91,9 +91,9 @@ e1759ebc02a29e156cbcf81742afec7d74643def5937ce414e3550582fb70145  scripts/probe_
 | Kit 返回 `busy` | 同一 state 的一个请求仍持锁 | 查已有 intent/receipt；等待该请求返回，不新建 state 来绕开协调 |
 | close 返回成功，但进程状态未知 | 关闭请求获得确认 | 用本次持有的进程身份 / 退出证据确认；通用结果保持 unknown |
 
-Kit 自身也有一个容易被误认为“终端死了”的等待层：[`core.py`](../../rdc_operator/core.py) 会在整个适配器调用和 receipt 提交期间持有 state 锁。因此同一 state 的第二次 Kit 调用会得到 `busy`，上游 SmartCLI 的并发观察能力不能自动穿透这把锁。当前 `terminal.wait` 最长接受 30,000 ms，外层 `run_command` 为该请求另留 18 秒 transport 余量；没有改成后台任务。交互任务可使用较短的显式 wait，完成后重新观察，保留请求 ID 与效果的现有语义。这个选择是本轮建议，不是已经合入的行为变更。
+Kit 自身也有一个容易被误认为“终端死了”的等待层：[`core.py`](https://github.com/dwgx/RDC-Operator-Kit/blob/v0.1.0a6/rdc_operator/core.py) 会在整个适配器调用和 receipt 提交期间持有 state 锁。因此同一 state 的第二次 Kit 调用会得到 `busy`，上游 SmartCLI 的并发观察能力不能自动穿透这把锁。当前 `terminal.wait` 最长接受 30,000 ms，外层 `run_command` 为该请求另留 18 秒 transport 余量；没有改成后台任务。交互任务可使用较短的显式 wait，完成后重新观察，保留请求 ID 与效果的现有语义。这个选择是本轮建议，不是已经合入的行为变更。
 
-当前 [`common.run_command`](../../rdc_operator/common.py) 已用临时文件承接 stdin/stdout/stderr，避免因为一条普通管道未排空而阻塞另一条；它每 50 ms 检查超时/输出保护阈值。该实现仍是批命令等待接口，不是 PTY、可交互 session 或实时视频通道。本轮没有替换它，也没有增加 daemon、broker、任务队列或新模型路由。
+当前 [`common.run_command`](https://github.com/dwgx/RDC-Operator-Kit/blob/v0.1.0a6/rdc_operator/common.py) 已用临时文件承接 stdin/stdout/stderr，避免因为一条普通管道未排空而阻塞另一条；它每 50 ms 检查超时/输出保护阈值。该实现仍是批命令等待接口，不是 PTY、可交互 session 或实时视频通道。本轮没有替换它，也没有增加 daemon、broker、任务队列或新模型路由。
 
 ## 固定上游源码得到的判断
 

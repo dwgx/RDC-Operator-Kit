@@ -28,6 +28,8 @@ class ReleasePrivacyTests(unittest.TestCase):
             "site/docs/guide.md": "SYNTHETIC_PUBLIC_GUIDE",
             "site/docs/research/data.json": '{"research":"SYNTHETIC_PUBLIC_JSON"}',
             "examples/config.example.json": '{"schema_version":1}',
+            "examples/recovery-checkpoint.example.json": '{"example":"SYNTHETIC_PUBLIC_CHECKPOINT"}',
+            "site/docs/recovery-context.example.json": '{"example":"SYNTHETIC_PUBLIC_CONTEXT"}',
         }
         for name, content in files.items():
             path = root / name
@@ -38,10 +40,14 @@ class ReleasePrivacyTests(unittest.TestCase):
         private_names = {
             "config.local.json", ".rdc-install.json", ".rdc-delivery.json",
             "delivery-payload.json", "receive-source.py",
+            ".recovery-marker.json", "recovery-checkpoint.local.json",
+            "recovery-context.local.json", "recovery-handoff.local.md",
         }
         allowed = {
             "README.md": "source readme",
             "examples/config.example.json": '{"schema_version": 1}',
+            "examples/recovery-checkpoint.example.json": '{"example": true}',
+            "site/docs/recovery-context.example.json": '{"example": true}',
             "examples/browser-evidence/counter-success.json": '{"synthetic": true}',
             "docs/research-wave2/OBSERVATION.sources.json": '{"research": true}',
             "docs/research-wave2/MCP-SKILL.sources.json": '{"research": true}',
@@ -83,6 +89,7 @@ class ReleasePrivacyTests(unittest.TestCase):
         private_directories = {
             "__pycache__", ".git", ".venv", ".venv-mcp", "evidence", "tools",
             "dist", "build", ".rdc-state", ".pytest_cache", "sample.egg-info",
+            "checkpoints",
         }
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
@@ -111,6 +118,9 @@ class ReleasePrivacyTests(unittest.TestCase):
             "delivery-payload.json", "receive-source.py", "nested/CONFIG.LOCAL.json",
             ".pytest_cache/private.json", "nested/EVIDENCE/private.json",
             "nested/Sample.EGG-INFO/private.json",
+            ".recovery-marker.json", "recovery-checkpoint.local.json",
+            "nested/RECOVERY-CONTEXT.LOCAL.json", "recovery-handoff.local.md",
+            "state/checkpoints/private-task.json", "state/CHECKPOINTS/private-task.json",
         )
         for reference in references:
             with self.subTest(reference=reference), tempfile.TemporaryDirectory() as tmp:
@@ -151,9 +161,15 @@ class ReleasePrivacyTests(unittest.TestCase):
         sentinel = b"SYNTHETIC_PRIVATE_ARTIFACT_SENTINEL"
         with tempfile.TemporaryDirectory() as tmp:
             root, output = Path(tmp) / "source", Path(tmp) / "output"
-            self.make_build_fixture(root, ["guide.md", "research/data.json"])
+            self.make_build_fixture(root, ["guide.md", "research/data.json", "recovery-context.example.json"])
             for relative in ("site/docs/config.local.json", "docs/nested/.rdc-delivery.json",
-                             "site/docs/.pytest_cache/private.json"):
+                             "site/docs/.pytest_cache/private.json",
+                             "docs/copied-state/.recovery-marker.json",
+                             "site/docs/copied-state/checkpoints/private-task.json",
+                             "docs/copied-state/CHECKPOINTS/private-task.json",
+                             "site/docs/recovery-checkpoint.local.json",
+                             "docs/nested/RECOVERY-CONTEXT.LOCAL.json",
+                             "site/docs/recovery-handoff.local.md"):
                 private = root / relative
                 private.parent.mkdir(parents=True, exist_ok=True)
                 private.write_bytes(sentinel)
@@ -171,9 +187,12 @@ class ReleasePrivacyTests(unittest.TestCase):
             preview = contents["RDC-Operator-Kit-preview.html"]
             self.assertIn(b"SYNTHETIC_PUBLIC_GUIDE", preview)
             self.assertIn(b"SYNTHETIC_PUBLIC_JSON", preview)
+            self.assertIn(b"SYNTHETIC_PUBLIC_CONTEXT", preview)
             manifest_names = {entry["path"] for entry in json.loads(contents["SOURCE-MANIFEST.json"])["files"]}
             self.assertIn("site/docs/research/data.json", manifest_names)
             self.assertIn("examples/config.example.json", manifest_names)
+            self.assertIn("examples/recovery-checkpoint.example.json", manifest_names)
+            self.assertIn("site/docs/recovery-context.example.json", manifest_names)
             self.assertEqual(result["source_files"], len(manifest_names))
 
     def test_standalone_preview_uses_the_same_private_reference_policy(self):
@@ -185,6 +204,24 @@ class ReleasePrivacyTests(unittest.TestCase):
             with patch.object(build_release, "ROOT", root):
                 with self.assertRaises(ValueError):
                     build_release.standalone_page()
+
+    def test_standalone_preview_refuses_recovery_runtime_even_in_supplied_snapshot(self):
+        references = (
+            ".recovery-marker.json", "recovery-checkpoint.local.json",
+            "nested/RECOVERY-CONTEXT.LOCAL.json", "recovery-handoff.local.md",
+            "state/checkpoints/private-task.json", "state/CHECKPOINTS/private-task.json",
+        )
+        for reference in references:
+            with self.subTest(reference=reference), tempfile.TemporaryDirectory() as tmp:
+                root = Path(tmp)
+                self.make_build_fixture(root, [reference])
+                with patch.object(build_release, "ROOT", root):
+                    sources = dict(build_release.source_files())
+                # Even a caller-supplied snapshot must not make a private
+                # recovery record available to the standalone HTML renderer.
+                sources["site/docs/" + reference] = b"SYNTHETIC_PRIVATE_RECOVERY_SNAPSHOT"
+                with self.assertRaisesRegex(ValueError, "Private source reference refused"):
+                    build_release.standalone_page(sources)
 
 
 if __name__ == "__main__":

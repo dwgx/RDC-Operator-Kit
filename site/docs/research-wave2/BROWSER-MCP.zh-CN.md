@@ -10,7 +10,7 @@
 
 本机已经发现 OMP `19.2.1` 是主执行者提供的只读线索；本子任务随后独立核对了该版本上游源码。**OMP Browser Relay 是直接适配候选；AgentWorkforce/relay 是另一个项目。** 二者的名称相似，不代表共享实现或兼容契约。
 
-所有候选都只适用于获得授权的独立测试站点。当前宿主已经拒绝的目标不能转交 OMP、RDC、CDP、其他 MCP、另一模型或桌面输入访问。这里的技术比较不改变 [AGENTS.md](../../AGENTS.md) 和 [现有架构](../ARCHITECTURE.zh-CN.md) 中的宿主策略边界。
+所有候选都只适用于获得授权的独立测试站点。当前宿主已经拒绝的目标不能转交 OMP、RDC、CDP、其他 MCP、另一模型或桌面输入访问。这里的技术比较不改变 [AGENTS.md](https://github.com/dwgx/RDC-Operator-Kit/blob/v0.1.0a6/AGENTS.md) 和 [现有架构](../ARCHITECTURE.zh-CN.md) 中的宿主策略边界。
 
 ## 证据分级与检索覆盖
 

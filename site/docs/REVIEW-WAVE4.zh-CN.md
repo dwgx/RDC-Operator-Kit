@@ -31,7 +31,7 @@ Windows 的 8 项 skipped 由主控进一步核对为：5 项 symlink 权限不�
 
 ### 2.1 `windows-preflight`：观察输入条件
 
-新增 [`windows.py`](../rdc_operator/windows.py) 和 CLI 入口，读取 collector/target 的 PID、创建时间、session、token integrity/elevation/UIAccess，以及 window station、thread/input desktop、前后 foreground 和各项错误。CLI 在 config/state 处理之前返回；探针没有输入、聚焦、切换 desktop、提权或策略修改。
+新增 [`windows.py`](https://github.com/dwgx/RDC-Operator-Kit/blob/v0.1.0a6/rdc_operator/windows.py) 和 CLI 入口，读取 collector/target 的 PID、创建时间、session、token integrity/elevation/UIAccess，以及 window station、thread/input desktop、前后 foreground 和各项错误。CLI 在 config/state 处理之前返回；探针没有输入、聚焦、切换 desktop、提权或策略修改。
 
 `assessment.status` 为 `observed`、`blocked`、`unknown` 或 `unsupported`。只有 observed 返回 exit 0，其他三态返回 1，非法参数为 2。普通桌面不指定目标通常是 `unknown / target_not_provided`；已观察到的 blocked 风险优先。所有状态都保留 `permission_granted: false` 和 `uac_state: not_determined`。非原子采样、会话连接状态未核验及后续状态变化都保持为明确限制。
 
@@ -47,7 +47,7 @@ run 001 的真实 preflight 返回 `supported: true`、`assessment.status: obser
 
 ### 2.3 串行 Windows runner
 
-新增 [`smoke_windows.py`](../scripts/smoke_windows.py)，固定顺序为 core、doctor、liveness、terminal、MCP、browser offline、OMP preview、desktop、observation。总报告在阶段开始、子进程启动、结束与清理后持续原子写入，失败子报告和 stdout/stderr 引用不会被后续成功覆盖。
+新增 [`smoke_windows.py`](https://github.com/dwgx/RDC-Operator-Kit/blob/v0.1.0a6/scripts/smoke_windows.py)，固定顺序为 core、doctor、liveness、terminal、MCP、browser offline、OMP preview、desktop、observation。总报告在阶段开始、子进程启动、结束与清理后持续原子写入，失败子报告和 stdout/stderr 引用不会被后续成功覆盖。
 
 runner 分别使用真实基础 Python、SmartCLI Python、独立 MCP Python 和实际绝对路径的 PowerShell 7 `pwsh.exe`。GUI readiness 必须同时满足持有的 Popen PID、新 witness、HWND/kernel identity、可执行文件和 fixture 标题/初态；不接管 redirector 的另一 PID。输出目录必须新建，旧证据保持原样。
 

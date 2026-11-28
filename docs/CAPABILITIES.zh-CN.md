@@ -1,6 +1,8 @@
 # 能力与边界
 
-日期：2026-11-26（Asia/Tokyo）。RDC Operator Kit `0.1.0a5` 已作为 alpha [发布](https://github.com/dwgx/RDC-Operator-Kit/releases/tag/v0.1.0a5)，[项目网站](https://dwgx.github.io/RDC-Operator-Kit/) 已部署；固定 tag 对应提交 `27d367a9698c381d90986c8640d506b24d84ddd9`。本文定义当前源码接口与操作条件，具体执行证据及未覆盖范围见 [第五轮报告](REVIEW-WAVE5.zh-CN.md)。发布和部署没有新增 UI live 或任意应用控制的通过结论。第一轮 [验证记录](VERIFICATION.zh-CN.md)、[第二轮报告](research-wave2/REPORT.zh-CN.md)、[第三轮审查](REVIEW-WAVE3.zh-CN.md) 和 [第四轮报告](REVIEW-WAVE4.zh-CN.md) 保留各自的版本与环境，不自动升级为 a5 的验收结论。
+日期：2026-11-28（Asia/Tokyo）。当前源码为 `0.1.0a6` candidate；已安装包验证已完成，公开 CI／Release／Pages 仍 pending，见[第六轮报告](REVIEW-WAVE6.zh-CN.md)。本文定义源码接口及条件，不能凭接口存在推定当前宿主已经提供、许可或安装该能力。
+
+a5 是已经[公开发布](https://github.com/dwgx/RDC-Operator-Kit/releases/tag/v0.1.0a5)的历史 alpha，固定 tag 提交为 `27d367a9698c381d90986c8640d506b24d84ddd9`，[网站](https://dwgx.github.io/RDC-Operator-Kit/)也有成功部署回执；详见[第五轮报告](REVIEW-WAVE5.zh-CN.md)。[验证记录](VERIFICATION.zh-CN.md)、[第二轮](research-wave2/REPORT.zh-CN.md)、[第三轮](REVIEW-WAVE3.zh-CN.md)和[第四轮](REVIEW-WAVE4.zh-CN.md)保留原环境与失败，不自动成为 a6 的 live 验收。
 
 ## 从任务选择路线
 
@@ -12,23 +14,41 @@
 | 诊断 Windows 输入条件 | `windows-preflight` 只读 CLI | 可选 exact HWND；读取事实，不申请权限或发送输入 |
 | 请求已观察窗口获得前台 | `desktop.focus` → winapp | 未过期 observation、同一顶层 HWND、明确执行与前台回读 |
 | 查看指定应用窗口截图 | Kit → winapp screenshot → RDC 图像读取 | 明确窗口、可用桌面、允许的输出目录 |
-| 操作已连接的 Edge 网页 | 官方 Browser 插件与 `control-browser` Skill | 正确浏览器已连接；目标 origin 获得策略许可 |
+| 操作明确指定的网页 UI | 当前宿主官方 Browser 插件与 `control-browser` Skill | 尊重用户选定浏览器及当前 Chat／Work 模式；目标 origin 获得策略许可，不另用 CDP 绕过 |
 | 派发已有本地 OMP 工作 | 已安装的 `origin-dispatch` wrapper | 现行路由、冻结 brief、独占写入范围、真实回执 |
 | 使用本机 Codex | 其正式 CLI 或经过验证的终端路线 | 先核实已安装版本、参数、账号与当前授权 |
 | 有限地连续观察原生窗口 | `scripts/sample_desktop.py` | 同一 observation、同一 state；每帧保存 manifest；最多 12 帧 |
 | 诊断静默、洪泛、等待输入和超时的区别 | `scripts/probe_terminal_liveness.py` | 只新建自有合成 fixture；不能据此接管任意 PID |
 | 校验已有浏览器证据包 | `scripts/verify_browser_evidence.py` | 离线检查内部一致性；不授予 origin 访问、不执行浏览器动作 |
 | 由本地 MCP host 读取 Kit 回执或最小记录摘要 | 独立 `.venv-mcp` 的三个只读 stdio 工具 | 官方 SDK 2.3.0；与 SmartCLI 的 MCP 1.x 环境分开；保存记录不是实时状态 |
+| 保存已授权任务的恢复检查点 | a6 `checkpoint` CLI | 原 config/state，明确 expected revision，私有任务正文与来源材料 |
+| 手动重连后核对原任务 | a6 `resume` CLI；a5 人工对账 | fresh route、原 state/marker；只读计划，不执行或重放 |
 | 检索公开能力与证据说明 | `site/` 静态页面的本地搜索与分类筛选 | 不传出查询，不连接或控制设备；新版视觉尚未浏览器验收 |
 | 串行运行 Windows 自有 fixture | `scripts/smoke_windows.py` | 完整源码、新证据目录、实际基础 Python 和 PowerShell；依赖环境分别指定 |
 
-### 浏览器：本轮结果与历史拒绝
+网页 UI 与保存记录任务不为使用本 Skill 而额外发现 RDC 或运行 doctor。网页信息检索按任务选择可用的语义工具；实际浏览器操作遵守当前宿主 Skill，不把 URL 本身当作任意自动化许可。完整路由和交接步骤见[Agent 指南](AGENT-GUIDE.zh-CN.md)。
+
+### 浏览器：历史结果与继续保留的拒绝
 
 第四轮已通过官方 **Edge** 能力在自有 localhost Lab 执行文字填写、语义按钮点击、延迟效果、按截图定位的鼠标点击，以及 epoch reset 和 document reload。动作后的页面 witness 单独读取，ACK 回显与计数效果分开核对。该证据只覆盖已执行的自有页面操作；完整序列、采集器错误与协调记录见第四轮报告。
 
 历史测试导航到 `https://chatgpt.com` 时，Browser 返回 `host restrictions gate did not grant access for https://chatgpt.com`，状态为 **`BLOCKED_BY_POLICY`**。第四轮没有重新尝试该目标。扩展显示“Allowed on all sites”不取消这项宿主拒绝；不得改用桌面坐标、OMP Relay、CDP 或 shell 绕过。ChatGPT 网页开新聊天、切模型及“所有功能”仍不属于已验收范围。
 
 后续 a4 首页检查中的 Markdown 导航返回 `ERR_BLOCKED_BY_CLIENT`，返回同一 localhost origin 的操作又遭自动审批拒绝。该 origin 的浏览器验证已停止，没有经其他传输或渲染器继续。a5 对首页与 Lab 的视觉更新只有静态／合成事件检查；旧截图、旧点击坐标和旧版本的交互通过均不证明新版布局已验收。
+
+## a6 检查点与只读恢复
+
+[`recovery.py`](../rdc_operator/recovery.py) 提供 `save_checkpoint(document, config, state, expected_revision=...)` 和 `assess_resume(task_id, context, config, state)`；对应 CLI 为 `checkpoint DOCUMENT --expected-revision N`、`resume TASK_ID --context DOCUMENT`，都要求显式 `--state`。推荐 `python -B -m rdc_operator` 避免导入缓存写入。完整封闭 schema 和错误语义见[恢复规格](RESUME-SPEC.zh-CN.md)。
+
+- checkpoint 在原 state 锁内执行 CAS，绑定精确 marker UUID 与规范路径，冻结 scope/config 指纹；request ID 只追加，旧 revision 不能覆盖新 writer。
+- `user_reconnected` 即使 link/device 相同也推进 generation；仅刷新 route 时间不推进。旧 typed handles 保留来源，不能重新标成新连接有效线索。
+- disconnected/auth_required 可在明确用户手动恢复和 fresh context 后复核；quota/policy_refused/cancelled 不被新路由清除。
+- resume 只读原检查点和请求，返回前复核 marker/checkpoint 身份、字节、revision；不创建新 state 或自动修复记录。`snapshot_atomic: false`，返回后的变化仍可能发生。
+- 计划固定 `execution_authorized`、`automatic_replay_allowed`、`actions_exposed`、`physical_device_verified`、`request_config_binding_verified` 为 false；`route_source: caller_attested`。当前 config 与历史 request 的关联不能由复合 digest 反推；scope hash 也不能恢复任务正文或证明授权。
+
+`review_required` 的 exit 0 只表示报告生成成功；`blocked` 为 1，输入或文件错误为 2。已有 completed/observed 仍需独立业务核验；未知效果不能换 request ID 重跑。提交后回读失败返回不确定提交，先检查已保存 revision。此模块**不是所有 call／RDC 操作的全局执行拦截器**，Agent 继续承担路由、授权、停止和当前目标核对。
+
+运行时本体只读不等于系统级沙箱；`-B` CLI 已有 fresh-copy 正向及去掉 `-B` 的反向控制，不承诺 atime、宿主日志或显式 stdout 重定向不变。源码与安装包的有限验证范围见[第六轮报告](REVIEW-WAVE6.zh-CN.md)。
 
 ## 只读 MCP 的三个接口
 
@@ -42,7 +62,7 @@
 
 记录状态为 `no_records_observed`、`intent_without_receipt`、`receipt_recorded` 或 `inconclusive`。它们都不等于实时运行状态；始终保留 `snapshot_atomic: false`、未做 live verification、未验证真实性和不暴露动作接口的标志。输出 schema 改善结构验证，不授予权限，也不使原 receipt 自动可信。SDK 与 Pydantic 懒加载，基础 CLI 仍不依赖 MCP extra。
 
-## Linux 与终端诊断的本轮范围
+## Linux 与终端诊断：沿用 a5 的范围
 
 Linux 安装器在执行解释器前拒绝 `.venv/bin` **目录** symlink，保留正常 venv 的 `bin/python` 文件 symlink。独立隔离反例确认 a4 会运行链接目录中的外部 fixture stub，而 a5 在运行前拒绝；正常无 pip venv 能保持正确的 `sys.prefix`。这不等于联网安装或同权限恶意并发替换防护已经全面验收。
 
@@ -182,4 +202,4 @@ Microsoft 的 [`SendInput`](https://learn.microsoft.com/en-us/windows/win32/api/
 
 任意网页所有功能、被策略拒绝的 origin、锁屏/UAC secure desktop 的键鼠输入、跨用户桌面、任意 TUI 兼容、自动接管用户已有任意进程、无人确认的账号配对，以及 Linux/macOS 完整 GUI 支持。
 
-Windows 是首要实测平台。本轮实际通过、待验证、跳过与阻断见 [第五轮报告](REVIEW-WAVE5.zh-CN.md)，历史结果保持原版本。Linux 的安装器与核心/终端路线可以单独验收；`winapp` 桌面适配器仅适用于 Windows。旧上游测试、作者声称或设备可连都不能替代本项目在指定版本上的实测。
+Windows 是首要实测平台。a6 的源码、安装包、待公开发布与未重跑范围见[第六轮报告](REVIEW-WAVE6.zh-CN.md)；a5 结果继续见[第五轮报告](REVIEW-WAVE5.zh-CN.md)，历史结果保持原版本。Linux 的安装器与核心/终端路线可以单独验收；`winapp` 桌面适配器仅适用于 Windows。旧上游测试、作者声称或设备可连都不能替代本项目在指定版本上的实测。

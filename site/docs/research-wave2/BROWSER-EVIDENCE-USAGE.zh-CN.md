@@ -8,11 +8,11 @@
 
 | 文件 | 用途 |
 |---|---|
-| [`rdc_operator/browser_evidence.py`](../../rdc_operator/browser_evidence.py) | 标准库纯函数 `validate_bundle()` 和计数器请求摘要 |
-| [`scripts/verify_browser_evidence.py`](../../scripts/verify_browser_evidence.py) | 只读一个 JSON 文件或 stdin，输出 JSON 判定 |
-| [`examples/browser-evidence/`](../../examples/browser-evidence/) | 6 个明确标记为 synthetic 的正反例 |
-| [`site/lab.html`](../../site/lab.html) | 无账号、无外部资源的静态网页 fixture |
-| [`tests/test_browser_evidence.py`](../../tests/test_browser_evidence.py) | 离线契约及 CLI 验收 |
+| [`rdc_operator/browser_evidence.py`](https://github.com/dwgx/RDC-Operator-Kit/blob/v0.1.0a6/rdc_operator/browser_evidence.py) | 标准库纯函数 `validate_bundle()` 和计数器请求摘要 |
+| [`scripts/verify_browser_evidence.py`](https://github.com/dwgx/RDC-Operator-Kit/blob/v0.1.0a6/scripts/verify_browser_evidence.py) | 只读一个 JSON 文件或 stdin，输出 JSON 判定 |
+| [`examples/browser-evidence/`](https://github.com/dwgx/RDC-Operator-Kit/tree/v0.1.0a6/examples/browser-evidence) | 6 个明确标记为 synthetic 的正反例 |
+| [`site/lab.html`](https://github.com/dwgx/RDC-Operator-Kit/blob/v0.1.0a6/site/lab.html) | 无账号、无外部资源的静态网页 fixture |
+| [`tests/test_browser_evidence.py`](https://github.com/dwgx/RDC-Operator-Kit/blob/v0.1.0a6/tests/test_browser_evidence.py) | 离线契约及 CLI 验收 |
 
 Windows，在项目目录运行：
 
@@ -53,7 +53,7 @@ Linux：
 
 ## 最小数据契约
 
-完整可运行范例是 [counter-success.json](../../examples/browser-evidence/counter-success.json)。v0 只处理“从已观察计数值增加一次”的合成业务条件，不提供任意断言表达式或通用代码执行。
+完整可运行范例是 [counter-success.json](https://github.com/dwgx/RDC-Operator-Kit/blob/v0.1.0a6/examples/browser-evidence/counter-success.json)。v0 只处理“从已观察计数值增加一次”的合成业务条件，不提供任意断言表达式或通用代码执行。
 
 | 对象 | 关键字段与核对 |
 |---|---|

@@ -1,0 +1,11 @@
+{
+  "schema_version": 1,
+  "scope_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+  "route": {
+    "link_id": "replace-with-current-link",
+    "device_id": "replace-with-current-device",
+    "observed_utc": "2026-11-28T00:00:00+00:00"
+  },
+  "event": "user_reconnected",
+  "stop_reason": "none"
+}

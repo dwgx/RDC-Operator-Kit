@@ -1,18 +1,37 @@
 # RDC Operator Kit 使用指南
 
-版本：`0.1.0a5`，已发布的 alpha，状态日期为 2026-11-26（Asia/Tokyo）。
+当前源码：`0.1.0a6` candidate，状态日期 2026-11-28（Asia/Tokyo）。Windows／Linux 已安装包及恢复验证已完成；a6 GitHub CI、Release、Pages 仍待最终回执，见[第六轮报告](REVIEW-WAVE6.zh-CN.md)与[安装发布状态](RELEASE.zh-CN.md)。
 
-**[下载 v0.1.0a5 Release](https://github.com/dwgx/RDC-Operator-Kit/releases/tag/v0.1.0a5) · [项目网站](https://dwgx.github.io/RDC-Operator-Kit/) · [固定版本安装与校验](RELEASE.zh-CN.md)**
+**[Agent 使用与交接](AGENT-GUIDE.zh-CN.md) · [恢复规格](RESUME-SPEC.zh-CN.md) · [当前能力](CAPABILITIES.zh-CN.md) · [各轮验证记录](VERIFICATION.zh-CN.md)**
 
-tag `v0.1.0a5` 固定在提交 `27d367a9698c381d90986c8640d506b24d84ddd9`；发行 CI 六个 job 与 Pages build／deploy 均成功，九项 Release 资产下载回读 SHA-256 一致。精确回执和能力范围见 [第五轮报告](REVIEW-WAVE5.zh-CN.md)。Release 归档保留该提交，后续 main 只同步发布记录，不修改 tag 或资产。
+已公开的固定版本仍为 [v0.1.0a5 Release](https://github.com/dwgx/RDC-Operator-Kit/releases/tag/v0.1.0a5)。它的 tag 固定在 `27d367a9698c381d90986c8640d506b24d84ddd9`，六个 CI job、Pages 与九项资产下载哈希已核对，历史回执见[第五轮报告](REVIEW-WAVE5.zh-CN.md)。下面标有 a5 的下载／wheel 命令安装该历史版本，不会提供 a6 的恢复命令；不移动旧 tag 或替换资产。
 
-Windows 操作步骤见 [Windows 操控指南](WINDOWS-CONTROL.zh-CN.md)。[第四轮验收报告](REVIEW-WAVE4.zh-CN.md)、[第一轮验证](VERIFICATION.zh-CN.md) 与 [a2 第二轮报告](research-wave2/REPORT.zh-CN.md) 保留对应版本的历史证据。a4 最终 Windows 顶层 suite 为 8/9 passed、整体 exit 1；其中的成功项不能拼接成 a5 全部通过。
+Windows 操作步骤见 [Windows 操控指南](WINDOWS-CONTROL.zh-CN.md)。[第四轮验收报告](REVIEW-WAVE4.zh-CN.md)与 [a2 第二轮报告](research-wave2/REPORT.zh-CN.md)保留原版本证据；a4 最终 Windows 顶层 suite 8/9 passed、exit 1 不会被后续通过覆盖。
 
 RDC Operator Kit 为已获授权的电脑操作提供一条可核对的路径：读取当前状态，绑定目标，执行一次，再检查结果。它通过已有 RDC 传输调用本地 CLI，用 SmartCLI 控制终端，用 Microsoft winapp 控制 Windows 原生界面。网页交互使用宿主提供的官方 Browser 插件。
 
-本版新增三个只读 MCP 工具的输出 schema，以及不暴露原始任务参数的保存记录摘要；修复 Linux 安装目录链接与 liveness 中断丢失报告问题；更新静态首页和 Browser Evidence Lab 的浅色／深色布局与证据检索。新版视觉目前只经过源码和合成事件检查，不能把 a4 的网页操作结果当作 a5 浏览器验收。
+a5 新增三个只读 MCP 工具的输出 schema，以及不暴露原始任务参数的保存记录摘要；修复 Linux 安装目录链接与 liveness 中断丢失报告问题；更新静态首页和 Browser Evidence Lab 的浅色／深色布局与证据检索。新版视觉目前只经过源码和合成事件检查，不能把 a4 的网页操作结果当作 a5 浏览器验收。
+
+## a6：用户手动重连后继续原任务
+
+先确定任务是否需要设备操作。网页 UI 使用当前宿主的官方 Browser Skill；只读已保存记录直接读记录，两者都不要求额外 RDC discovery 或 doctor。确需 RDC 时重新发现当前连接和设备，保留旧任务授权与停止原因，并按新工具 schema 操作。用户手动登录完成，不代表旧 PID、call ID、tab 或截图仍可使用。
+
+已经确认使用 a6 时，保留原 config、原 state、原 request 文件和私有任务正文。按照[完整 Agent 指南](AGENT-GUIDE.zh-CN.md)准备文档，再执行：
+
+```text
+python -B -m rdc_operator --config config.local.json --state .rdc-state checkpoint recovery-checkpoint.local.json --expected-revision 0
+python -B -m rdc_operator --config config.local.json --state .rdc-state resume TASK_ID --context recovery-context.local.json
+```
+
+`TASK_ID` 替换为原检查点任务；只有首次创建用 revision 0，后续必须使用读到的当前 revision。两个命令都要求显式原 `--state`，不能新建目录来消除未知效果。checkpoint 写入本地检查点；resume 只生成 `blocked` 或 `review_required` 计划，exit 0 不授予执行许可，也不自动重试。`-B` 防止导入生成 Python 缓存；不承诺 OS 访问时间或宿主日志不变。
+
+相同 ID 的 `user_reconnected` 也建立新连接代次；未知结果先查独立业务证据，再重新观察目标。`quota`、`policy_refused`、`cancelled` 保留，不能通过新账号、凭据、state 或任务 ID 清除。本机制不是所有 `call`／RDC 操作的全局拦截器，Agent 必须继续落实原授权和停止边界。a5 只做人工对账；不因为需要新命令便自动升级或改账号。
+
+当前源码 core：Linux 225 run／221 pass／4 skip，Windows 225／212／13；两系统 source recovery smoke 各 17/17。Windows 两个已安装环境各 12 模块匹配 wheel，installed recovery 各 17/17，Linux 新隔离安装环境也为 17/17；另有真实 installed 现代 MCP 17 项。环境与反例见[第六轮报告](REVIEW-WAVE6.zh-CN.md)，这些分项不合并为一次任意应用验收。
 
 ## 安装
+
+以下固定下载示例保留 a5 已公开版本。a6 的候选安装结果与待发布状态见[发布检查点](RELEASE.zh-CN.md)，不要猜测尚未公布的资产链接。
 
 ### Windows
 
@@ -31,7 +50,7 @@ RDC Operator Kit 为已获授权的电脑操作提供一条可核对的路径：
 
 ### 已有 Windows 环境的离线 wheel 升级
 
-如果已有归属明确、依赖就绪的 `.venv` 或 `.venv-mcp`，可从 [v0.1.0a5 Release](https://github.com/dwgx/RDC-Operator-Kit/releases/tag/v0.1.0a5) 取得 `rdc_operator_kit-0.1.0a5-py3-none-any.whl` 和同批 `SHA256SUMS.txt`，核验后仅升级 Kit。本版最终 wheel 已在两个自有 Windows 环境安装并逐一核对 11 个模块；实际 installed CLI 与现代 MCP 的有限验证见第五轮报告第 11 节。先保留当前源码、已安装 Kit、配置和状态的备份，核对本地修改；下例在已有项目根目录运行，假定这两个发行文件已放在该目录。
+如果已有归属明确、依赖就绪的 `.venv` 或 `.venv-mcp`，可从 [v0.1.0a5 Release](https://github.com/dwgx/RDC-Operator-Kit/releases/tag/v0.1.0a5) 取得 `rdc_operator_kit-0.1.0a5-py3-none-any.whl` 和同批 `SHA256SUMS.txt`，核验后仅升级 Kit。a5 最终 wheel 已在两个自有 Windows 环境安装并逐一核对 11 个模块；实际 installed CLI 与现代 MCP 的有限验证见第五轮报告第 11 节。先保留当前源码、已安装 Kit、配置和状态的备份，核对本地修改；下例在已有项目根目录运行，假定这两个发行文件已放在该目录。
 
 先检查同名校验条目与实际文件一致；缺少条目、重复条目或摘要不符均停止：
 
@@ -250,7 +269,7 @@ Codex、OMP 或其他本地 Agent 可调用同一 CLI。RDC 使用者先确认�
 
 可分发的路由 Skill 在 [`skills/rdc-operator-kit/`](../skills/rdc-operator-kit/)。按宿主的 Skill 导入方式使用；上传文件不等于安装了 RDC、连接了浏览器或授予了电脑权限。ChatGPT 的浏览器工具与设备可用性取决于当前环境，不能由这个仓库保证。
 
-可选 stdio MCP 配套见 [MCP 安装及使用](MCP.zh-CN.md)。a5 提供以下三个只读工具；本轮首次 Windows SDK 2.3.0 的两个协议会话已实际运行，后续独立 review 又发现 smoke 判定缺口。修复与最终复验进展以第五轮报告为准，不能继承旧版两工具的通过结论。
+可选 stdio MCP 配套见 [MCP 安装及使用](MCP.zh-CN.md)。a5 提供以下三个只读工具；第五轮首次 Windows SDK 2.3.0 的两个协议会话已实际运行，后续独立 review 又发现 smoke 判定缺口。修复与最终复验进展以第五轮报告为准，不能继承旧版两工具的通过结论。
 
 | 工具 | 用途与返回边界 |
 |---|---|
@@ -270,6 +289,8 @@ Codex、OMP 或其他本地 Agent 可调用同一 CLI。RDC 使用者先确认�
 | `busy` | 读取当前拥有者的结果，等待其释放；不删除锁文件 |
 | `request_conflict` | 保留原 ID 的含义，核对请求与配置变更 |
 | `outcome_unknown` | 检查当前目标和独立见证，停止自动重试 |
+| `checkpoint_conflict` | 回读原检查点 revision，保留较新 writer 的记录 |
+| `checkpoint_commit_unconfirmed` | 提交可能已落盘；先只读核对，不重发保存或业务动作 |
 | `stale_observation` / `target_changed` | 新建 observe，重新选择目标 |
 | `browser_surface_required` | 转回宿主官方 Browser 插件，遵守其能力和策略 |
 

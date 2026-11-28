@@ -1,6 +1,25 @@
 # 架构与可靠性边界
 
-本文对应 `0.1.0a5`（2026-11-26，Asia/Tokyo）。执行入口仍是 [`core.py`](../rdc_operator/core.py)、[`common.py`](../rdc_operator/common.py)、[`adapters.py`](../rdc_operator/adapters.py) 和 [`omp.py`](../rdc_operator/omp.py)；截图文件证据在 [`frames.py`](../rdc_operator/frames.py)。a4 加入 [`windows.py`](../rdc_operator/windows.py) 只读诊断与 [`smoke_windows.py`](../scripts/smoke_windows.py) 串行验收；a5 扩展 [`mcp_server.py`](../rdc_operator/mcp_server.py) 的只读记录契约，并加强 Linux 安装与 liveness 报告。本文说明当前实现，本轮实际覆盖见 [第五轮报告](REVIEW-WAVE5.zh-CN.md)，历史 Windows 证据见 [第四轮报告](REVIEW-WAVE4.zh-CN.md)。
+本文对应 `0.1.0a5`（2026-11-26，Asia/Tokyo）。执行入口仍是 [`core.py`](https://github.com/dwgx/RDC-Operator-Kit/blob/v0.1.0a6/rdc_operator/core.py)、[`common.py`](https://github.com/dwgx/RDC-Operator-Kit/blob/v0.1.0a6/rdc_operator/common.py)、[`adapters.py`](https://github.com/dwgx/RDC-Operator-Kit/blob/v0.1.0a6/rdc_operator/adapters.py) 和 [`omp.py`](https://github.com/dwgx/RDC-Operator-Kit/blob/v0.1.0a6/rdc_operator/omp.py)；截图文件证据在 [`frames.py`](https://github.com/dwgx/RDC-Operator-Kit/blob/v0.1.0a6/rdc_operator/frames.py)。a4 加入 [`windows.py`](https://github.com/dwgx/RDC-Operator-Kit/blob/v0.1.0a6/rdc_operator/windows.py) 只读诊断与 [`smoke_windows.py`](https://github.com/dwgx/RDC-Operator-Kit/blob/v0.1.0a6/scripts/smoke_windows.py) 串行验收；a5 扩展 [`mcp_server.py`](https://github.com/dwgx/RDC-Operator-Kit/blob/v0.1.0a6/rdc_operator/mcp_server.py) 的只读记录契约，并加强 Linux 安装与 liveness 报告。本文说明当前实现，本轮实际覆盖见 [第五轮报告](REVIEW-WAVE5.zh-CN.md)，历史 Windows 证据见 [第四轮报告](REVIEW-WAVE4.zh-CN.md)。
+
+## a6 增量：检查点与只读恢复
+
+2026-11-28 的增量以 [恢复规格](RESUME-SPEC.zh-CN.md) 为契约；使用步骤见
+[Agent 指南](AGENT-GUIDE.zh-CN.md)。以下 a5 章节保留已有执行器和 MCP 的说明，
+不能把 a5 通过记录当成 a6 新功能验收。
+
+`recovery.py` 在原 state 内保存任务 marker 与有版本号的 checkpoint。保存使用现有
+state lock，更新要求 expected revision。scope/config/path/marker 保持绑定，原请求
+ID 不能被新检查点静默丢弃；hard stop 不能因换 route 消除。
+
+`resume` 不创建 state、不持有跨任务执行锁、不调用适配器；它前后核对 marker 和
+checkpoint，并通过现有安全读取器观察原请求记录。双重采样仍非原子快照。
+只读计划明确区分 caller-attested route、逻辑 state 连续性、未验证的物理身份与
+未独立验证的 request-config 关联，不输出执行许可。
+
+route change 与同 ID 的 user_reconnected 都使新检查点进入新代次。历史 handle
+保留来源，视觉观察必须重新建立；这是一项恢复工作规程，并未给旧版 `call`
+或宿主其他工具增加全局拦截器。任务的冻结原文和原请求文件仍须由 Agent 保留。
 
 ## 控制路径
 
@@ -136,7 +155,7 @@ OMP 适配器目前仅支持 `omp.preview`，调用已配置的 `origin-dispatch
 
 ## Linux 安装目录归属
 
-[`install.sh`](../scripts/install.sh) 使用源码内专用 `.venv` 和 ownership marker。a5 在执行解释器前额外拒绝 `.venv/bin` **目录** symlink，防止拥有的外层目录被用于执行链接目录里的其他解释器；正常 venv 的 `bin/python` 文件链接仍可工作。这个修复限定安装路径，不是对同一 OS 用户恶意并发修改或所有 venv 内容的完整防护。隔离 fixture 验证与实际机器安装必须分别记录。
+[`install.sh`](https://github.com/dwgx/RDC-Operator-Kit/blob/v0.1.0a6/scripts/install.sh) 使用源码内专用 `.venv` 和 ownership marker。a5 在执行解释器前额外拒绝 `.venv/bin` **目录** symlink，防止拥有的外层目录被用于执行链接目录里的其他解释器；正常 venv 的 `bin/python` 文件链接仍可工作。这个修复限定安装路径，不是对同一 OS 用户恶意并发修改或所有 venv 内容的完整防护。隔离 fixture 验证与实际机器安装必须分别记录。
 
 ## 证据与发布
 

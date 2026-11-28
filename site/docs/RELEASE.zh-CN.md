@@ -1,4 +1,31 @@
-# a5 发布、安装与 GitHub Pages
+# a6 安装与发布检查点
+
+状态日期：2026-11-28（Asia/Tokyo）。`0.1.0a6` 是当前 candidate；已安装包验证已完成，公开 CI、Release 与 Pages 仍为 **pending**。完整结果见[第六轮报告](REVIEW-WAVE6.zh-CN.md)。下面的 a5 章节保留真实已发布 tag、资产、校验和及历史命令，不能直接替换版本字符串便声称 a6 已发布。
+
+| a6 交付层 | 当前结果 | 后续记录要求 |
+|---|---|---|
+| 冻结源码 | 已从公开 main `54131f00c3b942797809a1b90424e845ef56fe13` 逐 SHA-256 对齐 139 个基线文件；最终运行时本地检查点 `06e0e21` | 本地 commit 不充当公开 tag；最终源码／文档同步另记 |
+| 源码验证 | Linux core 225／221 pass／4 skip；Windows 225／212 pass／13 skip；两系统恢复 smoke 各 17/17 | 保留平台、Python、原失败和 skip；不是一次九项 GUI 集成 suite |
+| 候选 wheel | 51,757 字节；SHA-256 `f84ae08e8e6625a14ca84fe2b4a154a58ee4829c5a3866dc9bb23656b2f2770e` | 此哈希核对本轮实际安装字节；公开资产仍需上传后下载回读 |
+| Windows 安装 | 两个已有环境 offline／no-deps 从 a5 升 a6；旧包备份，各 12 模块匹配 wheel，非 Kit 依赖及 config 哈希不变 | 实际 `-I` site-packages 导入；两个 `rdc-kit.exe` 版本 a6；源码主副本同步单独记录 |
+| 已安装恢复 | Windows 两环境各 17/17，Linux 新隔离 venv 同一 wheel 17/17 | Windows 每次六个 guarded resume、零副作用；不是 RDC 重登实验 |
+| 已安装现代 MCP | SDK 2.3.0，真正 stdio 协议 `2026-07-28`，17 checks passed | 三工具、双通道、unknown、正常退出与记录未变；与恢复 17 项分开 |
+| 公开源码／CI | pending | 实际 commit／run、每个 job 的测试数、skip、失败与最终结果 |
+| a6 tag／Release | pending | 精确固定 tag、时间、资产名／大小／SHA-256 与下载回读 |
+| a6 Pages | pending | 精确 commit／run、build/deploy 与 page URL；不增加 live UI 验收 |
+
+本轮新增的恢复材料过滤会剪除 `checkpoints` 目录，并排除 `.recovery-marker.json`、`recovery-checkpoint.local.json`、`recovery-context.local.json`、`recovery-handoff.local.md`。公开 example JSON 保留，归档和独立 HTML 使用同一过滤快照；七项定向隐私测试通过。这是命名与引用防护，不是通用秘密扫描；不得将原始账号、设备路由、token、state 或聊天／UI 内容加入发行快照。
+
+当前源码的复验入口：
+
+```bash
+python -B -m unittest discover -s tests -v
+python -I scripts/smoke_recovery.py --output-dir evidence/recovery-source-new
+```
+
+恢复 smoke 会创建自有合成子进程与证据；它不修改账号或连接。`resume` 的命令行只读示例使用 `python -B`，避免导入缓存写入。a5 安装不会因为读取新文档而具备 checkpoint／resume；旧版本继续人工核对，升级须按实际任务授权处理。可操作步骤见[Agent 指南](AGENT-GUIDE.zh-CN.md)和[恢复规格](RESUME-SPEC.zh-CN.md)。
+
+# 历史：a5 发布、安装与 GitHub Pages
 
 版本：`0.1.0a5`，已发布的 alpha。状态日期：2026-11-26（Asia/Tokyo）。
 
@@ -131,7 +158,7 @@ git clone --branch v0.1.0a5 --single-branch https://github.com/dwgx/RDC-Operator
 
 ## 5. GitHub CI 的实际范围
 
-[`ci.yml`](../.github/workflows/ci.yml) 使用 Ubuntu／Windows × Python 3.10／3.13 的四个核心 jobs，不安装可选依赖；依赖 Pydantic 的检查在未安装对应版本时明确 skip。另有 Ubuntu／Windows × Python 3.13 的两个独立 MCP jobs，创建 `.venv-mcp`、安装 `.[mcp]`、运行 modern／legacy 真实 stdio。它们不安装 SmartCLI，不连接个人设备，不运行桌面 GUI或真实模型。
+[`ci.yml`](https://github.com/dwgx/RDC-Operator-Kit/blob/v0.1.0a6/.github/workflows/ci.yml) 使用 Ubuntu／Windows × Python 3.10／3.13 的四个核心 jobs，不安装可选依赖；依赖 Pydantic 的检查在未安装对应版本时明确 skip。另有 Ubuntu／Windows × Python 3.13 的两个独立 MCP jobs，创建 `.venv-mcp`、安装 `.[mcp]`、运行 modern／legacy 真实 stdio。它们不安装 SmartCLI，不连接个人设备，不运行桌面 GUI或真实模型。
 
 核心 jobs 的 timeout 为 15 分钟，MCP jobs 为 10 分钟；矩阵 `fail-fast: false`。权限为 `contents: read`，checkout 不保留 credentials。实际 job 数、测试数、skip、失败与运行 URL 从该 commit 的 GitHub 回执读取；工作流存在不代表执行通过。
 
@@ -161,7 +188,7 @@ Actions 的固定 revision 已通过官方仓库 git-ref lookup 核对，当前 
 gh workflow run pages.yml --repo dwgx/RDC-Operator-Kit --ref main
 ```
 
-[`pages.yml`](../.github/workflows/pages.yml) 只接受手动触发，build 限定默认分支；上传范围仅为 `site/`。deploy 依赖 build，使用 `github-pages` environment；workflow 权限为 `contents: read`、`pages: write`、`id-token: write`，并设置独立并发组防止同时部署。此流程不会创建 MCP 服务或开放远程设备端口。[GitHub Pages 官方工作流说明](https://docs.github.com/en/pages/getting-started-with-github-pages/using-custom-workflows-with-github-pages)
+[`pages.yml`](https://github.com/dwgx/RDC-Operator-Kit/blob/v0.1.0a6/.github/workflows/pages.yml) 只接受手动触发，build 限定默认分支；上传范围仅为 `site/`。deploy 依赖 build，使用 `github-pages` environment；workflow 权限为 `contents: read`、`pages: write`、`id-token: write`，并设置独立并发组防止同时部署。此流程不会创建 MCP 服务或开放远程设备端口。[GitHub Pages 官方工作流说明](https://docs.github.com/en/pages/getting-started-with-github-pages/using-custom-workflows-with-github-pages)
 
 每次部署后检查准确 run／commit、两个 job 的完成状态，以及 `deploy-pages` 实际返回的 `page_url`。本版已取得发行提交的成功部署回执；这不增加新版 UI、剪贴板或响应式交互的 live browser 通过项，也不改动固定 tag 或 Release 资产。
 

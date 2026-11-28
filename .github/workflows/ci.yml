@@ -33,6 +33,8 @@ jobs:
           python-version: ${{ matrix.python }}
       - name: Run core and synthetic regression tests
         run: python -m unittest discover -s tests -v
+      - name: Check recovery after an owned child exits before its receipt
+        run: python -I scripts/smoke_recovery.py --output-dir evidence/recovery-source-ci
 
   mcp-stdio:
     name: MCP stdio / ${{ matrix.os }}
@@ -60,3 +62,4 @@ jobs:
           executable = pathlib.Path('.venv-mcp') / ('Scripts/python.exe' if sys.platform == 'win32' else 'bin/python')
           subprocess.run([str(executable), '-m', 'pip', 'install', '.[mcp]'], check=True)
           subprocess.run([str(executable), '-X', 'utf8', 'scripts/smoke_mcp.py', '--output-dir', 'evidence/mcp-ci'], check=True)
+          subprocess.run([str(executable), '-I', 'scripts/smoke_recovery.py', '--installed', '--output-dir', 'evidence/recovery-installed-ci'], check=True)

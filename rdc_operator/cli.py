@@ -41,7 +41,7 @@ def main(argv=None):
         sys.stdout.reconfigure(encoding="utf-8")
     parser = argparse.ArgumentParser(description="RDC Operator Kit — local adapters with durable receipts")
     parser.add_argument("--config", type=Path, default=Path("config.local.json"))
-    parser.add_argument("--state", type=Path, default=Path(".rdc-state"))
+    parser.add_argument("--state", type=Path, help="state directory; recovery commands require an explicit original path")
     parser.add_argument("--version", action="version", version=__version__)
     commands = parser.add_subparsers(dest="command", required=True)
     commands.add_parser("doctor", help="probe executable availability without changing desktop or starting models")
@@ -52,6 +52,12 @@ def main(argv=None):
     call.add_argument("--apply", action="store_true", help="apply already authorized state-changing action")
     receipt = commands.add_parser("receipt", help="read one saved receipt")
     receipt.add_argument("request_id")
+    checkpoint = commands.add_parser("checkpoint", help="save a local recovery checkpoint with compare-and-swap")
+    checkpoint.add_argument("document", type=Path, help="private checkpoint JSON document")
+    checkpoint.add_argument("--expected-revision", type=int, required=True)
+    resume = commands.add_parser("resume", help="read a recovery plan without creating state, executing or authorizing actions")
+    resume.add_argument("task_id")
+    resume.add_argument("--context", type=Path, required=True, help="fresh caller-observed route and recovery context")
     args = parser.parse_args(argv)
     try:
         if args.command == "windows-preflight":
@@ -59,6 +65,19 @@ def main(argv=None):
             result = inspect_windows_context(args.window)
             print(json.dumps(result, ensure_ascii=False, indent=2, allow_nan=False))
             return 0 if result["assessment"]["status"] == "observed" else 1
+        if args.command in {"checkpoint", "resume"}:
+            from .recovery import assess_resume, read_recovery_document, save_checkpoint
+            if args.state is None:
+                raise KitError("explicit_state_required", "Recovery requires the explicit original --state path")
+            config = read_recovery_document(args.config)
+            if args.command == "checkpoint":
+                result = save_checkpoint(read_recovery_document(args.document), config, args.state,
+                                         expected_revision=args.expected_revision)
+            else:
+                result = assess_resume(args.task_id, read_recovery_document(args.context), config, args.state)
+            print(json.dumps(result, ensure_ascii=False, indent=2, allow_nan=False))
+            return 1 if result["status"] == "blocked" else 0
+        args.state = args.state if args.state is not None else Path(".rdc-state")
         config = read_json(args.config)
         if args.command == "doctor":
             result = doctor(config)

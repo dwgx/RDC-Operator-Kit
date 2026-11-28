@@ -6,7 +6,7 @@
   <meta name="description" content="RDC Operator Kit：连接已授权的本地终端、Windows UIA 与 Agent 工作流。查看安装方式、工具边界和逐轮验收，保留失败与未知。">
   <meta name="color-scheme" content="light dark">
   <meta name="theme-color" content="#f7f8fc">
-  <title>RDC Operator Kit 0.1.0a5 · 把电脑上的工作，接回对话</title>
+  <title>RDC Operator Kit 0.1.0a6 · 把电脑上的工作，接回对话</title>
   <link rel="icon" href="./icon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="./styles.css">
   <script src="./app.js" defer></script>
@@ -22,7 +22,7 @@
       <nav aria-label="主导航">
         <a href="#capabilities">能力</a>
         <a href="#install">安装</a>
-        <a href="#windows-control">操控</a><a href="#validation">验收</a>
+        <a href="#reconnect">续作</a><a href="#windows-control">操控</a><a href="#validation">验收</a>
       </nav>
       <button class="theme-toggle enhancement-only" id="theme-toggle" type="button" aria-label="切换深色主题" title="切换深色主题">
         <svg class="moon" viewBox="0 0 20 20" aria-hidden="true"><path d="M16.5 11.8A7 7 0 0 1 8.2 3.5a7 7 0 1 0 8.3 8.3Z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
@@ -34,10 +34,10 @@
   <main id="main">
     <section class="hero container" aria-labelledby="hero-title">
       <div class="hero-copy">
-        <div class="eyebrow"><span class="release-pill">0.1.0a5 ALPHA</span><span>WINDOWS FIRST</span><span class="eyebrow-separator" aria-hidden="true">/</span><span>预发布已上线</span></div>
+        <div class="eyebrow"><span class="release-pill">0.1.0a6 ALPHA</span><span>WINDOWS FIRST</span><span class="eyebrow-separator" aria-hidden="true">/</span><span>安全续作 · Alpha</span></div>
         <p class="hero-overline">A local toolkit for capable agents.</p>
         <h1 id="hero-title">把电脑上的工作，<br><span>接回对话。</span></h1>
-        <p class="hero-description">复用你已有的 RDC、SmartCLI 与 OMP。让 Agent 读懂终端、定位窗口、执行明确动作，再用独立证据确认结果。每一次工作，都有可继续检查的记录。</p>
+        <p class="hero-description">复用你已有的 RDC、SmartCLI 与 OMP。让 Agent 读懂终端、定位窗口、执行明确动作，再用独立证据确认结果。手动重新登录后，从原检查点核对并继续。</p>
         <div class="hero-actions">
           <a class="button primary" href="#install">开始安装 <span aria-hidden="true">↗</span></a>
           <a class="button secondary" href="#capabilities">探索能力 <span aria-hidden="true">↓</span></a>
@@ -132,6 +132,20 @@ receipt.json
       <a class="text-link" href="./docs/CAPABILITIES.zh-CN.md">阅读完整能力表与 30 个 RDC 工具 <span aria-hidden="true">↗</span></a>
     </section>
 
+    <section class="section container" id="reconnect" aria-labelledby="reconnect-title">
+      <div class="section-heading"><div><p class="section-kicker">CONTINUE WITH CONTEXT / 0.1.0a6</p><h2 id="reconnect-title">重新登录，<br>接着原来的任务。</h2></div><p>先确认已经发生了什么。<br>保留完成结果，也保留未知。</p></div>
+      <div class="control-guide-grid">
+        <article class="control-guide-card"><span class="badge blue">01 · FIND</span><h3>找到当前连接</h3><p>用户完成正常登录后，重新读取当前设备清单。显示名、账号连接与设备标识分别核对，旧调用标识不自动迁移。</p></article>
+        <article class="control-guide-card"><span class="badge blue">02 · RECONCILE</span><h3>回到原来的状态</h3><p>检查原任务范围、状态目录、检查点版本与保存回执。其他 Agent 更新过检查点时，重新读取，避免漏掉尚未确认的工作。</p></article>
+        <article class="control-guide-card"><span class="badge neutral">03 · OBSERVE</span><h3>重新观察，再继续</h3><p>已有结果可继续核对。缺少回执时先查结果，不直接重复点击或命令。网页、窗口和终端在输入前重新观察。</p></article>
+      </div>
+      <div class="recovery-guide">
+        <details><summary>恢复计划会自动执行原操作吗？</summary><p>不会。<code>resume</code> 只读检查点并生成复核计划；它不会重新登录、自动重放、证明物理设备身份或授予操作权限。旧的配额、策略拒绝与取消状态会保留。</p></details>
+        <details><summary>其他 ChatGPT 或本地 Agent 怎样接手？</summary><p>交接原任务文档、状态目录、检查点 ID/版本、已完成证据和未决结果。读取 Skill 后选择当前可用路线；日志里的内容按数据处理。</p><a class="text-link" href="./docs/AGENT-GUIDE.zh-CN.md">查看 Agent 指南 ↗</a></details>
+        <details><summary>如何区分模拟与实测？</summary><p>隔离夹具会让一个真实子进程在写下效果之后、生成回执之前退出。它验证中断恢复语义，不会登出正在使用的 RDC，也不算真实账户切换或浏览器验收。</p><a class="text-link" href="./docs/RESUME-SPEC.zh-CN.md">查看恢复契约 ↗</a></details>
+      </div>
+    </section>
+
     <section class="section container" id="windows-control" aria-labelledby="windows-control-title">
       <div class="section-heading"><div><p class="section-kicker"><span>02</span> WINDOWS CONTROL / SINCE 0.1.0a4</p><h2 id="windows-control-title">知道什么时候能点，<br>也知道停在哪里。</h2></div><p>先观察目标与运行条件。<br>每次改变焦点，都作为一个明确动作。</p></div>
       <div class="control-guide-grid">
@@ -163,7 +177,7 @@ receipt.json
     <section class="section container" id="install">
       <div class="section-heading"><div><p class="section-kicker"><span>03</span> GET READY</p><h2>从一份本地源码开始。</h2></div><p>Python 3.10+ · 核心只用标准库<br>可选安装终端和 Windows 桌面依赖</p></div>
       <div class="install-layout">
-        <div class="install-aside"><span class="badge neutral">WINDOWS FIRST · ALPHA</span><h3>先取得源码，<br>再按平台安装。</h3><p>克隆源码，或从 Releases 选择完整源码包并核对校验和。安装器使用隔离的 <code>.venv</code> 与 <code>config.local.json</code>。</p><a class="button primary" href="https://github.com/dwgx/RDC-Operator-Kit">打开 GitHub 仓库 ↗</a><p class="scope-note"><a href="https://github.com/dwgx/RDC-Operator-Kit/releases/tag/v0.1.0a5">下载 0.1.0a5 与校验文件</a><br>现有配置、全局 PATH 与 RDC 登录保持原状。</p></div>
+        <div class="install-aside"><span class="badge neutral">WINDOWS FIRST · ALPHA</span><h3>先取得源码，<br>再按平台安装。</h3><p>克隆源码，或从 Releases 选择完整源码包并核对校验和。安装器使用隔离的 <code>.venv</code> 与 <code>config.local.json</code>。</p><a class="button primary" href="https://github.com/dwgx/RDC-Operator-Kit">打开 GitHub 仓库 ↗</a><p class="scope-note"><a href="https://github.com/dwgx/RDC-Operator-Kit/releases/tag/v0.1.0a6">下载 0.1.0a6 与校验文件</a><br>现有配置、全局 PATH 与 RDC 登录保持原状。</p></div>
         <div class="install-main">
           <div class="install-tabs tabs" role="tablist" aria-label="安装方式">
             <button id="tab-windows" role="tab" aria-selected="true" aria-controls="panel-windows" data-tab="windows" tabindex="0">Windows</button>
@@ -172,7 +186,7 @@ receipt.json
           </div>
           <div class="install-panel" id="panel-windows" role="tabpanel" aria-labelledby="tab-windows" tabindex="0">
             <div class="install-code-top"><span>PowerShell · 下载固定发行版本</span><button class="copy-button" type="button" data-copy="code-windows">复制</button></div>
-            <pre><code id="code-windows">git clone --branch v0.1.0a5 --single-branch https://github.com/dwgx/RDC-Operator-Kit.git
+            <pre><code id="code-windows">git clone --branch v0.1.0a6 --single-branch https://github.com/dwgx/RDC-Operator-Kit.git
 if ($LASTEXITCODE -ne 0) { throw 'Source download failed.' }
 Set-Location RDC-Operator-Kit
 .\scripts\install.ps1 -WithTerminal -WithDesktop
@@ -183,7 +197,7 @@ if ($LASTEXITCODE -ne 0) { throw 'Installation failed.' }
           <div class="install-panel" id="panel-agent" role="tabpanel" aria-labelledby="tab-agent" tabindex="0" hidden>
             <div class="install-code-top"><span>可复制的接手说明</span><button class="copy-button" type="button" data-copy="code-agent">复制</button></div>
             <pre><code id="code-agent">读取 https://github.com/dwgx/RDC-Operator-Kit 的 README 和 Skill。
-检出已发布 v0.1.0a5，核对该 Release 的发布记录与校验文件。
+检出 v0.1.0a6；先核对该 Release 的发布记录与校验文件。
 确认本机平台、依赖、目标目录与现有 RDC 路线。
 按安装文档准备隔离环境，然后运行 doctor。
 运行 windows-preflight，再用有界 Windows smoke 验证。
@@ -195,7 +209,7 @@ if ($LASTEXITCODE -ne 0) { throw 'Installation failed.' }
           </div>
           <div class="install-panel" id="panel-linux" role="tabpanel" aria-labelledby="tab-linux" tabindex="0" hidden>
             <div class="install-code-top"><span>Shell · 核心与终端路线</span><button class="copy-button" type="button" data-copy="code-linux">复制</button></div>
-            <pre><code id="code-linux">git clone --branch v0.1.0a5 --single-branch https://github.com/dwgx/RDC-Operator-Kit.git &amp;&amp;
+            <pre><code id="code-linux">git clone --branch v0.1.0a6 --single-branch https://github.com/dwgx/RDC-Operator-Kit.git &amp;&amp;
 cd RDC-Operator-Kit &amp;&amp;
 bash scripts/install.sh --with-terminal &amp;&amp;
 .venv/bin/python -m rdc_operator --config config.local.json --state .rdc-state doctor</code></pre>
@@ -223,11 +237,11 @@ bash scripts/install.sh --with-terminal &amp;&amp;
         </div>
         <div class="evidence-grid" id="evidence-grid">
           <article class="evidence-card" data-kind="source"><span class="badge neutral">HISTORICAL TOOL CATALOG</span><h3>30 项工具的历史盘点</h3><p>第二轮 schema 快照覆盖文件、搜索、进程与设备。当前可用能力以本次连接为准，工具存在不等于已逐项实测。</p><a href="./docs/CAPABILITIES.zh-CN.md">查看范围与清单 <span aria-hidden="true">↗</span></a></article>
-          <article class="evidence-card" data-kind="source"><span class="badge neutral">WAVE 05 · SOURCE + REVIEW</span><h3>研究进入实现，也接受反例</h3><p>Firecrawl 核对官方 MCP 规范与 SDK，Scite 提供论文元数据与摘录。独立审查复现安装、归档、输入法和验收判定问题。</p><a href="./docs/REVIEW-WAVE5.zh-CN.md">阅读第五轮研究与修复 <span aria-hidden="true">↗</span></a></article>
+          <article class="evidence-card" data-kind="source"><span class="badge neutral">WAVE 06 · RECOVERY REVIEW</span><h3>换了连接，也不丢掉任务证据</h3><p>任务检查点绑定原状态、范围和配置。真实子进程留下效果后中断，恢复器保留未知，原请求没有再次产生效果。</p><a href="./docs/REVIEW-WAVE6.zh-CN.md">阅读第六轮研究与修复 <span aria-hidden="true">↗</span></a></article>
           <article class="evidence-card" data-kind="contract"><span class="badge blue">WINDOWS FIXTURE</span><h3>可追溯的有限画面采样</h3><p>原生测试窗已保存操作前后图和动态三帧，manifest 记录各帧身份与哈希。复合窗口图被拒绝为单窗证据。</p><a href="./docs/research-wave2/REPORT.zh-CN.md">查看画面证据与边界 <span aria-hidden="true">↗</span></a></article>
           <article class="evidence-card" data-kind="contract"><span class="badge blue">LIVENESS DIAGNOSTICS</span><h3>9 场景终端诊断</h3><p>Windows 与 Linux 的自建管道探针覆盖沉默、等待输入、洪泛、超时和虚假完成信号。Windows venv PID 问题保留失败及修复记录。</p><a href="./docs/research-wave2/REPORT.zh-CN.md">查看命令存活性结果 <span aria-hidden="true">↗</span></a></article>
           <article class="evidence-card" data-kind="contract"><span class="badge blue">OPTIONAL MCP · READ ONLY</span><h3>三个只读工具，一个明确契约</h3><p>描述配置、读取原回执、摘要保存记录。输出 schema 由 SDK 验证；摘要不返回原 intent 内容，也不推断实时运行状态。</p><a href="./docs/MCP.zh-CN.md">查看接口和 72 项协议检查 <span aria-hidden="true">↗</span></a></article>
-          <article class="evidence-card" data-kind="blocked"><span class="badge amber">WAVE 05 / DISPATCH</span><h3>有截止，也如实保留阻断</h3><p>GLM 本轮约 179 秒后 deadline；DeepSeek 返回 402。两项都没有最终审阅。HMC 的月度配额阻断也保持未验证。</p><a href="./docs/REVIEW-WAVE5.zh-CN.md">查看本轮外部服务结果 <span aria-hidden="true">↗</span></a></article>
+          <article class="evidence-card" data-kind="blocked"><span class="badge amber">WAVE 05 / DISPATCH</span><h3>有截止，也如实保留阻断</h3><p>第五轮 GLM 约 179 秒后 deadline；DeepSeek 返回 402。两项都没有最终审阅。HMC 的月度配额阻断也保持未验证。</p><a href="./docs/REVIEW-WAVE5.zh-CN.md">查看历史外部服务结果 <span aria-hidden="true">↗</span></a></article>
           <article class="evidence-card" data-kind="blocked"><span class="badge amber">RELAY · PARTIAL</span><h3>操作完成，验收未完成</h3><p>本地页的一次点击与 DOM 回读有证据；后续验收变量错误和任务期限导致整轮 BLOCKED。没有重放原点击补结果。</p><a href="./docs/research-wave2/REPORT.zh-CN.md">查看已发生与缺失的证据 <span aria-hidden="true">↗</span></a></article>
           <article class="evidence-card" data-kind="blocked"><span class="badge amber">BLOCKED_BY_POLICY</span><h3>ChatGPT origin</h3><p>已确认选择 Edge；host restrictions gate 拒绝访问 chatgpt.com。此项没有改走其他通道。</p><button class="text-button" type="button" id="show-browser">查看浏览器路线 <span aria-hidden="true">↗</span></button></article>
         </div>
@@ -237,7 +251,22 @@ bash scripts/install.sh --with-terminal &amp;&amp;
     </section>
 
     <section class="section container" id="validation" aria-labelledby="validation-current-title">
-      <div class="section-heading"><div><p class="section-kicker"><span>05</span> WAVE 05 / 2026-11-26</p><h2 id="validation-current-title">每次改进，<br>都要经得起核对。</h2></div><p>先运行实际流程，再审查验收本身。<br>每个数字都有明确范围。</p></div>
+      <div class="section-heading"><div><p class="section-kicker"><span>05</span> WAVE 06 / 2026-11-28</p><h2 id="validation-current-title">续作之前，<br>先核对已经发生的事。</h2></div><p>真实中断、故障注入与安装验收分开记录。<br>未知结果不会被当成重试许可。</p></div>
+      <div class="qa-overview"><article><small>Linux a6 核心回归</small><strong>221 / 225</strong><span>4 跳过 · 0 失败</span></article><article><small>Windows a6 核心回归</small><strong>212 / 225</strong><span>13 跳过 · 0 失败</span></article><article><small>已安装恢复 smoke</small><strong>17 / 17</strong><span>Windows 两环境分别通过 · Linux 通过</span></article></div>
+      <div class="qa-table-wrap" role="region" tabindex="0" aria-label="第六轮验收表，可横向滚动"><table class="qa-table"><caption>a6 恢复功能验收；模拟连接变化，不执行真实登出</caption><thead><tr><th>范围</th><th>结果</th><th>证据与边界</th></tr></thead><tbody>
+      <tr><td>效果已发生、回执尚未保存</td><td class="qa-pass">真实子进程中断</td><td>独立计数见证、exit 73、intent 保留；未知结果阻止续作，重复请求没有再次产生效果。</td></tr>
+      <tr><td>检查点并发与身份</td><td class="qa-pass">回归通过</td><td>原 state、marker、scope/config、revision、类型化句柄归属与停止原因逐项核对。</td></tr>
+      <tr><td>已安装包</td><td class="qa-pass">实包通过</td><td>Windows 两环境各 12 个模块与 wheel 一致；真实 site-packages 导入，配置和非 Kit 依赖未变。</td></tr>
+      <tr><td>故障与验收反例</td><td class="qa-pass">发现并修复</td><td>null 检查点、NUL 路径、提交后读回失败、恢复私有文件打包风险，以及能伪装通过的 smoke。</td></tr>
+      <tr><td>Agent 操作指南</td><td class="qa-pass">已更新</td><td>普通任务主动选择许可工具；重登后新观察、保留原授权、未知效果不重放。独立交接演练与 Skill 保存回读完成。</td></tr>
+      <tr><td>Browser / OMP / HMC</td><td class="qa-partial">沿用已知边界</td><td>本轮没有重新访问已拒绝目标、重试配额阻断或执行账号轮换；新增页面内容仅做静态检查。</td></tr>
+      </tbody></table></div>
+      <p class="evidence-footer">恢复计划由调用者提供当前连接观察；本地 marker 不能证明物理机器身份。review_required 不是执行许可。历史功能验收保留在下方，不算作本轮重新执行。</p>
+      <a class="text-link" href="./docs/REVIEW-WAVE6.zh-CN.md">阅读第六轮完整报告与发布记录 ↗</a>
+    </section>
+
+    <section class="section container history-section" id="validation-wave5" aria-labelledby="validation-wave5-title">
+      <div class="section-heading"><div><p class="section-kicker"><span>05</span> WAVE 05 / 历史证据 · 2026-11-26</p><h2 id="validation-wave5-title">每次改进，<br>都要经得起核对。</h2></div><p>先运行实际流程，再审查验收本身。<br>每个数字都有明确范围。</p></div>
       <div class="qa-overview"><article><small>Linux a5 核心回归</small><strong>181 / 184</strong><span>3 项 Windows 专用跳过 · 0 失败</span></article><article><small>Windows a5 核心回归</small><strong>173 / 184</strong><span>11 跳过 · 0 失败</span></article><article><small>Windows 有界总验收</small><strong>9 / 9</strong><span>一次源码快照运行 · exit 0</span></article></div>
       <div class="qa-table-wrap" role="region" tabindex="0" aria-label="第五轮验收表，可横向滚动"><table class="qa-table"><caption>a5 源码与修复后的定点验证；不是实时设备状态</caption><thead><tr><th>范围</th><th>结果</th><th>证据与边界</th></tr></thead><tbody>
       <tr><td>聚焦与鼠标点击</td><td class="qa-pass">14 项通过</td><td>自有窗口、精确前台回读、独立计数、重复请求不二次点击。</td></tr>
@@ -282,7 +311,7 @@ bash scripts/install.sh --with-terminal &amp;&amp;
 <section class="closing container"><div><p class="section-kicker">SMALL CORE. CLEAR RESPONSIBILITY.</p><h2>把复杂度留在该在的地方。</h2><p>连接交给 RDC，终端交给 SmartCLI，Windows 控件交给 winapp。<br>Kit 负责把动作范围、证据与结果接起来。</p></div><a class="button secondary" href="./docs/WINDOWS-CONTROL.zh-CN.md">阅读 Windows 操控指南 <span aria-hidden="true">↗</span></a></section>
   </main>
 
-  <footer class="site-footer"><div class="container footer-top"><span class="footer-brand">RDC Operator Kit</span><span>独立配套项目 · 0.1.0a5 Alpha · 2026-11-26</span><a href="#main">回到顶部 ↑</a></div><div class="container footer-bottom"><p>参考上游：<a href="https://github.com/wonderwhy-er/DesktopCommanderMCP" rel="noreferrer">Desktop Commander</a><a href="https://github.com/dwgx/SmartCLI" rel="noreferrer">SmartCLI</a><a href="https://github.com/microsoft/winappCli" rel="noreferrer">WinApp CLI</a></p><p>无远端脚本 · 无跟踪服务 · 无设备控制连接</p></div></footer>
+  <footer class="site-footer"><div class="container footer-top"><span class="footer-brand">RDC Operator Kit</span><span>独立配套项目 · 0.1.0a6 Alpha · 2026-11-28</span><a href="#main">回到顶部 ↑</a></div><div class="container footer-bottom"><p>参考上游：<a href="https://github.com/wonderwhy-er/DesktopCommanderMCP" rel="noreferrer">Desktop Commander</a><a href="https://github.com/dwgx/SmartCLI" rel="noreferrer">SmartCLI</a><a href="https://github.com/microsoft/winappCli" rel="noreferrer">WinApp CLI</a></p><p>无远端脚本 · 无跟踪服务 · 无设备控制连接</p></div></footer>
   <div class="screen-reader-only" role="status" aria-live="polite" id="announcement"></div>
   <noscript><p class="noscript-note">JavaScript 未启用，所有路线与安装面板已展开。复制和主题按钮不可用；完整说明也可在页面链接的 Markdown 文档中查看。</p></noscript>
 </body>

@@ -1,3 +1,59 @@
+# 0.1.0a6 — candidate, 2026-11-28
+
+### Added
+
+- Durable task checkpoints with compare-and-swap revisions, exact original-state
+  marker/path binding, frozen scope/config fingerprints and append-only request IDs.
+- Read-only resumption plans after user-managed reconnection, including same-ID
+  reconnect generations, typed-handle provenance, retained stop reasons and
+  before/after checkpoint sampling. Plans never authorize execution or replay;
+  this is not a global interceptor for every call or control tool.
+- A real owned child-exit fixture for an effect before its receipt, plus an
+  installed-package mode that verifies actual isolated site-packages imports.
+- Task-first Skill routing, a private agent handoff guide and version-scoped
+  recovery research. Browser-only and saved-record tasks need no RDC discovery.
+
+### Fixed
+
+- Treat a JSON null checkpoint as corruption, not absence; normalize NUL state
+  paths into structured errors without overwriting existing records.
+- Preserve uncertain commit semantics when atomic replacement succeeds but
+  checkpoint readback fails. Keep the committed revision and reject stale writers.
+- Guard smoke assessments against Python-level side-effect attempts; verify full
+  request/handle evidence and use held-worker cleanup with bounded file logging.
+  Independent mutations now reject swallowed effects and empty evidence.
+- Exclude private recovery checkpoints, markers, local contexts and handoff files
+  before release traversal and standalone preview generation; retain public examples.
+- Document and test the -B CLI boundary: normal Python imports may create bytecode
+  even when the assessment function itself performs no writes.
+
+### Verification and delivery status
+
+- Final Linux Python 3.12.14 core: 225 run, 221 passed, four Windows-only skips.
+  Windows 11 build 26300 / Python 3.14.7 core: 225 run, 212 passed, 13 skipped.
+  Both exited zero. The earlier Linux 223/219/4 result remains a separate checkpoint.
+- Linux and Windows source recovery smoke each passed 17 checks. These use owned
+  synthetic effects, not real RDC reauthentication, Browser or GUI operations.
+- Three independent runtime regressions passed after their original failures;
+  release privacy passed seven test methods after 26 failure entries including
+  subtests. Fresh-copy -B CLI passed; removing -B created seven pyc files and the
+  negative control failed as expected. Targeted counts are not added to core totals.
+- Both owned Windows environments upgraded offline/no-deps from a5 to a6 with
+  backups, 12 installed modules matching the wheel, and unchanged other dependency
+  versions and config hashes. Both actual CLI entry points returned a6; isolated
+  installed recovery smoke passed 17/17 in each, and in one fresh Linux environment.
+- A separate real installed SDK 2.3.0 MCP session negotiated 2026-07-28 and passed
+  17 assertions for three tools, strict text/structured equality, retained unknown
+  outcome, unchanged records and normal worker exit. It is not the recovery suite.
+- The installed wheel is 51,757 bytes; its SHA-256 is recorded in
+  [Wave 06](docs/REVIEW-WAVE6.zh-CN.md). Source synchronization and public delivery
+  remain separate from site-packages installation.
+- Canonical Skill resources were saved and read back. Four native-agent scenario
+  responses exercised the handoff guidance without performing live task actions.
+- a6 public CI, Release and Pages remain pending at this documentation checkpoint.
+  Previous Browser refusals, HMC quota block and OMP failures were not rerun or bypassed.
+  Previous release evidence remains below and is not inherited by a6.
+
 # 0.1.0a5 — released alpha, 2026-11-26
 
 ### Added

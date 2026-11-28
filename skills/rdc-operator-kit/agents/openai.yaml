@@ -1,14 +1,13 @@
 interface:
-  display_name: RDC Operator Kit
-  short_description: Operate and verify desktop and terminal work
-  default_prompt: Use $rdc-operator-kit to choose an available computer-control route
-    and verify the actual result.
-  icon_small: assets/icon.svg
-  icon_large: assets/icon.svg
+  display_name: "RDC Operator Kit"
+  short_description: "Operate, resume and verify computer work"
+  default_prompt: "Use $rdc-operator-kit to choose the permitted route, reconcile a checkpoint when resuming, and verify the requested result."
+  icon_small: "assets/icon.svg"
+  icon_large: "assets/icon.svg"
 policy:
   products:
-  - chatgpt
-  - codex
-  - api
-  - atlas
+  - "chatgpt"
+  - "codex"
+  - "api"
+  - "atlas"
   allow_implicit_invocation: true

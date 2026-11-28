@@ -36,6 +36,19 @@ script's old evidence flags to pretend that the script viewed the picture.
 
 ## Browser evidence
 
+For requested page interaction or visual acceptance, use the current official
+Browser skill proactively. Follow its connector preference, selected-browser
+scope and advertised API. Reacquire tab/origin/document and current semantic
+targets after navigation, reload, worker recovery or a manual handoff. When a
+permitted CUA action needs coordinates, inspect a fresh screenshot first and
+capture/read the result afterward; never reuse old coordinates across a change.
+
+Keep action readiness, accepted input and business effect separate. A visible
+enabled control can still lack its application's event handler during hydration.
+Wait for the relevant application condition and verify the intended effect;
+do not repeat a click to compensate for an uncertain response. See [recovery](recovery.md)
+for preserved request identities and typed handles after a connection change.
+
 `scripts/verify_browser_evidence.py` checks a small fixture bundle offline. It
 does not operate a browser, authenticate evidence, or grant website access.
 `verified_fixture` means the supplied synthetic evidence is internally
