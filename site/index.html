@@ -34,7 +34,7 @@
   <main id="main">
     <section class="hero container" aria-labelledby="hero-title">
       <div class="hero-copy">
-        <div class="eyebrow"><span class="release-pill">0.1.0a6 ALPHA</span><span>WINDOWS FIRST</span><span class="eyebrow-separator" aria-hidden="true">/</span><span>安全续作 · Alpha</span></div>
+        <div class="eyebrow"><span class="release-pill">0.1.0a6 ALPHA</span><span>WINDOWS FIRST</span><span class="eyebrow-separator" aria-hidden="true">/</span><span>预发布已上线 · 安全续作</span></div>
         <p class="hero-overline">A local toolkit for capable agents.</p>
         <h1 id="hero-title">把电脑上的工作，<br><span>接回对话。</span></h1>
         <p class="hero-description">复用你已有的 RDC、SmartCLI 与 OMP。让 Agent 读懂终端、定位窗口、执行明确动作，再用独立证据确认结果。手动重新登录后，从原检查点核对并继续。</p>
@@ -259,6 +259,7 @@ bash scripts/install.sh --with-terminal &amp;&amp;
       <tr><td>已安装包</td><td class="qa-pass">实包通过</td><td>Windows 两环境各 12 个模块与 wheel 一致；真实 site-packages 导入，配置和非 Kit 依赖未变。</td></tr>
       <tr><td>故障与验收反例</td><td class="qa-pass">发现并修复</td><td>null 检查点、NUL 路径、提交后读回失败、恢复私有文件打包风险，以及能伪装通过的 smoke。</td></tr>
       <tr><td>Agent 操作指南</td><td class="qa-pass">已更新</td><td>普通任务主动选择许可工具；重登后新观察、保留原授权、未知效果不重放。独立交接演练与 Skill 保存回读完成。</td></tr>
+      <tr><td>公开发行与 CI</td><td class="qa-pass">6 jobs · 9 assets</td><td>发行提交六个 CI job 全部成功；九个资产实际下载哈希一致；同提交 Pages build/deploy 成功。<a href="https://github.com/dwgx/RDC-Operator-Kit/actions/runs/46128657762">CI 回执 ↗</a></td></tr>
       <tr><td>Browser / OMP / HMC</td><td class="qa-partial">沿用已知边界</td><td>本轮没有重新访问已拒绝目标、重试配额阻断或执行账号轮换；新增页面内容仅做静态检查。</td></tr>
       </tbody></table></div>
       <p class="evidence-footer">恢复计划由调用者提供当前连接观察；本地 marker 不能证明物理机器身份。review_required 不是执行许可。历史功能验收保留在下方，不算作本轮重新执行。</p>

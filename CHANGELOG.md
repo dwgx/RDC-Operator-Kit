@@ -1,4 +1,4 @@
-# 0.1.0a6 — candidate, 2026-11-28
+# 0.1.0a6 — released alpha, 2026-11-28
 
 ### Added
 
@@ -46,11 +46,15 @@
   17 assertions for three tools, strict text/structured equality, retained unknown
   outcome, unchanged records and normal worker exit. It is not the recovery suite.
 - The installed wheel is 51,757 bytes; its SHA-256 is recorded in
-  [Wave 06](docs/REVIEW-WAVE6.zh-CN.md). Source synchronization and public delivery
-  remain separate from site-packages installation.
+  [Wave 06](docs/REVIEW-WAVE6.zh-CN.md). The Windows source tree separately
+  verified all 156 public source files; its rollback copy remains available.
 - Canonical Skill resources were saved and read back. Four native-agent scenario
   responses exercised the handoff guidance without performing live task actions.
-- a6 public CI, Release and Pages remain pending at this documentation checkpoint.
+- a6 was published at 18:07:02 JST from `edf4aa52e11d1f326cee93a538b8dfa7422a055f`.
+  All six [CI jobs](https://github.com/dwgx/RDC-Operator-Kit/actions/runs/46128657762)
+  passed; all nine release assets were downloaded and hash-verified before publication.
+  [Pages build/deploy](https://github.com/dwgx/RDC-Operator-Kit/actions/runs/46129018315)
+  succeeded for the same release source. These main-branch notes do not rewrite the tag.
   Previous Browser refusals, HMC quota block and OMP failures were not rerun or bypassed.
   Previous release evidence remains below and is not inherited by a6.
 

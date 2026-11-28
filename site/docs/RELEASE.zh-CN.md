@@ -1,18 +1,18 @@
 # a6 安装与发布检查点
 
-状态日期：2026-11-28（Asia/Tokyo）。`0.1.0a6` 是当前 candidate；已安装包验证已完成，公开 CI、Release 与 Pages 仍为 **pending**。完整结果见[第六轮报告](REVIEW-WAVE6.zh-CN.md)。下面的 a5 章节保留真实已发布 tag、资产、校验和及历史命令，不能直接替换版本字符串便声称 a6 已发布。
+状态日期：2026-11-28（Asia/Tokyo）。`0.1.0a6` 已公开为 alpha；安装验证、六个 CI job、九项资产下载回读和发行提交 Pages 部署均已完成。完整结果见[第六轮报告](REVIEW-WAVE6.zh-CN.md)。下面的 a5 章节保留历史命令；当前 a6 安装入口与实际回执在本节。
 
 | a6 交付层 | 当前结果 | 后续记录要求 |
 |---|---|---|
 | 冻结源码 | 已从公开 main `54131f00c3b942797809a1b90424e845ef56fe13` 逐 SHA-256 对齐 139 个基线文件；最终运行时本地检查点 `06e0e21` | 本地 commit 不充当公开 tag；最终源码／文档同步另记 |
 | 源码验证 | Linux core 225／221 pass／4 skip；Windows 225／212 pass／13 skip；两系统恢复 smoke 各 17/17 | 保留平台、Python、原失败和 skip；不是一次九项 GUI 集成 suite |
-| 候选 wheel | 51,757 字节；SHA-256 `f84ae08e8e6625a14ca84fe2b4a154a58ee4829c5a3866dc9bb23656b2f2770e` | 此哈希核对本轮实际安装字节；公开资产仍需上传后下载回读 |
+| 已验证 wheel | 51,757 字节；SHA-256 `f84ae08e8e6625a14ca84fe2b4a154a58ee4829c5a3866dc9bb23656b2f2770e` | 此哈希核对本轮实际安装字节及上传后实际下载的相同资产 |
 | Windows 安装 | 两个已有环境 offline／no-deps 从 a5 升 a6；旧包备份，各 12 模块匹配 wheel，非 Kit 依赖及 config 哈希不变 | 实际 `-I` site-packages 导入；两个 `rdc-kit.exe` 版本 a6；源码主副本同步单独记录 |
 | 已安装恢复 | Windows 两环境各 17/17，Linux 新隔离 venv 同一 wheel 17/17 | Windows 每次六个 guarded resume、零副作用；不是 RDC 重登实验 |
 | 已安装现代 MCP | SDK 2.3.0，真正 stdio 协议 `2026-07-28`，17 checks passed | 三工具、双通道、unknown、正常退出与记录未变；与恢复 17 项分开 |
-| 公开源码／CI | pending | 实际 commit／run、每个 job 的测试数、skip、失败与最终结果 |
-| a6 tag／Release | pending | 精确固定 tag、时间、资产名／大小／SHA-256 与下载回读 |
-| a6 Pages | pending | 精确 commit／run、build/deploy 与 page URL；不增加 live UI 验收 |
+| 公开源码／CI | 已完成 | `edf4aa52`；CI run 46128657762 六个 job 全部成功；计数见第六轮报告第 9 节 |
+| a6 tag／Release | 已发布 | 2026-11-28 18:07:02 JST；固定 `v0.1.0a6`，九项资产下载回读一致 |
+| a6 Pages | 已部署 | run 46129018315，发行提交 build/deploy success；不增加 live UI 验收 |
 
 本轮新增的恢复材料过滤会剪除 `checkpoints` 目录，并排除 `.recovery-marker.json`、`recovery-checkpoint.local.json`、`recovery-context.local.json`、`recovery-handoff.local.md`。公开 example JSON 保留，归档和独立 HTML 使用同一过滤快照；七项定向隐私测试通过。这是命名与引用防护，不是通用秘密扫描；不得将原始账号、设备路由、token、state 或聊天／UI 内容加入发行快照。
 
@@ -24,6 +24,26 @@ python -I scripts/smoke_recovery.py --output-dir evidence/recovery-source-new
 ```
 
 恢复 smoke 会创建自有合成子进程与证据；它不修改账号或连接。`resume` 的命令行只读示例使用 `python -B`，避免导入缓存写入。a5 安装不会因为读取新文档而具备 checkpoint／resume；旧版本继续人工核对，升级须按实际任务授权处理。可操作步骤见[Agent 指南](AGENT-GUIDE.zh-CN.md)和[恢复规格](RESUME-SPEC.zh-CN.md)。
+
+
+## 安装当前 a6 固定版本
+
+[下载 a6 Release](https://github.com/dwgx/RDC-Operator-Kit/releases/tag/v0.1.0a6) ·
+[Windows ZIP](https://github.com/dwgx/RDC-Operator-Kit/releases/download/v0.1.0a6/RDC-Operator-Kit-0.1.0a6.zip) ·
+[SHA256SUMS.txt](https://github.com/dwgx/RDC-Operator-Kit/releases/download/v0.1.0a6/SHA256SUMS.txt)
+
+Windows 新目录示例（已有安装请先按[离线升级说明](README.zh-CN.md#已有-windows-环境的离线-wheel-升级)核对修改与备份）：
+
+```powershell
+git clone --branch v0.1.0a6 --single-branch https://github.com/dwgx/RDC-Operator-Kit.git RDC-Operator-Kit-a6
+Set-Location RDC-Operator-Kit-a6
+.\scripts\install.ps1 -WithTerminal -WithDesktop
+.\.venv\Scripts\python.exe -B -I -m rdc_operator --version
+```
+
+Linux 用同一固定 tag，进入源码目录后运行 `bash scripts/install.sh --with-terminal`。
+现代 MCP SDK 继续使用独立环境；三只读工具见 [MCP 指南](MCP.zh-CN.md)。当前一轮
+真实安装验证的范围和所有资产哈希见[第六轮报告第 9 节](REVIEW-WAVE6.zh-CN.md#9-实际公开发行与-pages-部署)。
 
 # 历史：a5 发布、安装与 GitHub Pages
 

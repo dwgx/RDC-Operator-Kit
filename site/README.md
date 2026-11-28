@@ -4,6 +4,16 @@ This directory contains a self-contained static project guide and Browser Eviden
 Lab. It needs no build step, package install, remote font, analytics service or
 live device connection. The page is documentation, not a remote-control console.
 
+## a6 publication receipt
+
+Version [v0.1.0a6](https://github.com/dwgx/RDC-Operator-Kit/releases/tag/v0.1.0a6)
+was published at 18:07:02 JST on 2026-11-28 from `edf4aa52e11d1f326cee93a538b8dfa7422a055f`.
+All nine assets passed actual download/SHA-256 readback. The exact source passed
+all six [CI jobs](https://github.com/dwgx/RDC-Operator-Kit/actions/runs/46128657762)
+and [Pages build/deploy](https://github.com/dwgx/RDC-Operator-Kit/actions/runs/46129018315).
+Later main notes record these receipts without replacing the frozen release assets.
+Deployment remains separate from live browser acceptance.
+
 ## a6 recovery guide
 
 The homepage adds a manual-reconnection workflow, original-state reconciliation,

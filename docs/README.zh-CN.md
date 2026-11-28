@@ -1,10 +1,10 @@
 # RDC Operator Kit 使用指南
 
-当前源码：`0.1.0a6` candidate，状态日期 2026-11-28（Asia/Tokyo）。Windows／Linux 已安装包及恢复验证已完成；a6 GitHub CI、Release、Pages 仍待最终回执，见[第六轮报告](REVIEW-WAVE6.zh-CN.md)与[安装发布状态](RELEASE.zh-CN.md)。
+当前版本：`0.1.0a6` 已发布 alpha，状态日期 2026-11-28（Asia/Tokyo）。Windows／Linux 已安装包及恢复验证已完成；a6 GitHub CI、Release 资产下载回读与 Pages 部署也已完成，见[第六轮报告](REVIEW-WAVE6.zh-CN.md)与[安装发布状态](RELEASE.zh-CN.md)。
 
 **[Agent 使用与交接](AGENT-GUIDE.zh-CN.md) · [恢复规格](RESUME-SPEC.zh-CN.md) · [当前能力](CAPABILITIES.zh-CN.md) · [各轮验证记录](VERIFICATION.zh-CN.md)**
 
-已公开的固定版本仍为 [v0.1.0a5 Release](https://github.com/dwgx/RDC-Operator-Kit/releases/tag/v0.1.0a5)。它的 tag 固定在 `27d367a9698c381d90986c8640d506b24d84ddd9`，六个 CI job、Pages 与九项资产下载哈希已核对，历史回执见[第五轮报告](REVIEW-WAVE5.zh-CN.md)。下面标有 a5 的下载／wheel 命令安装该历史版本，不会提供 a6 的恢复命令；不移动旧 tag 或替换资产。
+历史固定版本为 [v0.1.0a5 Release](https://github.com/dwgx/RDC-Operator-Kit/releases/tag/v0.1.0a5)。它的 tag 固定在 `27d367a9698c381d90986c8640d506b24d84ddd9`，六个 CI job、Pages 与九项资产下载哈希已核对，历史回执见[第五轮报告](REVIEW-WAVE5.zh-CN.md)。当前安装示例使用 a6；旧 tag 与资产保留，不移动或替换。
 
 Windows 操作步骤见 [Windows 操控指南](WINDOWS-CONTROL.zh-CN.md)。[第四轮验收报告](REVIEW-WAVE4.zh-CN.md)与 [a2 第二轮报告](research-wave2/REPORT.zh-CN.md)保留原版本证据；a4 最终 Windows 顶层 suite 8/9 passed、exit 1 不会被后续通过覆盖。
 
@@ -31,11 +31,11 @@ python -B -m rdc_operator --config config.local.json --state .rdc-state resume T
 
 ## 安装
 
-以下固定下载示例保留 a5 已公开版本。a6 的候选安装结果与待发布状态见[发布检查点](RELEASE.zh-CN.md)，不要猜测尚未公布的资产链接。
+以下使用已发布的 [v0.1.0a6](https://github.com/dwgx/RDC-Operator-Kit/releases/tag/v0.1.0a6)。先核对同批 SHA256SUMS.txt；安装与回执见[发布说明](RELEASE.zh-CN.md)。
 
 ### Windows
 
-准备 Python 3.10 或更新版本，从已发布的 [Release](https://github.com/dwgx/RDC-Operator-Kit/releases/tag/v0.1.0a5) 下载并核验源码 ZIP，或按[固定 tag clone 步骤](RELEASE.zh-CN.md)取得完整源码，放入专用目录。在该目录打开 PowerShell，运行：
+准备 Python 3.10 或更新版本，从已发布的 [Release](https://github.com/dwgx/RDC-Operator-Kit/releases/tag/v0.1.0a6) 下载并核验源码 ZIP，或按[固定 tag clone 步骤](RELEASE.zh-CN.md)取得完整源码，放入专用目录。在该目录打开 PowerShell，运行：
 
 ```powershell
 .\scripts\install.ps1 -WithTerminal -WithDesktop
@@ -50,12 +50,12 @@ python -B -m rdc_operator --config config.local.json --state .rdc-state resume T
 
 ### 已有 Windows 环境的离线 wheel 升级
 
-如果已有归属明确、依赖就绪的 `.venv` 或 `.venv-mcp`，可从 [v0.1.0a5 Release](https://github.com/dwgx/RDC-Operator-Kit/releases/tag/v0.1.0a5) 取得 `rdc_operator_kit-0.1.0a5-py3-none-any.whl` 和同批 `SHA256SUMS.txt`，核验后仅升级 Kit。a5 最终 wheel 已在两个自有 Windows 环境安装并逐一核对 11 个模块；实际 installed CLI 与现代 MCP 的有限验证见第五轮报告第 11 节。先保留当前源码、已安装 Kit、配置和状态的备份，核对本地修改；下例在已有项目根目录运行，假定这两个发行文件已放在该目录。
+如果已有归属明确、依赖就绪的 `.venv` 或 `.venv-mcp`，可从 [v0.1.0a6 Release](https://github.com/dwgx/RDC-Operator-Kit/releases/tag/v0.1.0a6) 取得 `rdc_operator_kit-0.1.0a6-py3-none-any.whl` 和同批 `SHA256SUMS.txt`，核验后仅升级 Kit。a6 最终 wheel 已在两个自有 Windows 环境安装并逐一核对 12 个模块；实际 installed 恢复、CLI 与现代 MCP 验证见第六轮报告。先保留当前源码、已安装 Kit、配置和状态的备份，核对本地修改；下例在已有项目根目录运行，假定这两个发行文件已放在该目录。
 
 先检查同名校验条目与实际文件一致；缺少条目、重复条目或摘要不符均停止：
 
 ```powershell
-$wheelName = 'rdc_operator_kit-0.1.0a5-py3-none-any.whl'
+$wheelName = 'rdc_operator_kit-0.1.0a6-py3-none-any.whl'
 $checksumRows = @(Get-Content -LiteralPath .\SHA256SUMS.txt | Where-Object {
   $_ -match ('^[0-9a-fA-F]{64}\s+\*?' + [regex]::Escape($wheelName) + '$')
 })
@@ -68,16 +68,22 @@ if ($actualWheelHash -ne $expectedWheelHash) { throw 'Wheel SHA-256 mismatch' }
 核验通过后，对原有主环境执行：
 
 ```powershell
-& .\.venv\Scripts\python.exe -m pip install --no-index --no-deps --force-reinstall .\rdc_operator_kit-0.1.0a5-py3-none-any.whl
+& .\.venv\Scripts\python.exe -m pip install --no-index --no-deps --force-reinstall .\rdc_operator_kit-0.1.0a6-py3-none-any.whl
 ```
 
 若另外配置了独立 MCP 环境，在同一已核验文件上单独执行：
 
 ```powershell
-& .\.venv-mcp\Scripts\python.exe -m pip install --no-index --no-deps --force-reinstall .\rdc_operator_kit-0.1.0a5-py3-none-any.whl
+& .\.venv-mcp\Scripts\python.exe -m pip install --no-index --no-deps --force-reinstall .\rdc_operator_kit-0.1.0a6-py3-none-any.whl
 ```
 
 wheel 只安装 Kit 的 Python 包，不安装或升级 SmartCLI、MCP SDK、winapp、Skill、测试夹具或网页，也不会同步源码目录。保留终端与 MCP 的分离环境；新机器或依赖尚未准备好的机器继续使用上面的完整源码安装流程。校验和用于核对交付字节，不能代替来源核验。a4 的 a2→a4 升级记录仍见 [第四轮报告](REVIEW-WAVE4.zh-CN.md)，a5 的独立安装证据另见第五轮；两者不混算，source-tree smoke 也不等于 installed-package 全套通过。
+
+检查实际安装包版本时，使用隔离导入，避免当前目录的旧源码遮盖 site-packages：
+
+```powershell
+& .\.venv\Scripts\python.exe -B -I -m rdc_operator --version
+```
 
 ### Linux
 

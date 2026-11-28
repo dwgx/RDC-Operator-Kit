@@ -1,6 +1,6 @@
 # 能力与边界
 
-日期：2026-11-28（Asia/Tokyo）。当前源码为 `0.1.0a6` candidate；已安装包验证已完成，公开 CI／Release／Pages 仍 pending，见[第六轮报告](REVIEW-WAVE6.zh-CN.md)。本文定义源码接口及条件，不能凭接口存在推定当前宿主已经提供、许可或安装该能力。
+日期：2026-11-28（Asia/Tokyo）。当前版本为已发布的 `0.1.0a6` alpha；已安装包、公开 CI、Release 资产下载回读与 Pages 部署均已核验，见[第六轮报告](REVIEW-WAVE6.zh-CN.md)。本文定义源码接口及条件，不能凭接口存在推定当前宿主已经提供、许可或安装该能力。
 
 a5 是已经[公开发布](https://github.com/dwgx/RDC-Operator-Kit/releases/tag/v0.1.0a5)的历史 alpha，固定 tag 提交为 `27d367a9698c381d90986c8640d506b24d84ddd9`，[网站](https://dwgx.github.io/RDC-Operator-Kit/)也有成功部署回执；详见[第五轮报告](REVIEW-WAVE5.zh-CN.md)。[验证记录](VERIFICATION.zh-CN.md)、[第二轮](research-wave2/REPORT.zh-CN.md)、[第三轮](REVIEW-WAVE3.zh-CN.md)和[第四轮](REVIEW-WAVE4.zh-CN.md)保留原环境与失败，不自动成为 a6 的 live 验收。
 
@@ -202,4 +202,4 @@ Microsoft 的 [`SendInput`](https://learn.microsoft.com/en-us/windows/win32/api/
 
 任意网页所有功能、被策略拒绝的 origin、锁屏/UAC secure desktop 的键鼠输入、跨用户桌面、任意 TUI 兼容、自动接管用户已有任意进程、无人确认的账号配对，以及 Linux/macOS 完整 GUI 支持。
 
-Windows 是首要实测平台。a6 的源码、安装包、待公开发布与未重跑范围见[第六轮报告](REVIEW-WAVE6.zh-CN.md)；a5 结果继续见[第五轮报告](REVIEW-WAVE5.zh-CN.md)，历史结果保持原版本。Linux 的安装器与核心/终端路线可以单独验收；`winapp` 桌面适配器仅适用于 Windows。旧上游测试、作者声称或设备可连都不能替代本项目在指定版本上的实测。
+Windows 是首要实测平台。a6 的源码、安装包、公开发布与未重跑范围见[第六轮报告](REVIEW-WAVE6.zh-CN.md)；a5 结果继续见[第五轮报告](REVIEW-WAVE5.zh-CN.md)，历史结果保持原版本。Linux 的安装器与核心/终端路线可以单独验收；`winapp` 桌面适配器仅适用于 Windows。旧上游测试、作者声称或设备可连都不能替代本项目在指定版本上的实测。

@@ -1,6 +1,6 @@
 # 第六轮：手动重连后的恢复、Agent 交接与证据复核
 
-状态日期：2026-11-28（Asia/Tokyo）。版本：`0.1.0a6` candidate。本文记录已执行的源码验证、独立反例及其修复；Windows／Linux 已安装包验证已完成；a6 GitHub CI、Release 与 Pages 的最终回执仍待补充。a5 的已发布资产和历史结论保留在[第五轮报告](REVIEW-WAVE5.zh-CN.md)，不会被本轮源码结果替代。
+状态日期：2026-11-28（Asia/Tokyo）。版本：`0.1.0a6` 已发布 alpha。本文记录已执行的源码验证、独立反例及其修复；Windows／Linux 已安装包验证已完成；a6 GitHub CI、Release 与 Pages 均已有真实回执，见第 9 节。a5 的已发布资产和历史结论保留在[第五轮报告](REVIEW-WAVE5.zh-CN.md)，不会被本轮源码结果替代。
 
 本轮从公开 `main` 提交 `54131f00c3b942797809a1b90424e845ef56fe13` 建立隔离副本，139 个基线文件逐一核对 SHA-256 相同。开发、独立审阅和运行时冻结使用的是本地提交；最终运行时检查点 `06e0e21` **不是公开发行提交或 tag**。Windows 源码测试前另核对了当时隔离快照的 149 个文件；这也不是最终 Release 文件数。
 
@@ -19,7 +19,7 @@
 | 当前 RDC 路由 | 用户手动登录后，主执行者已重新发现并读取现有连接和设备 | 私有标识已脱敏；只证明当时路由发现成功，不授予额外工具权限 |
 | a6 已安装包 | Windows 两个环境各 12 模块匹配 wheel；恢复 smoke 各 17/17；Linux 新隔离环境安装包 smoke 17/17 | 真实 site-packages 隔离导入；其他依赖与 Windows 配置未变 |
 | installed CLI／现代 MCP | 两个 `rdc-kit.exe` 均返回 a6；真实 SDK 2.3.0 stdio 会话 17 checks passed | 与恢复 smoke 的 17 项分开记录；协议 `2026-07-28`，三工具、双通道、unknown 与记录未变均核对 |
-| a6 CI、Release、Pages | **pending** | 分项补充实际 commit、run、资产哈希和回读结果后才能改为完成 |
+| a6 CI、Release、Pages | 已完成，见第 9 节 | 六个 CI job、九项资产下载回读及 Pages build/deploy；不增加 live UI 结论 |
 
 较早的 Linux 223 run／219 pass／4 skip 是修复后的中间检查点。新增命令行只读回归后最终变为 225 项；不能把这两个运行或定向子集相加成更多测试。各系统 skip 的数量保留原值，未执行项不计为通过。
 
@@ -95,7 +95,7 @@ python -I scripts/smoke_recovery.py --output-dir evidence/recovery-source-new
 | fresh-copy CLI | 真实 `-B` 子命令正向和去 `-B` 反向控制 | 不保证 OS 不更新 atime、不保证宿主不记日志 |
 | 独立审阅 | 规格审查、运行时反例、harness 反向控制、打包隐私测试 | 独立审阅无新增 coding-standard finding 不等于“没有任何缺陷” |
 | 已安装包 | Windows 两环境各 17 项恢复 smoke，Linux 隔离安装包 17 项；Windows 另有真实现代 MCP 17 项 | 分开的进程／协议验收不合并成同一 suite；没有重跑 GUI 或 legacy MCP |
-| GitHub CI／公开资产／部署 | pending | 旧 a5 绿灯、下载链接和 Pages 不能作为 a6 结果 |
+| GitHub CI／公开资产／部署 | a6 实际回执已核对，见第 9 节 | 旧 a5 结果仍独立保留；部署不等于浏览器交互验收 |
 
 规格审查先澄清了同 ID 重连代次、request/config 关联未验证、精确 marker 绑定、并发快照复核、软暂停及私有 scope 正文归属；随后对实际代码的审阅发现了提交后回读缺陷。独立标准审阅在其受审 diff 中没有确认的编码规范违例，并另外复现了同一回读问题；两份意见不是两次独立全套运行。规格独立 follow-up 已确认两项问题关闭，无剩余 blocking finding；这不是所有代码无缺陷的证明。原始检查点及错误输出都保留在私有证据账本，公开文档仅引用脱敏结论。
 
@@ -111,17 +111,66 @@ python -I scripts/smoke_recovery.py --output-dir evidence/recovery-source-new
 
 当前会话对既往任务的查阅只取得相关检索片段，没有读取完整聊天记录，不能据此声称还原全部历史。主执行者实际重新发现了用户手动登录后的现有 RDC 路由；原始账号与设备值不公开。真实 Browser 对 `chatgpt.com` 的宿主拒绝、localhost 自动审批拒绝、HMC 额度阻断和 OMP 失败记录全部沿用，未重新测试、换表面绕过或借新路由改写为通过。
 
-## 8. 已安装包与待补充的公开发布回执
+## 8. 已安装包与公开发布回执
 
 | 事项 | 本检查点状态 | 最终须记录的证据 |
 |---|---|---|
 | Windows a6 wheel 安装 | 已完成 | 两个已有环境 offline／no-deps 从 a5 升到 a6；旧包备份保留，各 12 个模块 SHA-256 与 wheel 相同；非 Kit distribution 与 config 哈希不变 |
 | 已安装恢复 smoke／CLI | 已完成 | Windows 两环境 `-I` 实际 site-packages 导入、版本 a6、恢复各 17/17；两个 `Scripts/rdc-kit.exe` 均为 a6；Linux 新隔离环境同一 wheel 恢复 17/17 |
 | 已安装现代 MCP | 已完成 | SDK 2.3.0 真正 stdio 协商 `2026-07-28`；三工具、严格双通道一致、unknown 保留、worker 正常返回、夹具未变，17 checks passed |
-| a6 GitHub 源码与 CI | pending | 精确公开 commit、真实 run URL、每个 job 的结果、test/skip 数；失败保留 |
-| a6 tag 与 Release | pending | 固定 tag、发布时间、明确资产清单、大小、SHA-256、上传后下载回读 |
-| a6 Pages | pending | 精确 run／commit、build/deploy 结果和实际 page URL；部署不等于浏览器验收 |
+| a6 GitHub 源码与 CI | 已完成 | `edf4aa52` 的六个 job 全部 success；各平台 run/pass/skip 见第 9 节 |
+| a6 tag 与 Release | 已发布 | 18:07:02 JST；九项资产全部下载回读一致；固定 tag 见第 9 节 |
+| a6 Pages | 已部署 | 发行提交的 build/deploy success 与实际 page URL；仍无本轮 live Browser 验收 |
 
 本轮已安装 wheel 为 **51,757 字节**，SHA-256 为 `f84ae08e8e6625a14ca84fe2b4a154a58ee4829c5a3866dc9bb23656b2f2770e`。wheel 只更新 Kit；源码主副本的最终同步和公开发布分别记录，不能因 site-packages 已升级便视为其他交付全部完成。
 
-发布步骤及 a5 固定版本下载保留在[安装与发布说明](RELEASE.zh-CN.md)，所有轮次总览见[验证记录](VERIFICATION.zh-CN.md)。本文中的 pending 只在取得对应回执后更新，不以计划或命令示例代替完成状态。
+当前 a6 下载与历史 a5 发布步骤见[安装与发布说明](RELEASE.zh-CN.md)，所有轮次总览见[验证记录](VERIFICATION.zh-CN.md)。已公开资产保留冻结字节，main 的后续发布补记与原归档分开。
+
+## 9. 实际公开发行与 Pages 部署
+
+`v0.1.0a6` 于 **2026-11-28 18:07:02 JST** 公开为预发布 alpha，固定到公开提交
+`edf4aa52e11d1f326cee93a538b8dfa7422a055f`。不移动 a5／a6 tag，不覆盖既有 Release 资产。
+[打开 a6 Release](https://github.com/dwgx/RDC-Operator-Kit/releases/tag/v0.1.0a6) ·
+[发行提交 CI](https://github.com/dwgx/RDC-Operator-Kit/actions/runs/46128657762) ·
+[发行提交 Pages](https://github.com/dwgx/RDC-Operator-Kit/actions/runs/46129018315)
+
+发行提交的六个 CI job 全部 success；日志回读结果如下。与本机数量的差异是各环境实际
+skip，不把未执行项算作通过，也不把每个 job 的同一套测试累加成独立能力数。
+
+| Job | Core run / pass / skip | 恢复 smoke |
+|---|---|---|
+| Windows / Python 3.10 | 225 / 217 / 8 | source 17/17 |
+| Windows / Python 3.13 | 225 / 217 / 8 | source 17/17 |
+| Ubuntu / Python 3.10 | 225 / 219 / 6 | source 17/17 |
+| Ubuntu / Python 3.13 | 225 / 219 / 6 | source 17/17 |
+| MCP stdio / Windows | 真实 SDK 会话 job success | installed 17/17 |
+| MCP stdio / Ubuntu | 真实 SDK 会话 job success | installed 17/17 |
+
+最终公开源清单包含 **156 个源文件**；ZIP、TAR 各含这 156 个文件及一份 manifest，共
+157 条目，已逐字节核对。独立审查核对了 38 份站点文档，站点副本的 53 条跨出 docs
+的源码引用改为固定 tag 上的 GitHub 路径；源码文档仍保留仓库相对链接。静态检查覆盖
+三个 HTML 文档、22 个 HTML 相对目标、338 个 Markdown 相对目标，不宣称完整无障碍
+或真实浏览器渲染验收。Windows 的最终源码副本也已同步核对这 156 个文件，旧源码和
+两个已安装包有独立备份，原 config 哈希及既有运行记录保留。
+
+九项资产先上传为 draft，再实际下载全部文件逐项比较 SHA-256，全部一致后才公开：
+
+| 发行资产 | 字节数 | SHA-256 |
+|---|---:|---|
+| `RDC-Operator-Kit-0.1.0a6-report.zh-CN.md` | 17,668 | `afc8b3473942d102937d150db3289d3194b66672c752c0f5009971572a00aba2` |
+| `RDC-Operator-Kit-0.1.0a6.tar.gz` | 702,737 | `c7d90fc16974f2489424c4e465f87f9cb4a84b1522dc0dfbb643bb024b746449` |
+| `RDC-Operator-Kit-0.1.0a6.zip` | 863,847 | `29b6ccc06f21ca6636e220e4181df3daf70a402c71bee41328fe631e9881e586` |
+| `RDC-Operator-Kit-preview.html` | 281,400 | `615b8f08de0f90588cd5da9c69d46e84d1d6efe85f380efdc666c7195172412e` |
+| `RELEASE-VALIDATION.json` | 1,596 | `681f9cfa9d44ede34eed315619fb875890ad58deeace650f4a1ce327188fa455` |
+| `SHA256SUMS.txt` | 777 | `562a4ebff115f1610d96014063102fdc15f6b2c6fb0a77b43ca0357df0c9a161` |
+| `SOURCE-MANIFEST.json` | 26,228 | `226031bd24c671a92ea8f055430489968e78f3dc9d8f9955a5d2eb187d3b01e3` |
+| `rdc_operator_kit-0.1.0a6-py3-none-any.whl` | 51,757 | `f84ae08e8e6625a14ca84fe2b4a154a58ee4829c5a3866dc9bb23656b2f2770e` |
+| `static-web-audit.json` | 550 | `5b5ced923dd4b482253157e35ec84c49d44445d76fa186f25fb76f5a5cf4204d` |
+
+Pages 的 build 与 deploy 均 success，部署状态回读在 **18:08:31 JST** 返回 success，
+对应同一个发行提交和实际页面 URL：<https://dwgx.github.io/RDC-Operator-Kit/>。
+这是部署证据，不增加 live Browser 验收。随后 main 只补充这些已经发生的发布回执与
+当前安装指南；发行包内报告保留打包时的发布前检查点，正文的后续补记不改变发行资产。
+
+本轮没有真实登出、重新配对或自动账号切换实验。连接变化由合成 context 覆盖；实际
+RDC 仅重新发现用户已经手动登录后的当前路由，并执行授权的文件、测试与发布工作。

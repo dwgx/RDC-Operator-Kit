@@ -1,4 +1,4 @@
-# 当前检查点：0.1.0a6 candidate
+# 当前发布：0.1.0a6 alpha
 
 2026-11-28（Asia/Tokyo）。本轮新增任务 checkpoint／CAS／原 state 绑定和只读 resume；它不是所有操作的全局执行拦截器。完整缺陷、修复与证据边界见[第六轮报告](REVIEW-WAVE6.zh-CN.md)，使用步骤见[Agent 指南](AGENT-GUIDE.zh-CN.md)与[恢复规格](RESUME-SPEC.zh-CN.md)。下面保留 a5 及更早历史，旧 CI／Release／Pages 不自动成为 a6 的验收。
 
@@ -17,9 +17,9 @@
 | Installed 现代 MCP | SDK 2.3.0 真正 stdio，17 checks passed | 协议 `2026-07-28`；三工具与严格双通道、unknown、记录未变、worker 正常退出；不是恢复 smoke 的 17 项 |
 | Skill／前向推演 | canonical 八资源保存并回读；四种 Agent 场景回答完成 | 未在推演中操作 Browser、账号或未知进程；不是所有 Agent 的行为保证 |
 | 当前路由／历史上下文 | 用户手动登录后重新发现现有连接；既往会话只取得相关检索片段 | 不公开私有标识，不声称读取完整聊天 |
-| a6 GitHub CI／Release／Pages | **pending** | 尚无本轮最终公开回执；不沿用 a5 绿灯或资产 |
+| a6 GitHub CI／Release／Pages | 六个 CI job、九项资产下载回读、Pages build/deploy 全部完成 | 固定发行提交 `edf4aa52`；完整回执见第六轮报告第 9 节 |
 
-本轮 wheel 为 51,757 字节，SHA-256 为 `f84ae08e8e6625a14ca84fe2b4a154a58ee4829c5a3866dc9bb23656b2f2770e`。已安装模块验证不等于源码主副本已经最终同步。Browser 的既有策略拒绝／localhost 自动审批拒绝、HMC 额度阻断、OMP 无 final 等历史结论全部保留，本轮未重新测试或绕过。
+本轮 wheel 为 51,757 字节，SHA-256 为 `f84ae08e8e6625a14ca84fe2b4a154a58ee4829c5a3866dc9bb23656b2f2770e`。Windows 最终源码主副本另已核对同步 156 文件，旧源码和包均保留备份。Browser 的既有策略拒绝／localhost 自动审批拒绝、HMC 额度阻断、OMP 无 final 等历史结论全部保留，本轮未重新测试或绕过。
 
 # 历史结果：0.1.0a5
 
